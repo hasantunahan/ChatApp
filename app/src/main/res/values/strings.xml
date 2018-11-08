@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Anons</string>
+    <string name="app_name_cap">ANONS</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">LOGIN</string>
+    <string name="or">or</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="forgot_password">Forgot My Password</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="e_mail">E-Mail</string>
+    <string name="dob">Date Of Birth</string>
+    <string name="sex">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string-array name="sex">
+        <item>@string/male</item>
+        <item>@string/female</item>
+    </string-array>
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Anons</string>
+    <string name="app_name_cap">ANONS</string>
+    <string name="username">Kullanıcı Adı</string>
+    <string name="password">Şifre</string>
+    <string name="login">GİRİŞ</string>
+    <string name="or">veya</string>
+    <string name="sign_up">KAYIT OL</string>
+    <string name="forgot_password">Şifremi Unuttum</string>
+    <string name="name">İsim</string>
+    <string name="surname">Soyisim</string>
+    <string name="e_mail">E-Posta</string>
+    <string name="dob">Doğum Tarihi</string>
+    <string name="sex">Cinsiyet</string>
+    <string name="male">Erkek</string>
+    <string name="female">Kadın</string>
+    <string-array name="sex">
+        <item>@string/male</item>
+        <item>@string/female</item>
+    </string-array>
+</resources>
