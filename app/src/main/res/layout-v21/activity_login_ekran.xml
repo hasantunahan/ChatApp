@@ -25,8 +25,8 @@
         app:layout_constraintVertical_bias="0.92" />
 
     <EditText
+        android:backgroundTint="@color/colorAccent"
         android:id="@+id/usernameEditText"
-        style="@style/MyEditTextStyle2"
         android:layout_width="0dp"
         android:layout_height="49dp"
         android:layout_marginStart="32dp"
@@ -42,6 +42,7 @@
         android:singleLine="false"
         android:textAlignment="textStart"
         android:textColor="@color/colorLoginText"
+        android:textColorHighlight="@android:color/darker_gray"
         android:textColorHint="@android:color/darker_gray"
         android:textColorLink="@color/colorAccent"
         app:layout_constraintBottom_toTopOf="@+id/passwordEditText"
@@ -50,8 +51,8 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
+        android:backgroundTint="@color/colorAccent"
         android:id="@+id/passwordEditText"
-        style="@style/MyEditTextStyle2"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginStart="32dp"
@@ -65,6 +66,7 @@
         android:padding="7dp"
         android:textAlignment="textStart"
         android:textColor="@android:color/black"
+        android:textColorHighlight="@android:color/darker_gray"
         android:textColorHint="@android:color/darker_gray"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"

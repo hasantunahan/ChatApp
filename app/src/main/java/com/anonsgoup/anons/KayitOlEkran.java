@@ -27,6 +27,9 @@ public class KayitOlEkran extends AppCompatActivity {
 
         genderSpinner = findViewById(R.id.genderSpinner);
         dobEditText = findViewById(R.id.dobEditText);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.sex, R.layout.custom_spinner_item);
+        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+        genderSpinner.setAdapter(adapter);
 
 
     }

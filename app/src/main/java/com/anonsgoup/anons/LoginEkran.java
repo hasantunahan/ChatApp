@@ -20,11 +20,8 @@ public class LoginEkran extends Activity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
                 startActivity(new Intent(getApplicationContext(), KayitOlEkran.class));
             }
         });
-
-
     }
 }

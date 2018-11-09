@@ -23,7 +23,7 @@
         android:textStyle="bold" />
 
     <EditText
-        android:theme="@style/MyEditTextStyle2"
+        android:backgroundTint="@color/colorAccent"
         android:id="@+id/usernameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:theme="@style/MyEditTextStyle2"
+            android:backgroundTint="@color/colorAccent"
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             android:textColorHint="@android:color/darker_gray" />
 
         <EditText
-            android:theme="@style/MyEditTextStyle2"
+            android:backgroundTint="@color/colorAccent"
             android:id="@+id/surnameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
     </LinearLayout>
 
     <EditText
-        android:theme="@style/MyEditTextStyle2"
+        android:backgroundTint="@color/colorAccent"
         android:id="@+id/emailEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
         android:textColorHint="@android:color/darker_gray" />
 
     <EditText
-        android:theme="@style/MyEditTextStyle2"
+        android:backgroundTint="@color/colorAccent"
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -106,8 +106,8 @@
 
         <TextView
             android:id="@+id/dobEditText"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_width="0dp"
             android:layout_weight="1"
             android:clickable="true"
             android:drawableStart="@drawable/ic_today_black_24dp"
@@ -115,7 +115,7 @@
             android:fontFamily="@font/anons_fontt"
             android:hint="@string/dob"
             android:onClick="kayitOlClicks"
-            android:paddingStart="5dp"
+            android:paddingLeft="5dp"
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="18sp" />
@@ -124,8 +124,8 @@
             android:id="@+id/genderSpinner"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:entries="@array/sex"
             android:minWidth="30dp"
-            android:spinnerMode="dropdown"
             android:theme="@style/Widget.AppCompat.Spinner.DropDown" />
     </LinearLayout>
 
