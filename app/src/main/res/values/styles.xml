@@ -9,11 +9,16 @@
     </style>
 
     <style name="MyEditTextStyle2" parent="Widget.AppCompat.EditText">
-        <item name="colorControlActivated">#85122B</item>
+        <item name="colorAccent">#636363</item>
         <item name="colorControlNormal">#636363</item>
+        <item name="colorControlActivated">#85122B</item>
     </style>
 
-    <style name="spinner_item" parent="android:Widget.TextView.SpinnerItem"></style>
+    <style name="spinner_item" parent="android:Widget.TextView.SpinnerItem">
+
+
+    </style>
+
 
 
 </resources>

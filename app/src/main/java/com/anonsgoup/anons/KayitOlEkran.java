@@ -41,11 +41,6 @@ public class KayitOlEkran extends AppCompatActivity {
                 int year = calendar.get(Calendar.YEAR);
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(KayitOlEkran.this,
-                        android.R.style.Theme_Holo_Light_Dialog,onDateSetListener,year,month,day);
-                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                datePickerDialog.show();
-
                 onDateSetListener = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -53,6 +48,13 @@ public class KayitOlEkran extends AppCompatActivity {
                         dobEditText.setText(dayOfMonth + "/" + month + "/" + year);
                     }
                 };
+                DatePickerDialog datePickerDialog = new DatePickerDialog(KayitOlEkran.this,
+                        android.R.style.Theme_Holo_Light_Dialog,onDateSetListener,year,month,day);
+
+                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                datePickerDialog.show();
+
+                break;
         }
     }
 }
