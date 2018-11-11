@@ -5,7 +5,20 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">#636363</item>
     </style>
+
+    <style name="MyEditTextStyle2" parent="Widget.AppCompat.EditText">
+        <item name="colorAccent">#636363</item>
+        <item name="colorControlNormal">#636363</item>
+        <item name="colorControlActivated">#85122B</item>
+    </style>
+
+    <style name="spinner_item" parent="android:Widget.TextView.SpinnerItem">
+
+
+    </style>
+
+
 
 </resources>
