@@ -26,7 +26,7 @@
     <string name="dob_warning">Choose a date</string>
     <string name="friends">Friends</string>
     <string name="anons">Anons</string>
-    <string name="likes">Like</string>
+    <string name="likes">Likes</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="about_me">ABOUT ME</string>
 </resources>
