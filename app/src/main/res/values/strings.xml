@@ -18,4 +18,10 @@
         <item>@string/male</item>
         <item>@string/female</item>
     </string-array>
+    <string name="invalid_login">Invalid Username or Password</string>
+    <string name="empty_warning">Field can\'t be empty</string>
+    <string name="email_warning">Please enter a valid email</string>
+    <string name="password_warning">Pasword too weak</string>
+    <string name="username_warning">Username too long</string>
+    <string name="dob_warning">Choose a date</string>
 </resources>

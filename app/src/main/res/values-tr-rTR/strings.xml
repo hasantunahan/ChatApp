@@ -19,4 +19,10 @@
         <item>@string/male</item>
         <item>@string/female</item>
     </string-array>
+    <string name="invalid_login">Kullanıcı Adı veya Şifre Yanlış</string>
+    <string name="empty_warning">Bu alan boş geçilemez</string>
+    <string name="email_warning">Geçerli bir email giriniz</string>
+    <string name="password_warning">Zayıf şifre</string>
+    <string name="username_warning">Kullanıcı adı çok uzun</string>
+    <string name="dob_warning">Tarih seçiniz</string>
 </resources>
