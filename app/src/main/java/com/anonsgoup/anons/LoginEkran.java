@@ -43,7 +43,7 @@ public class LoginEkran extends Activity {
                 kullaniciAdi = usernameEditText.getText().toString();
                 sifre = passwordEditText.getText().toString();
                 if (seroad.equals(kullaniciAdi) && serosifre.equals(sifre)){
-                    Intent intent = new Intent(LoginEkran.this,profil.class);
+                    Intent intent = new Intent(LoginEkran.this,ProfilEkran.class);
                     startActivity(intent);}
                 else {
                     uyariTextView.setVisibility(View.VISIBLE);
