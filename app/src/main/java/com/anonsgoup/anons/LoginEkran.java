@@ -20,8 +20,8 @@ public class LoginEkran extends Activity {
     Button login;
     String kullaniciAdi;
     String sifre;
-    String  seroad="serocan38";
-    String serosifre="seref123321";
+    String  seroad="1";
+    String serosifre="1";
     int sero;
     
 
@@ -43,7 +43,7 @@ public class LoginEkran extends Activity {
                 kullaniciAdi = usernameEditText.getText().toString();
                 sifre = passwordEditText.getText().toString();
                 if (seroad.equals(kullaniciAdi) && serosifre.equals(sifre)){
-                    Intent intent = new Intent(LoginEkran.this,ProfilEkran.class);
+                    Intent intent = new Intent(LoginEkran.this,AnaEkran.class);
                     startActivity(intent);}
                 else {
                     uyariTextView.setVisibility(View.VISIBLE);
