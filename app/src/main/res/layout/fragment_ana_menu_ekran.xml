@@ -1,15 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AnaMenuEkran">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        android:textColor="@android:color/black" />
+        android:background="@color/colorWhite">
 
+
+        <TextView
+            android:id="@+id/appNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/anonsfont"
+            android:text="@string/app_name_cap"
+            android:textColor="@color/batteryHigh"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.045" />
+
+        <TextView
+            android:id="@+id/kalanAnonsSayisiTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/profil_bilgi_background"
+            android:fontFamily="@font/anons_fontt"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="3"
+            android:textColor="@color/batteryHigh"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/appNameTextView"
+            app:layout_constraintStart_toStartOf="@+id/appNameTextView"
+            app:layout_constraintTop_toBottomOf="@+id/appNameTextView" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/anons_fontt"
+            android:text="Bildirim Mesafesi"
+            android:textColor="@color/AnonsColor"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/kalanAnonsSayisiTextView"
+            app:layout_constraintStart_toStartOf="@+id/kalanAnonsSayisiTextView"
+            app:layout_constraintTop_toBottomOf="@+id/kalanAnonsSayisiTextView" />
+
+        <TextView
+            android:id="@+id/maxMetreTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/anons_fontt"
+            android:gravity="left"
+            android:paddingLeft="2dp"
+            android:text="2km"
+            app:layout_constraintBottom_toBottomOf="@+id/anonsMesafeSeekBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/anonsMesafeSeekBar"
+            app:layout_constraintTop_toTopOf="@+id/anonsMesafeSeekBar" />
+
+        <TextView
+            android:id="@+id/minMetreTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/anons_fontt"
+            android:gravity="right"
+            android:paddingRight="2dp"
+            android:text="5m"
+            app:layout_constraintEnd_toStartOf="@+id/anonsMesafeSeekBar"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+        <SeekBar
+            android:id="@+id/anonsMesafeSeekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:thumb="@drawable/ic_seekbaritem"
+            app:layout_constraintBottom_toBottomOf="@+id/minMetreTextView"
+            app:layout_constraintEnd_toStartOf="@+id/maxMetreTextView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/minMetreTextView"
+            app:layout_constraintTop_toTopOf="@+id/minMetreTextView" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/profil_bilgi_background"
+            android:fontFamily="@font/anons_fontt"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="5dp"
+            android:text="12m"
+            android:textColor="@color/yeşilEnd"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/textView8"
+            app:layout_constraintStart_toStartOf="@+id/textView8"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <Button
+            android:id="@+id/premiumaYukseltButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/gradient_color_gold"
+            android:fontFamily="@font/anons_fontt"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Premiuma Yükselt"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/minMetreTextView" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/premiumaYukseltButton" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="126dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="87dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/gradient_color_gray"
+            android:orientation="horizontal"
+            android:padding="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner"
+            app:layout_constraintVertical_bias="0.029">
+
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="227dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+
+                android:background="@drawable/edit_text_color_white_radius"
+                android:ems="10"
+                android:fontFamily="@font/anons_fontt"
+                android:hint="Anons"
+                android:inputType="textPersonName"
+                android:paddingLeft="15dp"
+                android:paddingTop="0dp"
+                android:paddingRight="30dp" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="46dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_send" />
+
+        </LinearLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/slideViewPager"
+            android:layout_width="0dp"
+            android:layout_height="125dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        </android.support.v4.view.ViewPager>
+
+    </android.support.constraint.ConstraintLayout>
 </FrameLayout>

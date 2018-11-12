@@ -11,4 +11,11 @@
     <color name="Gray">#BFCED5</color>
     <color name="OpacityGray">#EFEFEF</color>
     <color name="Gold">#FCB215</color>
+    <color name="AnonsColor">#530015</color>
+    <color name="batteryHigh">#0F8C1C</color>
+    <color name="batteryNormal">#F17A0B</color>
+    <color name="batteryLow">#530015</color>
+    <color name="yeşilEnd">#7EB545</color>
+
+
 </resources>
