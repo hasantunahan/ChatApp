@@ -24,6 +24,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.anonsgoup.anons.KayitOlEkran" />
         </activity>
+        <activity android:name=".profil" android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 
 </manifest>
