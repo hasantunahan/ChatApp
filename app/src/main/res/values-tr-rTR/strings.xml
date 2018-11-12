@@ -25,4 +25,9 @@
     <string name="password_warning">Zayıf şifre</string>
     <string name="username_warning">Kullanıcı adı çok uzun</string>
     <string name="dob_warning">Tarih seçiniz</string>
+    <string name="friends">Arkadaşlar</string>
+    <string name="anons">Anons</string>
+    <string name="likes">Beğeni</string>
+    <string name="edit_profile">Profili Düzenle</string>
+    <string name="about_me">HAKKIMDA</string>
 </resources>
