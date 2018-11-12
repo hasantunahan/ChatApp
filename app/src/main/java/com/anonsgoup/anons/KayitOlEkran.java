@@ -1,41 +1,98 @@
 package com.anonsgoup.anons;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.regex.Pattern;
 
 public class KayitOlEkran extends AppCompatActivity {
 
     private Spinner genderSpinner;
     private TextView dobEditText;
     private DatePickerDialog.OnDateSetListener onDateSetListener;
+    Button signUpOkeyButton;
+    EditText emailEditText;
+    EditText passwordEditText;
+    EditText usernameEditText;
+    TextInputLayout passwordWrapper;
+    TextInputLayout emailWrapper;
+    TextInputLayout usernameWrapper;
+    TextInputLayout nameWrapper;
+    TextInputLayout surnameWrapper;
+    EditText nameEditText;
+    EditText surnameEditText;
+
+    private static final Pattern DATE_PATTERN = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4}");
+    private static final Pattern PASSWORD_PATTERN =
+            Pattern.compile("^" +
+                    //"(?=.*[0-9])" +         //at least 1 digit
+                    //"(?=.*[a-z])" +         //at least 1 lower case letter
+                    //"(?=.*[A-Z])" +         //at least 1 upper case letter
+                    "(?=.*[0-9])" +
+                    "(?=.*[a-zA-Z])" +      //any letter
+                    "(?=.*['*!@#$%^&+=.,_-])" +    //at least 1 special character
+                    "(?=\\S+$)" +           //no white spaces
+                    ".{6,}" +               //at least 6 characters
+                    "$");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kayit_ol_ekran);
 
-        genderSpinner = findViewById(R.id.genderSpinner);
+        usernameWrapper = findViewById(R.id.usernameWrapper);
         dobEditText = findViewById(R.id.dobEditText);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.sex, R.layout.custom_spinner_item);
+        emailEditText = findViewById(R.id.emailEditText);
+        signUpOkeyButton = findViewById(R.id.signUpOkeyButton);
+        passwordEditText = findViewById(R.id.passwordEditText);
+        emailWrapper = findViewById(R.id.emailWrapper);
+        passwordWrapper = findViewById(R.id.passwordWrappper);
+        genderSpinner = findViewById(R.id.genderSpinner);
+        nameEditText = findViewById(R.id.nameEditText);
+        surnameEditText = findViewById(R.id.surnameEditText);
+        nameWrapper = findViewById(R.id.nameWrapper);
+        surnameWrapper = findViewById(R.id.surnameWrapper);
+        usernameEditText = findViewById(R.id.usernameEditText);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.sex, R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
         genderSpinner.setAdapter(adapter);
 
-
+        signUpOkeyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!validatePassword() || !emailkontrol() || !usernamekontrol() || !dobKontrol()
+                        || !nameKontrol() || !surnameKontrol())
+                    return;
+                Intent intent = new Intent(KayitOlEkran.this, LoginEkran.class);
+                startActivity(intent);
+            }
+        });
     }
 
+
+    // viewların tıklanma olayları
     public void kayitOlClicks(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.dobEditText:
                 Calendar calendar = Calendar.getInstance();
                 int year = calendar.get(Calendar.YEAR);
@@ -44,17 +101,96 @@ public class KayitOlEkran extends AppCompatActivity {
                 onDateSetListener = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        month = month+1;
+                        month = month + 1;
                         dobEditText.setText(dayOfMonth + "/" + month + "/" + year);
                     }
                 };
                 DatePickerDialog datePickerDialog = new DatePickerDialog(KayitOlEkran.this,
-                        android.R.style.Theme_Holo_Light_Dialog,onDateSetListener,year,month,day);
+                        android.R.style.Theme_Holo_Light_Dialog, onDateSetListener, year, month, day);
+                datePickerDialog.getDatePicker().setMaxDate((new Date().getTime()) - Long.parseLong("31556926000") * 13);
 
                 datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 datePickerDialog.show();
 
                 break;
+        }
+    }
+
+
+    private boolean emailkontrol() {
+        String emailInput = emailEditText.getEditableText().toString().trim();
+
+        if (emailInput.isEmpty()) {
+            emailWrapper.setErrorEnabled(true);
+            emailWrapper.setError(getResources().getString(R.string.empty_warning));
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+            emailWrapper.setErrorEnabled(true);
+            emailWrapper.setError(getResources().getString(R.string.email_warning));
+            return false;
+        } else {
+            emailWrapper.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validatePassword() {
+        String passwordInput = passwordEditText.getText().toString().trim();
+
+        if (passwordInput.isEmpty()) {
+            passwordWrapper.setError(getResources().getString(R.string.empty_warning));
+            return false;
+        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+            passwordWrapper.setError(getResources().getString(R.string.password_warning));
+            return false;
+        } else {
+            passwordWrapper.setError(null);
+            return true;
+        }
+    }
+
+    private boolean usernamekontrol() {
+        String usernameInput = usernameEditText.getEditableText().toString().trim();
+
+        if (usernameInput.isEmpty()) {
+            usernameWrapper.setError(getResources().getString(R.string.empty_warning));
+            return false;
+        } else if (usernameInput.length() > 15) {
+            usernameWrapper.setError(getResources().getString(R.string.username_warning));
+            return false;
+        } else {
+            usernameWrapper.setError(null);
+            return true;
+        }
+    }
+
+    private boolean dobKontrol() {
+        if (!DATE_PATTERN.matcher(dobEditText.getText()).matches()) {
+            dobEditText.setText(getResources().getString(R.string.dob_warning));
+            return false;
+        }
+        return true;
+    }
+
+    private boolean nameKontrol() {
+        String nameInput = nameEditText.getEditableText().toString().trim();
+        if (nameInput.isEmpty()) {
+            nameWrapper.setError(getResources().getString(R.string.empty_warning));
+            return false;
+        } else {
+            nameWrapper.setError(null);
+            return true;
+        }
+    }
+
+    private boolean surnameKontrol() {
+        String surnameInput = surnameEditText.getEditableText().toString().trim();
+        if (surnameInput.isEmpty()) {
+            surnameWrapper.setError(getResources().getString(R.string.empty_warning));
+            return false;
+        } else {
+            nameWrapper.setError(null);
+            return true;
         }
     }
 }

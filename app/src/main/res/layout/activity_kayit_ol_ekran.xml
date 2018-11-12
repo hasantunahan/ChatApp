@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -21,20 +22,27 @@
         android:textColor="@android:color/black"
         android:textSize="36sp"
         android:textStyle="bold" />
-
-    <EditText
-        android:theme="@style/MyEditTextStyle2"
-        android:id="@+id/usernameEditText"
-        android:layout_width="match_parent"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/usernameWrapper"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:drawableStart="@drawable/ic_person_black_24dp"
-        android:ems="10"
-        android:fontFamily="@font/anons_fontt"
+        android:layout_width="match_parent"
         android:hint="@string/username"
-        android:inputType="textPersonName"
-        android:textColor="@android:color/black"
-        android:textColorHint="@android:color/darker_gray" />
+        android:textColorHint="@android:color/darker_gray"
+
+        >
+        <EditText
+            android:id="@+id/usernameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:drawableStart="@drawable/ic_person_black_24dp"
+            android:ems="10"
+            android:fontFamily="@font/anons_fontt"
+            android:hint="@string/username"
+            android:inputType="textPersonName"
+            android:textColor="@android:color/black"
+            android:theme="@style/MyEditTextStyle2" />
+    </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,63 +50,90 @@
         android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
-        <EditText
-            android:theme="@style/MyEditTextStyle2"
-            android:id="@+id/nameEditText"
-            android:layout_width="match_parent"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/nameWrapper"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_perm_contact_calendar_black_24dp"
-            android:ems="10"
-            android:fontFamily="@font/anons_fontt"
             android:hint="@string/name"
-            android:inputType="textPersonName"
-            android:textColor="@android:color/black"
-            android:textColorHint="@android:color/darker_gray" />
+            android:textColorHint="@android:color/darker_gray">
+            <EditText
+                android:theme="@style/MyEditTextStyle2"
+                android:id="@+id/nameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name"
+                android:drawableStart="@drawable/ic_perm_contact_calendar_black_24dp"
+                android:ems="10"
+                android:fontFamily="@font/anons_fontt"
+                android:inputType="textPersonName"
+                android:textColor="@android:color/black"
+                />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/surnameWrapper"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:hint="@string/surname"
+            android:textColorHint="@android:color/darker_gray">
 
+            <EditText
+                android:id="@+id/surnameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:ems="10"
+                android:fontFamily="@font/anons_fontt"
+                android:hint="@string/surname"
+                android:inputType="textPersonName"
+                android:textColor="@android:color/black"
+                android:theme="@style/MyEditTextStyle2" />
+    </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/emailWrapper"
+        android:layout_height="wrap_content"
+        android:hint="@string/e_mail"
+        android:layout_width="match_parent"
+        android:textColorHint="@android:color/darker_gray">
         <EditText
             android:theme="@style/MyEditTextStyle2"
-            android:id="@+id/surnameEditText"
+            android:id="@+id/emailEditText"
+            android:hint="@string/e_mail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:drawableStart="@drawable/ic_email_black_24dp"
             android:ems="10"
             android:fontFamily="@font/anons_fontt"
-            android:hint="@string/surname"
-            android:inputType="textPersonName"
-            android:textColor="@android:color/black"
-            android:textColorHint="@android:color/darker_gray" />
-    </LinearLayout>
-
-    <EditText
-        android:theme="@style/MyEditTextStyle2"
-        android:id="@+id/emailEditText"
-        android:layout_width="match_parent"
+            android:inputType="textPersonName|textWebEmailAddress"
+            android:textColor="@android:color/black" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/passwordWrappper"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:drawableStart="@drawable/ic_email_black_24dp"
-        android:ems="10"
-        android:fontFamily="@font/anons_fontt"
-        android:hint="@string/e_mail"
-        android:inputType="textPersonName|textWebEmailAddress"
-        android:textColor="@android:color/black"
-        android:textColorHint="@android:color/darker_gray" />
-
-    <EditText
-        android:theme="@style/MyEditTextStyle2"
-        android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:drawableStart="@drawable/ic_vpn_key_black_24dp"
-        android:ems="10"
-        android:fontFamily="@font/anons_fontt"
+        android:textColorHint="@android:color/darker_gray"
         android:hint="@string/password"
-        android:inputType="textPassword"
-        android:textColor="@android:color/black"
-        android:textColorHint="@android:color/darker_gray" />
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@android:color/darker_gray">
 
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:drawableStart="@drawable/ic_vpn_key_black_24dp"
+            android:ems="10"
+            android:fontFamily="@font/anons_fontt"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:theme="@style/MyEditTextStyle2"
+            android:textStyle="bold"/>
+    </android.support.design.widget.TextInputLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
