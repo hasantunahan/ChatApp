@@ -24,7 +24,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.614" />
+        app:layout_constraintVertical_bias="0.728" />
 
     <EditText
         android:id="@+id/usernameEditText"
@@ -34,9 +34,10 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="20dp"
-        android:drawableLeft="@drawable/ic_person_black_24dp"
+        android:background="@drawable/profil_bilgi_background"
+        android:drawableLeft="@drawable/ic_user"
         android:ems="10"
-        android:fontFamily="@font/anons_fontt"
+        android:fontFamily="@font/infotextfont"
         android:hint="@string/username"
         android:inputType="textPersonName"
         android:padding="7dp"
@@ -58,9 +59,10 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="12dp"
-        android:drawableStart="@drawable/ic_vpn_key_black_24dp"
+        android:background="@drawable/profil_bilgi_background"
+        android:drawableStart="@drawable/ic_passwordd"
         android:ems="10"
-        android:fontFamily="@font/anons_fontt"
+        android:fontFamily="@font/infotextfont"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="7dp"
