@@ -22,11 +22,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.anonsgoup.anons.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
@@ -51,6 +53,7 @@ public class KayitOlEkran extends AppCompatActivity {
     EditText nameEditText;
     EditText surnameEditText;
     private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
     private ProgressDialog progressDialog;
 
     private static final Pattern DATE_PATTERN = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4}");
@@ -105,28 +108,38 @@ public class KayitOlEkran extends AppCompatActivity {
                 String password = passwordEditText.getText().toString().trim();
                 String dob = dobEditText.getText().toString().trim();
                 String gender = genderSpinner.getSelectedItem().toString();
-                registerNewUser(name, surname, username, email, password, dob, gender);
-                progressDialog.setTitle(getResources().getString(R.string.registering_user));
-                progressDialog.setMessage(getResources().getString(R.string.please_wait));
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.show();
+                User user = new User(email,username,name,surname,dob,gender,new Date().getTime());
+                registerNewUser(user,password);
+
             }
         });
     }
 
-    private void registerNewUser(String name,String surname, String username, String email, String password, String dob, String gender){
-        mAuth.createUserWithEmailAndPassword(email, password)
+    private void registerNewUser(final User user, String password){
+        mAuth.createUserWithEmailAndPassword(user.getEmail(), password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             Log.d("İşlem: ", "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            progressDialog.dismiss();
-                            Intent intent = new Intent(getApplicationContext(),AnaEkran.class);
-                            startActivity(intent);
-                            finish();
+                            FirebaseDatabase.getInstance().getReference("users")
+                                    .child(mAuth.getCurrentUser().getUid())
+                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        progressDialog.dismiss();
+                                        Intent intent = new Intent(getApplicationContext(),AnaEkran.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    else{
+                                        mAuth.getCurrentUser().delete();
+                                        Log.d("userhata:",task.getException().toString());
+                                    }
+                                }
+                            });
+
                         } else {
                             progressDialog.hide();
                             // If sign in fails, display a message to the user.
