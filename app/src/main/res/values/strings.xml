@@ -32,4 +32,7 @@
     <string name="registering_user">Registering User</string>
     <string name="please_wait">Please wait a while.</string>
     <string name="user_registering_fail">We couldn\'t create a user, please try again.</string>
+    <string name="verification_info">Check Your Mail To Confirm Your Account..</string>
+    <string name="send_again">Send Again</string>
+    <string name="email_didnt_come">You Didn\'t Receive An E-mail?</string>
 </resources>

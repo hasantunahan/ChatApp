@@ -33,4 +33,7 @@
     <string name="registering_user">Kullanıcı Oluşturuluyor</string>
     <string name="please_wait">Lütfen bekleyiniz.</string>
     <string name="user_registering_fail">Hesap oluşturulamadı, lütfen tekrar deneyin.</string>
+    <string name="verification_info">Giriş Yapabilmek İçin Lütfen Mail Adresine Gelen Doğrulama Linkine Tıklayınız.</string>
+    <string name="send_again">Tekrar Gönder</string>
+    <string name="email_didnt_come">E-mail Gelmedi Mi?</string>
 </resources>
