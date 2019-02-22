@@ -96,7 +96,7 @@
                 android:fontFamily="@font/infotextfont"
                 android:hint="@string/surname"
                 android:inputType="textPersonName"
-                android:paddingStart="5dp"
+                android:paddingStart="8dp"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:theme="@style/MyEditTextStyle2" />
