@@ -134,9 +134,14 @@ public class KayitOlEkran extends AppCompatActivity {
                                         progressDialog.dismiss();
                                         mAuth.getCurrentUser().sendEmailVerification();
                                         //TODO: verification Ekranına Gidilecek
-                                        //Intent intent = new Intent(getApplicationContext(),AnaEkran.class);
-                                        //startActivity(intent);
-                                        //finish();
+                                        if(!mAuth.getCurrentUser().isEmailVerified()) {
+                                            startActivity(new Intent(getApplicationContext(), EmailDogrulamaEkran.class));
+                                            finish();
+                                        }
+                                        else {
+                                            startActivity(new Intent(getApplicationContext(),AnaEkran.class));
+                                            finish();
+                                        }
                                     }
                                     else{
                                         mAuth.getCurrentUser().delete();

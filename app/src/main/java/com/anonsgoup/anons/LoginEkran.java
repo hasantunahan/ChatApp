@@ -104,12 +104,15 @@ public class LoginEkran extends Activity {
         super.onStart();
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
         if(firebaseUser != null){
-            if(firebaseUser.isEmailVerified()) {
+            if(!firebaseUser.isEmailVerified()) {
                 Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
                 startActivity(intent);
+                finish();
             }
             else {
                 //TODO: EMAİL VERİFİCATİON EKRANINA GİDİŞ KODU YAZILACAK;
+                startActivity(new Intent(getApplicationContext(),EmailDogrulamaEkran.class));
+                finish();
             }
         }
     }
