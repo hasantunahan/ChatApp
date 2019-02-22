@@ -16,6 +16,10 @@
     <color name="batteryNormal">#F17A0B</color>
     <color name="batteryLow">#530015</color>
     <color name="yeşilEnd">#7EB545</color>
+    <color name="baslikGray">#4A4A4A</color>
+    <color name="colorAnonsOrange">#FF4F5C</color>
+    <color name="colorAnonsBlue">#0CB2AD</color>
+
 
 
 </resources>
