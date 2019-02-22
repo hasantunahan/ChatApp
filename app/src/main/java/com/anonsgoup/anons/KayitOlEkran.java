@@ -1,22 +1,34 @@
 package com.anonsgoup.anons;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.anonsgoup.anons.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
@@ -40,6 +52,9 @@ public class KayitOlEkran extends AppCompatActivity {
     TextInputLayout surnameWrapper;
     EditText nameEditText;
     EditText surnameEditText;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+    private ProgressDialog progressDialog;
 
     private static final Pattern DATE_PATTERN = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4}");
     private static final Pattern PASSWORD_PATTERN =
@@ -76,6 +91,9 @@ public class KayitOlEkran extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.sex, R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
         genderSpinner.setAdapter(adapter);
+        progressDialog = new ProgressDialog(getApplicationContext());
+
+        mAuth = FirebaseAuth.getInstance();
 
         signUpOkeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,10 +101,57 @@ public class KayitOlEkran extends AppCompatActivity {
                 if (!validatePassword() || !emailkontrol() || !usernamekontrol() || !dobKontrol()
                         || !nameKontrol() || !surnameKontrol())
                     return;
-                Intent intent = new Intent(KayitOlEkran.this, LoginEkran.class);
-                startActivity(intent);
+                String name = nameEditText.getText().toString().trim();
+                String surname = surnameEditText.getText().toString().trim();
+                String username = usernameEditText.getText().toString().trim();
+                String email = emailEditText.getText().toString().trim();
+                String password = passwordEditText.getText().toString().trim();
+                String dob = dobEditText.getText().toString().trim();
+                String gender = genderSpinner.getSelectedItem().toString();
+                User user = new User(email,username,name,surname,dob,gender,new Date().getTime());
+                registerNewUser(user,password);
+
             }
         });
+    }
+
+    private void registerNewUser(final User user, String password){
+        mAuth.createUserWithEmailAndPassword(user.getEmail(), password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("İşlem: ", "createUserWithEmail:success");
+                            FirebaseDatabase.getInstance().getReference("users")
+                                    .child(mAuth.getCurrentUser().getUid())
+                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        progressDialog.dismiss();
+                                        Intent intent = new Intent(getApplicationContext(),AnaEkran.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    else{
+                                        mAuth.getCurrentUser().delete();
+                                        Log.d("userhata:",task.getException().toString());
+                                    }
+                                }
+                            });
+
+                        } else {
+                            progressDialog.hide();
+                            // If sign in fails, display a message to the user.
+                            Log.w("İşlem:","createUserWithEmail:failure", task.getException());
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.user_registering_fail),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
+
     }
 
 

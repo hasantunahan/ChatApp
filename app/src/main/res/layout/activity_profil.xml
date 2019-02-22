@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfilEkran">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ProfilEkran"
-        android:background="@color/OpacityGray">
+        android:background="@color/OpacityGray"
+        tools:context=".ProfilEkran">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -107,7 +108,8 @@
                             android:text="Arkadaş"
                             android:textColor="@android:color/black"
                             android:textSize="18sp"
-                            app:fontFamily="@font/anons_fontt" />
+                            app:fontFamily="@font/anons_fontt"
+                            tools:text="@string/friends" />
 
                         <TextView
                             android:id="@+id/bildirimTextView"
@@ -115,7 +117,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_horizontal"
-                            android:text="Bildirim"
+                            android:text="@string/anons"
                             android:textColor="@android:color/black"
                             android:textSize="18sp"
                             app:fontFamily="@font/anons_fontt" />
@@ -126,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_horizontal"
-                            android:text="Beğeni"
+                            android:text="@string/likes"
                             android:textColor="@android:color/black"
                             android:textSize="18sp"
                             app:fontFamily="@font/anons_fontt" />
@@ -253,7 +255,7 @@
                 <Button
                     android:id="@+id/profilDuzenleButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
@@ -263,21 +265,22 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:text="Profil Düzenle"
+                    android:textAllCaps="true"
                     android:textColor="@color/colorWhite"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.497"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/guideline6" />
+                    app:layout_constraintTop_toTopOf="@+id/guideline6"
+                    tools:text="@string/edit_profile" />
 
                 <TextView
                     android:id="@+id/hakkimdaTextView"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/profil_bilgi_background"
                     android:gravity="top|left|center"
@@ -297,17 +300,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
                     android:text="HAKKIMDA"
                     android:textColor="@android:color/black"
                     android:textSize="20sp"
                     app:fontFamily="@font/anons_fontt"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/hakkimdaTextView" />
+                    app:layout_constraintTop_toTopOf="@+id/hakkimdaTextView"
+                    tools:text="@string/about_me" />
 
             </android.support.constraint.ConstraintLayout>
 
@@ -350,7 +352,7 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_settings_black_24dp"/>
+                app:srcCompat="@drawable/ic_settings_black_24dp" />
 
             <ImageView
                 android:id="@+id/profil-AnaMenuImageView"
@@ -363,6 +365,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.65999997" />
+
+            <Button
+                android:id="@+id/geciciButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
 
