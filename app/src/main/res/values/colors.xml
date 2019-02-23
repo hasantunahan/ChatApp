@@ -19,6 +19,11 @@
     <color name="baslikGray">#4A4A4A</color>
     <color name="colorAnonsOrange">#FF4F5C</color>
     <color name="colorAnonsBlue">#0CB2AD</color>
+    <color name="profikKoyuGri">#000000</color>
+    <color name="profikOrtaGri">#606060</color>
+    <color name="profikAcikGri">#AAAAAA</color>
+
+
 
 
 

@@ -5,12 +5,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
 
 
 /**
@@ -33,6 +37,9 @@ public class ProfilEkran extends Fragment {
     private FirebaseAuth mAuth;
 
     private OnFragmentInteractionListener mListener;
+    ArrayList<MobileOs> mobileOs=new ArrayList<>();
+    RecyclerView recyclerView;
+    Context context;
 
     public ProfilEkran() {
         // Required empty public constructor
@@ -71,6 +78,17 @@ public class ProfilEkran extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.activity_profil, container, false);
         mAuth = FirebaseAuth.getInstance();
+        context = view.getContext();
+        recyclerView=view.findViewById(R.id.itemlerLayout);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.scrollToPosition(0);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
+        mobileOs.add(new MobileOs(R.mipmap.seropng,"Askin","Gazi Mahallesi","Şarj Aleti Olan var mı ?","25.12.2018",R.mipmap.hsn,"12k"));
+        mobileOs.add(new MobileOs(R.mipmap.hsn,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
+        CustomProfilAdapter customProfilAdapter=new CustomProfilAdapter(mobileOs,context);
+        recyclerView.setAdapter(customProfilAdapter);
         geciciButton = view.findViewById(R.id.geciciButton);
         geciciButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +101,7 @@ public class ProfilEkran extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    // TODO: Rename method, update argument and hook metho into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
