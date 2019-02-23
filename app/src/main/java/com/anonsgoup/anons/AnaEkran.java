@@ -18,7 +18,6 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
     TextView bildirimSayisiTextView;
     TextView begeniSayisiTextView;
     TextView profilAdSayodYasTextView;
-    TextView hakkimdaTextView;
     private FirebaseAuth mAuth;
 
     @Override
@@ -29,7 +28,6 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
         mAuth = FirebaseAuth.getInstance();
 
 
-       // hakkimdaTextView = findViewById(R.id.hakkimdaTextView);
         profilAdSayodYasTextView = findViewById(R.id.profilAdSayodYasTextView);
         bildirimSayisiTextView = findViewById(R.id.bildirimSayisiTextView);
         begeniSayisiTextView = findViewById(R.id.begeniSayisiTextView);
