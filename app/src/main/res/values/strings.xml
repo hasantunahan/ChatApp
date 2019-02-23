@@ -35,4 +35,5 @@
     <string name="verification_info">Check Your Mail To Confirm Your Account..</string>
     <string name="send_again">Send Again</string>
     <string name="email_didnt_come">You Didn\'t Receive An E-mail?</string>
+    <string name="show_anons">View Anons</string>
 </resources>

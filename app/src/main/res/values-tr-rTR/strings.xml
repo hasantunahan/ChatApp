@@ -36,4 +36,5 @@
     <string name="verification_info">Giriş Yapabilmek İçin Lütfen Mail Adresine Gelen Doğrulama Linkine Tıklayınız.</string>
     <string name="send_again">Tekrar Gönder</string>
     <string name="email_didnt_come">E-mail Gelmedi Mi?</string>
+    <string name="show_anons">Anonsları Gör</string>
 </resources>
