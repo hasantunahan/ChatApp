@@ -56,6 +56,7 @@ public class KayitOlEkran extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private ProgressDialog progressDialog;
+    private long longDOB;
 
     private static final Pattern DATE_PATTERN = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4}");
     private static final Pattern PASSWORD_PATTERN =
@@ -92,29 +93,30 @@ public class KayitOlEkran extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.sex, R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
         genderSpinner.setAdapter(adapter);
-        progressDialog = new ProgressDialog(KayitOlEkran.this);
+
 
         mAuth = FirebaseAuth.getInstance();
 
         signUpOkeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (!validatePassword() || !emailkontrol() || !usernamekontrol() || !dobKontrol()
+                        || !nameKontrol() || !surnameKontrol())
+                    return;
+                progressDialog = new ProgressDialog(KayitOlEkran.this);
                 progressDialog.setCanceledOnTouchOutside(false);
                 //TODO: string.xml e geçirilecek
                 progressDialog.setTitle("İşleminiz Yapılıyor");
                 progressDialog.setMessage("Lütfen Bekleyiniz.");
                 progressDialog.show();
-                if (!validatePassword() || !emailkontrol() || !usernamekontrol() || !dobKontrol()
-                        || !nameKontrol() || !surnameKontrol())
-                    return;
                 String name = nameEditText.getText().toString().trim();
                 String surname = surnameEditText.getText().toString().trim();
                 String username = usernameEditText.getText().toString().trim();
                 String email = emailEditText.getText().toString().trim();
                 String password = passwordEditText.getText().toString().trim();
-                String dob = dobEditText.getText().toString().trim();
                 String gender = genderSpinner.getSelectedItem().toString();
-                User user = new User(email,username,name,surname,dob,gender,new Date().getTime());
+                User user = new User(email,username,name,surname,longDOB,gender,new Date().getTime(),"",0,new Date().getTime(),1000,0);
 
 
                 registerNewUser(user,password);
@@ -133,14 +135,13 @@ public class KayitOlEkran extends AppCompatActivity {
                             mAuth.getCurrentUser().updateProfile(userProfileChangeRequest);
                             Log.d("İşlem: ", "createUserWithEmail:success");
                             FirebaseDatabase.getInstance().getReference("users")
-                                    .child(mAuth.getCurrentUser().getUid())
+                                    .child(user.getUsername())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
                                         progressDialog.dismiss();
                                         mAuth.getCurrentUser().sendEmailVerification();
-                                        //TODO: verification Ekranına Gidilecek
                                         if(!mAuth.getCurrentUser().isEmailVerified()) {
                                             startActivity(new Intent(getApplicationContext(), EmailDogrulamaEkran.class));
                                             finish();
@@ -184,6 +185,7 @@ public class KayitOlEkran extends AppCompatActivity {
                 onDateSetListener = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        longDOB = new Date(year,month,dayOfMonth).getTime();
                         month = month + 1;
                         dobEditText.setText(dayOfMonth + "/" + month + "/" + year);
                     }
