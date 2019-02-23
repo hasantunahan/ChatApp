@@ -240,6 +240,7 @@
                         android:paddingLeft="40dp"
                         android:paddingRight="40dp"
                         android:text="@string/edit_profile"
+                        android:textColor="@color/baslikGray"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -263,16 +264,23 @@
                         android:text="@string/show_anons" />
                 </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/itemlerLayout"
+                <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
 
-                    android:scrollbars="vertical">
+                    >
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/itemlerLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="vertical">
 
 
-                </android.support.v7.widget.RecyclerView>
+                    </android.support.v7.widget.RecyclerView>
+                    ,,
 
+                </android.support.v4.widget.NestedScrollView>
 
 
             </LinearLayout>
