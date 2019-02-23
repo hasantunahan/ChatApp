@@ -92,13 +92,18 @@ public class KayitOlEkran extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.sex, R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
         genderSpinner.setAdapter(adapter);
-        progressDialog = new ProgressDialog(getApplicationContext());
+        progressDialog = new ProgressDialog(KayitOlEkran.this);
 
         mAuth = FirebaseAuth.getInstance();
 
         signUpOkeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.setCanceledOnTouchOutside(false);
+                //TODO: string.xml e geçirilecek
+                progressDialog.setTitle("İşleminiz Yapılıyor");
+                progressDialog.setMessage("Lütfen Bekleyiniz.");
+                progressDialog.show();
                 if (!validatePassword() || !emailkontrol() || !usernamekontrol() || !dobKontrol()
                         || !nameKontrol() || !surnameKontrol())
                     return;
@@ -110,6 +115,8 @@ public class KayitOlEkran extends AppCompatActivity {
                 String dob = dobEditText.getText().toString().trim();
                 String gender = genderSpinner.getSelectedItem().toString();
                 User user = new User(email,username,name,surname,dob,gender,new Date().getTime());
+
+
                 registerNewUser(user,password);
 
             }
@@ -144,6 +151,7 @@ public class KayitOlEkran extends AppCompatActivity {
                                         }
                                     }
                                     else{
+                                        progressDialog.hide();
                                         mAuth.getCurrentUser().delete();
                                         Log.d("userhata:",task.getException().toString());
                                     }

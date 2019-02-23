@@ -38,7 +38,9 @@ public class LoginEkran extends Activity {
     String sifre;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
-    
+    private FirebaseUser fUser;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +59,9 @@ public class LoginEkran extends Activity {
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //GİRİŞ YAPMA OLAYI KONTROLÜ
                 //şimdilik email ile giriyoruz.
+
                 // TODO: Stringe Geçirilecek
                 progressDialog.setTitle("Girişiniz Kontrol ediliyor.");
                 progressDialog.setMessage("Lütfen Bekleyiniz.");
@@ -102,9 +105,11 @@ public class LoginEkran extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        if(firebaseUser != null){
-            if(!firebaseUser.isEmailVerified()) {
+        fUser = mAuth.getCurrentUser();
+        if(fUser != null){
+            fUser.reload();
+            if(fUser.isEmailVerified()) {
+                Log.d("doğrulama",fUser.isEmailVerified()+"");
                 Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
                 startActivity(intent);
                 finish();

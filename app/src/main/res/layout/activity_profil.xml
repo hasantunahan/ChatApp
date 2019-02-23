@@ -281,7 +281,6 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_marginEnd="292dp"
-                            android:layout_toStartOf="@+id/"
                             android:paddingTop="10dp"
                             android:src="@drawable/hsn" />
 
@@ -292,7 +291,6 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginStart="292dp"
                             android:layout_marginEnd="272dp"
-                            android:layout_toEndOf="@+id/null"
                             android:fontFamily="@font/anons_fontt"
                             android:text="@string/anons" />
 
@@ -303,7 +301,6 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginStart="292dp"
                             android:layout_marginEnd="207dp"
-                            android:layout_toEndOf="@+id/null"
                             android:fontFamily="@font/anons_fontt"
                             android:text="@string/anons" />
                     </RelativeLayout>
