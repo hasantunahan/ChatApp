@@ -263,52 +263,17 @@
                         android:text="@string/show_anons" />
                 </LinearLayout>
 
-                <android.support.v7.widget.CardView
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/itemlerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:cardBackgroundColor="@android:color/transparent"
-                    app:cardCornerRadius="20dp"
-                    android:elevation="10dp"
 
-                    >
+                    android:scrollbars="vertical">
 
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
 
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginEnd="292dp"
-                            android:layout_toStartOf="@+id/"
-                            android:paddingTop="10dp"
-                            android:src="@drawable/hsn" />
+                </android.support.v7.widget.RecyclerView>
 
-                        <TextView
-                            android:id="@+id/kisiIsimTextView"
-                            android:layout_width="67dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginStart="292dp"
-                            android:layout_marginEnd="272dp"
-                            android:layout_toEndOf="@+id/null"
-                            android:fontFamily="@font/anons_fontt"
-                            android:text="@string/anons" />
 
-                        <TextView
-                            android:id="@+id/kisiIsimTextView2"
-                            android:layout_width="67dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginStart="292dp"
-                            android:layout_marginEnd="207dp"
-                            android:layout_toEndOf="@+id/null"
-                            android:fontFamily="@font/anons_fontt"
-                            android:text="@string/anons" />
-                    </RelativeLayout>
-
-                </android.support.v7.widget.CardView>
 
             </LinearLayout>
 
