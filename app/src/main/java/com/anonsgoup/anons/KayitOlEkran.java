@@ -57,6 +57,13 @@ public class KayitOlEkran extends AppCompatActivity {
     private FirebaseDatabase database;
     private ProgressDialog progressDialog;
     private long longDOB;
+    private FirebaseUser fUser;
+    private String name;
+    private String surname;
+    private String username;
+    private String email;
+    private String password;
+    private String gender;
 
     private static final Pattern DATE_PATTERN = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4}");
     private static final Pattern PASSWORD_PATTERN =
@@ -90,59 +97,61 @@ public class KayitOlEkran extends AppCompatActivity {
         nameWrapper = findViewById(R.id.nameWrapper);
         surnameWrapper = findViewById(R.id.surnameWrapper);
         usernameEditText = findViewById(R.id.usernameEditText);
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.sex, R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
         genderSpinner.setAdapter(adapter);
 
 
         mAuth = FirebaseAuth.getInstance();
+        fUser = mAuth.getCurrentUser();
 
         signUpOkeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (!validatePassword() || !emailkontrol() || !usernamekontrol() || !dobKontrol()
-                        || !nameKontrol() || !surnameKontrol())
+                if (!tumKontroller())
                     return;
                 progressDialog = new ProgressDialog(KayitOlEkran.this);
                 progressDialog.setCanceledOnTouchOutside(false);
-                //TODO: string.xml e geçirilecek
-                progressDialog.setTitle("İşleminiz Yapılıyor");
-                progressDialog.setMessage("Lütfen Bekleyiniz.");
+                progressDialog.setTitle(getResources().getString(R.string.processing));
+                progressDialog.setMessage(getResources().getString(R.string.please_wait));
                 progressDialog.show();
-                String name = nameEditText.getText().toString().trim();
-                String surname = surnameEditText.getText().toString().trim();
-                String username = usernameEditText.getText().toString().trim();
-                String email = emailEditText.getText().toString().trim();
-                String password = passwordEditText.getText().toString().trim();
-                String gender = genderSpinner.getSelectedItem().toString();
-                User user = new User(email,username,name,surname,longDOB,gender,new Date().getTime(),"",0,new Date().getTime(),1000,0);
+                name = nameEditText.getText().toString().trim();
+                surname = surnameEditText.getText().toString().trim();
+                username = usernameEditText.getText().toString().trim();
+                email = emailEditText.getText().toString().trim();
+                password = passwordEditText.getText().toString().trim();
+                gender = genderSpinner.getSelectedItem().toString();
 
 
-                registerNewUser(user,password);
+                registerNewUser(email,password);
 
             }
         });
     }
 
-    private void registerNewUser(final User user, String password){
-        mAuth.createUserWithEmailAndPassword(user.getEmail(), password)
+    private void registerNewUser(final String email ,final String password){
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            fUser = mAuth.getCurrentUser();
+                            fUser.reload();
+                            User user = new User(email,username,name,surname,longDOB,gender,new Date().getTime(),"",0,new Date().getTime(),1000,0);
                             UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(user.getName()).build();
-                            mAuth.getCurrentUser().updateProfile(userProfileChangeRequest);
+                            fUser.updateProfile(userProfileChangeRequest);
                             Log.d("İşlem: ", "createUserWithEmail:success");
                             FirebaseDatabase.getInstance().getReference("users")
-                                    .child(user.getUsername())
+                                    .child(fUser.getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
                                         progressDialog.dismiss();
-                                        mAuth.getCurrentUser().sendEmailVerification();
-                                        if(!mAuth.getCurrentUser().isEmailVerified()) {
+                                        fUser.sendEmailVerification();
+                                        if(!fUser.isEmailVerified()) {
                                             startActivity(new Intent(getApplicationContext(), EmailDogrulamaEkran.class));
                                             finish();
                                         }
@@ -153,7 +162,7 @@ public class KayitOlEkran extends AppCompatActivity {
                                     }
                                     else{
                                         progressDialog.hide();
-                                        mAuth.getCurrentUser().delete();
+                                        fUser.delete();
                                         Log.d("userhata:",task.getException().toString());
                                     }
                                 }
@@ -161,6 +170,7 @@ public class KayitOlEkran extends AppCompatActivity {
 
                         } else {
                             progressDialog.hide();
+                            fUser.delete();
                             // If sign in fails, display a message to the user.
                             Log.w("İşlem:","createUserWithEmail:failure", task.getException());
                             Toast.makeText(getApplicationContext(), getResources().getString(R.string.user_registering_fail),
@@ -201,81 +211,70 @@ public class KayitOlEkran extends AppCompatActivity {
         }
     }
 
-
-    private boolean emailkontrol() {
+    private boolean tumKontroller(){
+        // --  E-mail Kontrol  --
         String emailInput = emailEditText.getEditableText().toString().trim();
-
+        boolean kontrol = true;
         if (emailInput.isEmpty()) {
             emailWrapper.setErrorEnabled(true);
             emailWrapper.setError(getResources().getString(R.string.empty_warning));
-            return false;
+            kontrol = false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
             emailWrapper.setErrorEnabled(true);
             emailWrapper.setError(getResources().getString(R.string.email_warning));
-            return false;
+            kontrol = false;
         } else {
             emailWrapper.setError(null);
-            return true;
         }
-    }
 
-    private boolean validatePassword() {
+        // --  Password kontrol  --
         String passwordInput = passwordEditText.getText().toString().trim();
-
         if (passwordInput.isEmpty()) {
             passwordWrapper.setError(getResources().getString(R.string.empty_warning));
-            return false;
+            kontrol = false;
         } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
             passwordWrapper.setError(getResources().getString(R.string.password_warning));
-            return false;
+            kontrol = false;
         } else {
             passwordWrapper.setError(null);
-            return true;
         }
-    }
 
-    private boolean usernamekontrol() {
+        // --  Username Kontrol  --
         String usernameInput = usernameEditText.getEditableText().toString().trim();
-
         if (usernameInput.isEmpty()) {
             usernameWrapper.setError(getResources().getString(R.string.empty_warning));
-            return false;
+            kontrol = false;
         } else if (usernameInput.length() > 15) {
             usernameWrapper.setError(getResources().getString(R.string.username_warning));
-            return false;
+            kontrol = false;
         } else {
             usernameWrapper.setError(null);
-            return true;
         }
-    }
 
-    private boolean dobKontrol() {
+        // --  Date Kontrol  --
         if (!DATE_PATTERN.matcher(dobEditText.getText()).matches()) {
             dobEditText.setText(getResources().getString(R.string.dob_warning));
-            return false;
+            kontrol = false;
         }
-        return true;
-    }
 
-    private boolean nameKontrol() {
+        // --  Name Kontrol  --
         String nameInput = nameEditText.getEditableText().toString().trim();
         if (nameInput.isEmpty()) {
             nameWrapper.setError(getResources().getString(R.string.empty_warning));
-            return false;
+            kontrol = false;
         } else {
             nameWrapper.setError(null);
-            return true;
         }
-    }
 
-    private boolean surnameKontrol() {
+        // --  Surname Kontrol  --
         String surnameInput = surnameEditText.getEditableText().toString().trim();
         if (surnameInput.isEmpty()) {
             surnameWrapper.setError(getResources().getString(R.string.empty_warning));
-            return false;
+            kontrol = false;
         } else {
             nameWrapper.setError(null);
-            return true;
         }
+
+        return kontrol;
     }
 }

@@ -9,12 +9,15 @@
 
     <Button
         android:id="@+id/tekrarGonderButton"
-        android:layout_width="288dp"
-        android:layout_height="52dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/buton_signup"
         android:fontFamily="@font/anons_fontt"
+        android:padding="15dp"
         android:text="@string/send_again"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -104,6 +107,23 @@
         app:layout_constraintTop_toBottomOf="@+id/textView9"
         app:layout_constraintVertical_bias="0.19"
         app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/btnIleri"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/butons_login"
+        android:padding="15dp"
+        android:text="@string/next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tekrarGonderButton"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </android.support.constraint.ConstraintLayout>

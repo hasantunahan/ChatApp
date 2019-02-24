@@ -79,6 +79,8 @@ public class ProfilEkran extends Fragment {
         final View view = inflater.inflate(R.layout.activity_profil, container, false);
         mAuth = FirebaseAuth.getInstance();
         context = view.getContext();
+
+
         recyclerView=view.findViewById(R.id.itemlerLayout);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -89,6 +91,8 @@ public class ProfilEkran extends Fragment {
         mobileOs.add(new MobileOs(R.mipmap.hsn,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
         CustomProfilAdapter customProfilAdapter=new CustomProfilAdapter(mobileOs,context);
         recyclerView.setAdapter(customProfilAdapter);
+
+
         geciciButton = view.findViewById(R.id.geciciButton);
         geciciButton.setOnClickListener(new View.OnClickListener() {
             @Override

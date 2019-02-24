@@ -37,4 +37,11 @@
     <string name="send_again">Tekrar Gönder</string>
     <string name="email_didnt_come">E-mail Gelmedi Mi?</string>
     <string name="show_anons">Anonsları Gör</string>
+    <string name="processing">İşleminiz Yapılıyor</string>
+    <string name="email_send">E-posta gönderildi.</string>
+    <string name="an_error_occurred">Bir Hata Oluştu. Lütfen Bizimle İletişime Geçiniz.</string>
+    <string name="internet_connection_error">Lütfen İnternet Bağlantınızı Kontrol Ediniz.</string>
+    <string name="username_empty">Lütfen kullanıcı adı veya e-posta giriniz.</string>
+    <string name="password_empty">Lütfen şifrenizi giriniz</string>
+    <string name="next">İleri</string>
 </resources>
