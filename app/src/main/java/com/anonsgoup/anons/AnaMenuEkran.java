@@ -4,9 +4,15 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -63,8 +69,28 @@ public class AnaMenuEkran extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_ana_menu_ekran, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ana_menu_ekran, container, false);
+
+        RecyclerView recyclerView=view.findViewById(R.id.anaEkranAnonsListLayout);
+        List<AnaEkranitem> nlist=new ArrayList<>();
+        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
+        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
+        nlist.add(new AnaEkranitem(R.mipmap.trk,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
+        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
+        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
+        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
+        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
+        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
+        nlist.add(new AnaEkranitem(R.mipmap.hsn,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
+        CustomAnaEkranAdapter customAnaEkranAdapter=new CustomAnaEkranAdapter(view.getContext(),nlist);
+        recyclerView.setAdapter(customAnaEkranAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

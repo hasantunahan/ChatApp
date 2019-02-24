@@ -87,8 +87,19 @@ public class ProfilEkran extends Fragment {
         linearLayoutManager.scrollToPosition(0);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(true);
         mobileOs.add(new MobileOs(R.mipmap.seropng,"Askin","Gazi Mahallesi","Şarj Aleti Olan var mı ?","25.12.2018",R.mipmap.hsn,"12k"));
         mobileOs.add(new MobileOs(R.mipmap.hsn,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
+        mobileOs.add(new MobileOs(R.mipmap.trk,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
+        mobileOs.add(new MobileOs(R.mipmap.seropng,"Askin","Gazi Mahallesi","Şarj Aleti Olan var mı ?","25.12.2018",R.mipmap.hsn,"12k"));
+        mobileOs.add(new MobileOs(R.mipmap.hsn,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
+        mobileOs.add(new MobileOs(R.mipmap.trk,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
+        mobileOs.add(new MobileOs(R.mipmap.seropng,"Askin","Gazi Mahallesi","Şarj Aleti Olan var mı ?","25.12.2018",R.mipmap.hsn,"12k"));
+        mobileOs.add(new MobileOs(R.mipmap.hsn,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
+        mobileOs.add(new MobileOs(R.mipmap.trk,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
+        mobileOs.add(new MobileOs(R.mipmap.seropng,"Askin","Gazi Mahallesi","Şarj Aleti Olan var mı ?","25.12.2018",R.mipmap.hsn,"12k"));
+        mobileOs.add(new MobileOs(R.mipmap.hsn,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
+        mobileOs.add(new MobileOs(R.mipmap.trk,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
         CustomProfilAdapter customProfilAdapter=new CustomProfilAdapter(mobileOs,context);
         recyclerView.setAdapter(customProfilAdapter);
 
