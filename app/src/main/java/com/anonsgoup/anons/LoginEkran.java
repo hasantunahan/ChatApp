@@ -2,6 +2,7 @@ package com.anonsgoup.anons;
 
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,8 +14,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +43,7 @@ public class LoginEkran extends Activity {
 
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -53,22 +58,38 @@ public class LoginEkran extends Activity {
         passwordEditText = findViewById(R.id.passwordEditText);
         uyariTextView = findViewById(R.id.uyariTextView);
 
+        usernameEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                userNameWrapper.setError(null);
+                return false;
+            }
+        });
+        passwordEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                passwordWrapper.setError(null);
+                return false;
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
+        fUser = mAuth.getCurrentUser();
+        if(fUser!= null)
+            fUser.reload();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { //GİRİŞ YAPMA OLAYI KONTROLÜ
                 //şimdilik email ile giriyoruz.
-                // TODO: Stringe Geçirilecek
                 kullaniciAdi = usernameEditText.getText().toString().trim();
                 sifre = passwordEditText.getText().toString().trim();
                 if(!alanlarKontrol(kullaniciAdi,sifre)){
                     return;
                 }
                 progressDialog = new ProgressDialog(LoginEkran.this);
-                progressDialog.setTitle("Girişiniz Kontrol ediliyor.");
-                progressDialog.setMessage("Lütfen Bekleyiniz.");
+                progressDialog.setTitle(getResources().getString(R.string.processing));
+                progressDialog.setMessage(getResources().getString(R.string.please_wait));
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.show();
                 mAuth.signInWithEmailAndPassword(kullaniciAdi,sifre).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -76,15 +97,25 @@ public class LoginEkran extends Activity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             progressDialog.dismiss();
+                            fUser = mAuth.getCurrentUser();
+                            if(fUser != null){
+                                fUser.reload();
+                                if(!fUser.isEmailVerified()) {
+                                    Log.d("doğrulama",fUser.isEmailVerified()+"");
+                                    Intent intent = new Intent(getApplicationContext(), EmailDogrulamaEkran.class);
+                                    startActivity(intent);
+                                    return;
+                                }
+                            }
                             Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
                             startActivity(intent);
                             finish();
                         }
                         else {
-                            // TODO: Stringe Geçirilecek
+
                             progressDialog.hide();
                             if(!internetBaglantiKontrol()) {
-                                Toast.makeText(LoginEkran.this, "İnternet Bağlantınızı Kontrol Ediniz.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginEkran.this, getResources().getString(R.string.internet_connection_error), Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             uyariTextView.setText(getResources().getString(R.string.invalid_login));
@@ -102,7 +133,7 @@ public class LoginEkran extends Activity {
             @Override
            public void onClick(View v) {
                 if(!internetBaglantiKontrol()) {
-                    Toast.makeText(LoginEkran.this, "İnternet Bağlantınızı Kontrol Ediniz.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginEkran.this, getResources().getString(R.string.internet_connection_error), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 startActivity(new Intent(getApplicationContext(), KayitOlEkran.class));
@@ -111,19 +142,19 @@ public class LoginEkran extends Activity {
 
     }
 
-    //TODO:Stringe Çevir.
+
     private boolean alanlarKontrol(String kullaniciAdi, String sifre) {
         if(kullaniciAdi.equals("") && sifre.equals("")){
-            userNameWrapper.setError("Kullanıcı Adını Giriniz.");
-            passwordWrapper.setError("Şifreyi Giriniz");
+            userNameWrapper.setError(getResources().getString(R.string.username_empty));
+            passwordWrapper.setError(getResources().getString(R.string.password_empty));
             return false;
         }
         else if(kullaniciAdi.equals("")){
-            userNameWrapper.setError("Kullanıcı Adını Giriniz.");
+            userNameWrapper.setError(getResources().getString(R.string.username_empty));
             return false;
         }
         else if(sifre.equals("")){
-            passwordWrapper.setError("Şifreyi Giriniz.");
+            passwordWrapper.setError(getResources().getString(R.string.password_empty));
             return false;
         }
         return true;
@@ -141,18 +172,14 @@ public class LoginEkran extends Activity {
                 startActivity(intent);
                 finish();
             }
-            else {
-                //TODO: EMAİL VERİFİCATİON EKRANINA GİDİŞ KODU YAZILACAK;
-                startActivity(new Intent(getApplicationContext(),EmailDogrulamaEkran.class));
-                finish();
-            }
         }
     }
 
     private boolean internetBaglantiKontrol(){
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        //we are connected to a network
+        //we are checking whether connect to a network
         return connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
     }
+    
 }

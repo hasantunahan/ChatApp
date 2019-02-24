@@ -36,4 +36,11 @@
     <string name="send_again">Send Again</string>
     <string name="email_didnt_come">You Didn\'t Receive An E-mail?</string>
     <string name="show_anons">View Anons</string>
+    <string name="processing">Processing...</string>
+    <string name="email_send">E-mail has been sent.</string>
+    <string name="an_error_occurred">An Error has occurred. Please contact with us.</string>
+    <string name="internet_connection_error">Please Check Your Internet Connection.</string>
+    <string name="username_empty">Please enter your username or e-mail address.</string>
+    <string name="password_empty">Please enter your password.</string>
+    <string name="next">Go</string>
 </resources>
