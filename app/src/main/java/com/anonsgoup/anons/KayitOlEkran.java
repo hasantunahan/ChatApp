@@ -170,7 +170,8 @@ public class KayitOlEkran extends AppCompatActivity {
 
                         } else {
                             progressDialog.hide();
-                            fUser.delete();
+                            if(fUser != null)
+                                fUser.delete();
                             // If sign in fails, display a message to the user.
                             Log.w("İşlem:","createUserWithEmail:failure", task.getException());
                             Toast.makeText(getApplicationContext(), getResources().getString(R.string.user_registering_fail),

@@ -44,4 +44,5 @@
     <string name="username_empty">Lütfen kullanıcı adı veya e-posta giriniz.</string>
     <string name="password_empty">Lütfen şifrenizi giriniz</string>
     <string name="next">İleri</string>
+    <string name="hide_anons">Anonsları Gizle</string>
 </resources>

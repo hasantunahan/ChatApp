@@ -2,15 +2,18 @@ package com.anonsgoup.anons;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -35,6 +38,8 @@ public class ProfilEkran extends Fragment {
     private String mParam1;
     private String mParam2;
     private FirebaseAuth mAuth;
+    private TextView anonsGorGizle;
+    private NestedScrollView anonslarimScrollView;
 
     private OnFragmentInteractionListener mListener;
     ArrayList<MobileOs> mobileOs=new ArrayList<>();
@@ -80,6 +85,27 @@ public class ProfilEkran extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         context = view.getContext();
 
+        anonsGorGizle = view.findViewById(R.id.anonsGorGizleTextView);
+        anonslarimScrollView = view.findViewById(R.id.anonslarimNestedScrollView);
+
+        anonsGorGizle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(anonslarimScrollView.getVisibility() == View.GONE) {
+                    anonslarimScrollView.setVisibility(View.VISIBLE);
+                    anonslarimScrollView.scrollTo(0,0);
+                    anonsGorGizle.setText(getResources().getString(R.string.hide_anons));
+                    Drawable drawable = getResources().getDrawable(R.drawable.ic_sortupsvg);
+                    anonsGorGizle.setCompoundDrawablesWithIntrinsicBounds(null,null,drawable,null);
+                    return;
+                }
+                anonslarimScrollView.setVisibility(View.GONE);
+                anonsGorGizle.setText(getResources().getString(R.string.show_anons));
+                Drawable drawable = getResources().getDrawable(R.drawable.ic_sortsvg);
+                anonsGorGizle.setCompoundDrawablesWithIntrinsicBounds(null,null,drawable,null);
+            }
+        });
+
 
         recyclerView=view.findViewById(R.id.itemlerLayout);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
@@ -115,6 +141,7 @@ public class ProfilEkran extends Fragment {
         });
         return view;
     }
+
 
     // TODO: Rename method, update argument and hook metho into UI event
     public void onButtonPressed(Uri uri) {
