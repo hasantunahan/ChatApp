@@ -140,7 +140,7 @@ public class KayitOlEkran extends AppCompatActivity {
                             fUser = mAuth.getCurrentUser();
                             fUser.reload();
                             User user = new User(email,username,name,surname,longDOB,gender,new Date().getTime(),"",0,new Date().getTime(),1000,0);
-                            UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(user.getName()).build();
+                            UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(user.getUsername()).build();
                             fUser.updateProfile(userProfileChangeRequest);
                             Log.d("İşlem: ", "createUserWithEmail:success");
                             FirebaseDatabase.getInstance().getReference("users")

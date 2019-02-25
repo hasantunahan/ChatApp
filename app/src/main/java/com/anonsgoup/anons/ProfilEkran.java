@@ -137,6 +137,7 @@ public class ProfilEkran extends Fragment {
                 mAuth.getInstance().signOut();
                 Intent intent = new Intent(view.getContext(), LoginEkran.class);
                 startActivity(intent);
+
             }
         });
         return view;

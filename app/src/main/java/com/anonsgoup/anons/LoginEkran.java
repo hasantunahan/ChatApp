@@ -1,7 +1,6 @@
 package com.anonsgoup.anons;
 
 
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -9,23 +8,34 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 
 public class LoginEkran extends Activity {
     private TextInputEditText usernameEditText;
@@ -40,7 +50,6 @@ public class LoginEkran extends Activity {
     private FirebaseUser fUser;
     private TextInputLayout userNameWrapper;
     private TextInputLayout passwordWrapper;
-
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -78,55 +87,6 @@ public class LoginEkran extends Activity {
         if(fUser!= null)
             fUser.reload();
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { //GİRİŞ YAPMA OLAYI KONTROLÜ
-                //şimdilik email ile giriyoruz.
-                kullaniciAdi = usernameEditText.getText().toString().trim();
-                sifre = passwordEditText.getText().toString().trim();
-                if(!alanlarKontrol(kullaniciAdi,sifre)){
-                    return;
-                }
-                progressDialog = new ProgressDialog(LoginEkran.this);
-                progressDialog.setTitle(getResources().getString(R.string.processing));
-                progressDialog.setMessage(getResources().getString(R.string.please_wait));
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.show();
-                mAuth.signInWithEmailAndPassword(kullaniciAdi,sifre).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            progressDialog.dismiss();
-                            fUser = mAuth.getCurrentUser();
-                            if(fUser != null){
-                                fUser.reload();
-                                if(!fUser.isEmailVerified()) {
-                                    Log.d("doğrulama",fUser.isEmailVerified()+"");
-                                    Intent intent = new Intent(getApplicationContext(), EmailDogrulamaEkran.class);
-                                    startActivity(intent);
-                                    return;
-                                }
-                            }
-                            Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                        else {
-
-                            progressDialog.hide();
-                            if(!internetBaglantiKontrol()) {
-                                Toast.makeText(LoginEkran.this, getResources().getString(R.string.internet_connection_error), Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                            uyariTextView.setText(getResources().getString(R.string.invalid_login));
-                            uyariTextView.setVisibility(View.VISIBLE);
-                            Log.d("girisHata",task.getException().getMessage());
-                        }
-                    }
-                });
-
-            }
-        });
 
 
       signUp.setOnClickListener(new View.OnClickListener() {
@@ -175,11 +135,130 @@ public class LoginEkran extends Activity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(progressDialog!= null)
+            if(progressDialog.isShowing())
+                progressDialog.dismiss();
+    }
+
     private boolean internetBaglantiKontrol(){
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         //we are checking whether connect to a network
         return connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
     }
+
+    public void tiklanmaOlaylari(View view) {
+
+        switch (view.getId()){
+            case R.id.loginButton:
+                //şimdilik email ile giriyoruz.
+                kullaniciAdi = usernameEditText.getText().toString().trim();
+                sifre = passwordEditText.getText().toString().trim();
+                if(!alanlarKontrol(kullaniciAdi,sifre)){
+                    return;
+                }
+                progressDialog = new ProgressDialog(LoginEkran.this);
+                progressDialog.setTitle(getResources().getString(R.string.processing));
+                progressDialog.setMessage(getResources().getString(R.string.please_wait));
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+
+                Task<?> tasks = getUsername();
+
+                Tasks.whenAllComplete(tasks).addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
+                    @Override
+                    public void onComplete(@NonNull Task<List<Task<?>>> task) {
+                        mAuth.signInWithEmailAndPassword(kullaniciAdi, sifre).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    progressDialog.dismiss();
+                                    fUser = mAuth.getCurrentUser();
+                                    if (fUser != null) {
+                                        fUser.reload();
+                                        if (!fUser.isEmailVerified()) {
+                                            Log.d("doğrulama", fUser.isEmailVerified() + "");
+                                            Intent intent = new Intent(getApplicationContext(), EmailDogrulamaEkran.class);
+                                            startActivity(intent);
+                                            return;
+                                        }
+                                    }
+                                    Log.d("displayname:",fUser.getDisplayName());
+                                    Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
+                                    finish();
+                                    startActivity(intent);
+
+                                } else {
+
+                                    progressDialog.hide();
+                                    if (!internetBaglantiKontrol()) {
+                                        Toast.makeText(LoginEkran.this, getResources().getString(R.string.internet_connection_error), Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    uyariTextView.setText(getResources().getString(R.string.invalid_login));
+                                    uyariTextView.setVisibility(View.VISIBLE);
+                                    Log.d("girisHata", task.getException().getMessage());
+                                }
+                            }
+                        });
+                    }
+                });
+
+
+
+                break;
+
+            case R.id.signUpButton:
+
+                break;
+        }
+
+    }
+
+    public synchronized Task<String> getUsername() {
+        final TaskCompletionSource<String> tcs = new TaskCompletionSource<>();
+
+
+        if (!kullaniciAdi.contains("@")) {
+            final CountDownLatch count = new CountDownLatch(1);
+            Query query = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("username").equalTo(kullaniciAdi);
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.d("girdi ", "asdasdasdasdasdasdasdasd");
+                    if (dataSnapshot.exists()) {
+                        // dataSnapshot is the "issue" node with all children with id 0
+                        Log.d("email: ", kullaniciAdi + " - " + dataSnapshot.hasChild("tarikkkk"));
+                        kullaniciAdi = dataSnapshot.child("tarikkkk").child("email").getValue().toString();
+                        Log.d("email: ", dataSnapshot.getValue().toString());
+                        count.countDown();
+                        if(!tcs.getTask().isComplete())
+                         tcs.setResult(null);
+                    }
+                    else if(!tcs.getTask().isComplete())
+                        tcs.setException(new Exception("kullanıcı bulunamadı"));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    if(!tcs.getTask().isComplete())
+                    tcs.setException(new Exception("bilinmeyen hata"));
+                }
+            });
+            try {
+                count.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if(!tcs.getTask().isComplete())
+        tcs.setException(new Exception("email için devam ediliyor."));
+        return tcs.getTask();
+    }
+
     
 }

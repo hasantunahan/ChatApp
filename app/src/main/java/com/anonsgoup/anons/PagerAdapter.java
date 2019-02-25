@@ -36,3 +36,5 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         return mNoOfTabs;
     }
 }
+
+
