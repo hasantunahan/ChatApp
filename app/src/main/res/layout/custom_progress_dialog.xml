@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:gravity="center">
+
+
+    <ImageView
+
+        android:id="@+id/bir_cizgili"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/DialogTest"
+        app:layout_constraintEnd_toEndOf="@+id/DialogTest"
+        app:layout_constraintStart_toStartOf="@+id/DialogTest"
+        app:srcCompat="@drawable/ic_bircizgi" />
+
+    <ImageView
+        android:id="@+id/iki_cizgili"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/DialogTest"
+
+        app:layout_constraintEnd_toEndOf="@+id/DialogTest"
+        app:layout_constraintStart_toStartOf="@+id/DialogTest"
+        app:srcCompat="@drawable/ic_iki_cizgi" />
+
+    <ImageView
+        android:id="@+id/uc_cizgili"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_uc_cizgi"
+
+
+        app:layout_constraintBottom_toTopOf="@+id/DialogTest"
+        app:layout_constraintEnd_toEndOf="@+id/DialogTest"
+        app:layout_constraintStart_toStartOf="@+id/DialogTest"
+
+        />
+
+    <TextView
+        android:id="@+id/DialogTest"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bir_cizgili"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

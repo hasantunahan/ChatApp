@@ -2,9 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginEkranLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:onClick="loginEkranClicks"
     tools:layout_editor_absoluteY="81dp">
 
     <TextView
@@ -54,8 +57,7 @@
             android:textAlignment="textStart"
             android:textColor="@color/colorLoginText"
             android:textColorHint="@android:color/darker_gray"
-            android:theme="@style/MyEditTextStyle2"
-            />
+            android:theme="@style/MyEditTextStyle2" />
     </android.support.design.widget.TextInputLayout>
 
 
@@ -88,8 +90,7 @@
             android:textAlignment="textStart"
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"
-            android:theme="@style/MyEditTextStyle2"
-            />
+            android:theme="@style/MyEditTextStyle2" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -101,6 +102,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/butons_login"
         android:fontFamily="@font/anons_fontt"
+        android:onClick="loginEkranClicks"
         android:text="@string/login"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -108,8 +110,7 @@
         app:layout_constraintEnd_toEndOf="@+id/text_input_layout_password"
         app:layout_constraintStart_toStartOf="@+id/text_input_layout_password"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        android:onClick="tiklanmaOlaylari"/>
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/signUpButton"

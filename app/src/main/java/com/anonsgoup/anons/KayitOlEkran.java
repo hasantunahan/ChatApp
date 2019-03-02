@@ -1,10 +1,13 @@
 package com.anonsgoup.anons;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
+import com.anonsgoup.anons.customViews.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,16 +15,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import com.anonsgoup.anons.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,10 +30,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.w3c.dom.Text;
-
+import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -64,6 +65,34 @@ public class KayitOlEkran extends AppCompatActivity {
     private String email;
     private String password;
     private String gender;
+    private boolean usernameKontrol = false;
+    private boolean emailKontrol = false;
+    private View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            switch (v.getId()){
+                case R.id.usernameEditText:
+                    if(!hasFocus) {
+                     usernameKontrolFonksiyon();
+                    }
+                    break;
+
+                case R.id.emailEditText:
+                    if(!hasFocus){
+                     emailKontrolFonksiyon();
+                    }
+                    break;
+            }
+        }
+    };
+
+    private void emailKontrolFonksiyon() {
+
+    }
+
+    private void usernameKontrolFonksiyon() {
+
+    }
 
     private static final Pattern DATE_PATTERN = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4}");
     private static final Pattern PASSWORD_PATTERN =
@@ -97,6 +126,13 @@ public class KayitOlEkran extends AppCompatActivity {
         nameWrapper = findViewById(R.id.nameWrapper);
         surnameWrapper = findViewById(R.id.surnameWrapper);
         usernameEditText = findViewById(R.id.usernameEditText);
+        database = FirebaseDatabase.getInstance();
+        progressDialog = new ProgressDialog();
+        progressDialog.setStyle(R.style.CustomAlertDialogStyle,R.style.CustomDialogTheme);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+
+        usernameEditText.setOnFocusChangeListener(focusChangeListener);
+        emailEditText.setOnFocusChangeListener(focusChangeListener);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.sex, R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
@@ -109,29 +145,75 @@ public class KayitOlEkran extends AppCompatActivity {
         signUpOkeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (!tumKontroller())
-                    return;
-                progressDialog = new ProgressDialog(KayitOlEkran.this);
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.setTitle(getResources().getString(R.string.processing));
-                progressDialog.setMessage(getResources().getString(R.string.please_wait));
-                progressDialog.show();
+                progressDialog.show(getSupportFragmentManager(),"kayitol Ekran");
                 name = nameEditText.getText().toString().trim();
                 surname = surnameEditText.getText().toString().trim();
                 username = usernameEditText.getText().toString().trim();
                 email = emailEditText.getText().toString().trim();
                 password = passwordEditText.getText().toString().trim();
                 gender = genderSpinner.getSelectedItem().toString();
-
-
-                registerNewUser(email,password);
+                if (!tumKontroller()){
+                    progressDialog.dismiss();
+                    return;
+                }
+                if(internetBaglantiKontrol())
+                    registerNewUser(email,password);
+                else{
+                    progressDialog.dismiss();
+                    Toast.makeText(KayitOlEkran.this, getResources().getString(R.string.internet_connection_error), Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
             }
         });
     }
 
     private void registerNewUser(final String email ,final String password){
+
+        //TODO STRİNG OLACAK
+        progressDialog.setMessage("username Kontrol Ediliyor.");
+        if(!progressDialog.isShowing())
+            progressDialog.show(getSupportFragmentManager(),"kayitol ekran");
+        database.getReference("users").orderByChild("username").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    progressDialog.dismiss();
+                    usernameWrapper.setErrorEnabled(true);
+                    //TODO String olarak ayarla
+                    usernameWrapper.setError("Kullanıcı Adı Bulunmaktadır.");
+                } else {
+                    usernameWrapper.setErrorEnabled(false);
+                    progressDialog.setMessage("emailKontrol Ediliyor.");
+                    if(!progressDialog.isShowing())
+                        progressDialog.show(getSupportFragmentManager(),"kayitol ekran");
+                    database.getReference("users").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                progressDialog.dismiss();
+                                emailWrapper.setErrorEnabled(true);
+                                //TODO String olarak ayarla
+                                emailWrapper.setError("Email Bulunmaktadır.");
+                            } else {
+                                emailWrapper.setErrorEnabled(false);
+                                kayitTamamla();
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
+
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void kayitTamamla(){
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -161,7 +243,7 @@ public class KayitOlEkran extends AppCompatActivity {
                                         }
                                     }
                                     else{
-                                        progressDialog.hide();
+                                        progressDialog.dismiss();
                                         fUser.delete();
                                         Log.d("userhata:",task.getException().toString());
                                     }
@@ -169,7 +251,7 @@ public class KayitOlEkran extends AppCompatActivity {
                             });
 
                         } else {
-                            progressDialog.hide();
+                            progressDialog.dismiss();
                             if(fUser != null)
                                 fUser.delete();
                             // If sign in fails, display a message to the user.
@@ -181,12 +263,11 @@ public class KayitOlEkran extends AppCompatActivity {
                         // ...
                     }
                 });
-
     }
 
 
     // viewların tıklanma olayları
-    public void kayitOlClicks(View view) {
+    public void kayitOlEkranClicks(View view) {
         switch (view.getId()) {
             case R.id.dobEditText:
                 Calendar calendar = Calendar.getInstance();
@@ -204,12 +285,22 @@ public class KayitOlEkran extends AppCompatActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(KayitOlEkran.this,
                         android.R.style.Theme_Holo_Light_Dialog, onDateSetListener, year, month, day);
                 datePickerDialog.getDatePicker().setMaxDate((new Date().getTime()) - Long.parseLong("31556926000") * 13);
-
                 datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 datePickerDialog.show();
 
                 break;
+            case R.id.kayitOlEkranLayout:
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),0);
+                break;
         }
+    }
+
+    private boolean internetBaglantiKontrol() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        //we are checking whether connect to a network
+        return connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
     }
 
     private boolean tumKontroller(){
@@ -275,7 +366,6 @@ public class KayitOlEkran extends AppCompatActivity {
         } else {
             nameWrapper.setError(null);
         }
-
         return kontrol;
     }
 }

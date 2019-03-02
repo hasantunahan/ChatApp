@@ -14,6 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginEkran"
+            android:windowSoftInputMode="stateVisible|adjustResize"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +26,7 @@
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                         android:value=".AnaEkran"/>
         </activity>
-        <activity android:name=".KayitOlEkran" android:theme="@style/Theme.AppCompat.NoActionBar" android:label="Kayit Ol" android:parentActivityName=".LoginEkran">
+        <activity android:name=".KayitOlEkran" android:theme="@style/Theme.AppCompat.NoActionBar" android:label="Kayit Ol" android:parentActivityName=".LoginEkran" android:windowSoftInputMode="stateVisible|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.anonsgoup.anons.KayitOlEkran" />

@@ -17,14 +17,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int i) {
         switch (i){
             case 0:
-                ProfilEkran pf=new ProfilEkran();
-                return pf;
+                return new ProfilEkran();
             case 1:
-                AnaMenuEkran am=new AnaMenuEkran();
-                return am;
+                return new AnaMenuEkran();
             case 2:
-                ChatEkran ch=new ChatEkran();
-                return ch;
+                return new ChatEkran();
             default:
                 return null;
         }
