@@ -1,4 +1,4 @@
-package com.anonsgoup.anons;
+package com.anonsgroup.anons;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;

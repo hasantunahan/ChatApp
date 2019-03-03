@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.anonsgoup.anons">
+    package="com.anonsgroup.anons">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,11 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfilDuzenleEkran"
+        <activity android:name="com.anonsgroup.anons.ProfilDuzenleEkran"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             ></activity>
         <activity
-            android:name=".LoginEkran"
+            android:name="com.anonsgroup.anons.LoginEkran"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -29,25 +29,25 @@
         </activity>
 
         <activity
-            android:name=".AnaEkran"
-            android:parentActivityName=".LoginEkran"
+            android:name="com.anonsgroup.anons.AnaEkran"
+            android:parentActivityName="com.anonsgroup.anons.LoginEkran"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".AnaEkran" />
+                android:value="com.anonsgroup.anons.AnaEkran" />
         </activity>
         <activity
-            android:name=".KayitOlEkran"
+            android:name="com.anonsgroup.anons.KayitOlEkran"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:label="Kayit Ol"
-            android:parentActivityName=".LoginEkran"
+            android:parentActivityName="com.anonsgroup.anons.LoginEkran"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.anonsgoup.anons.KayitOlEkran" />
+                android:value="com.anonsgroup.anons.KayitOlEkran" />
         </activity>
         <activity
-            android:name=".EmailDogrulamaEkran"
+            android:name="com.anonsgroup.anons.EmailDogrulamaEkran"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"

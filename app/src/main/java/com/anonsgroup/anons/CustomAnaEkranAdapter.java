@@ -1,4 +1,4 @@
-package com.anonsgoup.anons;
+package com.anonsgroup.anons;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import com.anonsgoup.anons.models.Anons;
+import com.anonsgroup.anons.models.Anons;
 
 import java.util.List;
 

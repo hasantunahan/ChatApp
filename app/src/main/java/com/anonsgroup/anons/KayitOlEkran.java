@@ -1,7 +1,7 @@
-package com.anonsgoup.anons;
+package com.anonsgroup.anons;
 
 import android.app.DatePickerDialog;
-import com.anonsgoup.anons.customViews.ProgressDialog;
+import com.anonsgroup.anons.customViews.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,8 +24,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.anonsgoup.anons.database.KullaniciIslemler;
-import com.anonsgoup.anons.models.User;
+import com.anonsgroup.anons.database.KullaniciIslemler;
+import com.anonsgroup.anons.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

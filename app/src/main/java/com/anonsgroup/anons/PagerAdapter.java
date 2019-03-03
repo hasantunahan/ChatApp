@@ -1,4 +1,4 @@
-package com.anonsgoup.anons;
+package com.anonsgroup.anons;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

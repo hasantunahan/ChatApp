@@ -1,4 +1,4 @@
-package com.anonsgoup.anons;
+package com.anonsgroup.anons;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

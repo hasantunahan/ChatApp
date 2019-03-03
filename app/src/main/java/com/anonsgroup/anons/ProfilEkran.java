@@ -1,4 +1,4 @@
-package com.anonsgoup.anons;
+package com.anonsgroup.anons;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.anonsgroup.anons.models.Anons;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class ProfilEkran extends Fragment {
     private NestedScrollView anonslarimScrollView;
 
     private OnFragmentInteractionListener mListener;
-    ArrayList<MobileOs> mobileOs=new ArrayList<>();
+    ArrayList<Anons> anons=new ArrayList<>();
     RecyclerView recyclerView;
     Context context;
 
@@ -90,6 +91,9 @@ public class ProfilEkran extends Fragment {
         context = view.getContext();
         editLayout=view.findViewById(R.id.editLayout);
 
+        //TODO: resimler databaseden çekilip imageview a konacak ve diğer bilgiler.
+        //TODO: Şerefin yaptığı açılan pencere buna entegre edilecek.
+
         anonsGorGizle = view.findViewById(R.id.anonsGorGizleTextView);
         anonslarimScrollView = view.findViewById(R.id.anonslarimNestedScrollView);
 
@@ -119,27 +123,27 @@ public class ProfilEkran extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(true);
-        mobileOs.add(new MobileOs(R.mipmap.seropng,"Askin","Gazi Mahallesi","Şarj Aleti Olan var mı ?","25.12.2018",R.mipmap.hsn,"12k"));
-        mobileOs.add(new MobileOs(R.mipmap.hsn,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
-        mobileOs.add(new MobileOs(R.mipmap.trk,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
-        mobileOs.add(new MobileOs(R.mipmap.seropng,"Askin","Gazi Mahallesi","Şarj Aleti Olan var mı ?","25.12.2018",R.mipmap.hsn,"12k"));
-        mobileOs.add(new MobileOs(R.mipmap.hsn,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
-        mobileOs.add(new MobileOs(R.mipmap.trk,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
-        mobileOs.add(new MobileOs(R.mipmap.seropng,"Askin","Gazi Mahallesi","Şarj Aleti Olan var mı ?","25.12.2018",R.mipmap.hsn,"12k"));
-        mobileOs.add(new MobileOs(R.mipmap.hsn,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
-        mobileOs.add(new MobileOs(R.mipmap.trk,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
-        mobileOs.add(new MobileOs(R.mipmap.seropng,"Askin","Gazi Mahallesi","Şarj Aleti Olan var mı ?","25.12.2018",R.mipmap.hsn,"12k"));
-        mobileOs.add(new MobileOs(R.mipmap.hsn,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
-        mobileOs.add(new MobileOs(R.mipmap.trk,"Askin","Gazi Mahallesi,Emniyet Mahallesi","Şarj Aleti Olan var mı ?","28.12.2018",R.mipmap.hsn,"129"));
-        CustomProfilAdapter customProfilAdapter=new CustomProfilAdapter(mobileOs,context);
+        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
+        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
+        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
+        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
+        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
+        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
+        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
+        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
+        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
+        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
+        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
+
+        CustomProfilAdapter customProfilAdapter=new CustomProfilAdapter(anons,context);
         recyclerView.setAdapter(customProfilAdapter);
 
-
+        //TODO: Navigation drawer gelince bu burdan kalkıcak.
         geciciButton = view.findViewById(R.id.geciciButton);
         geciciButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAuth.getInstance().signOut();
+                FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(view.getContext(), LoginEkran.class);
                 startActivity(intent);
             }

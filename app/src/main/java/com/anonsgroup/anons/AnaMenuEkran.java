@@ -1,4 +1,4 @@
-package com.anonsgoup.anons;
+package com.anonsgroup.anons;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.anonsgoup.anons.models.Anons;
+import com.anonsgroup.anons.models.Anons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,17 +87,17 @@ public class AnaMenuEkran extends Fragment {
 
         RecyclerView recyclerView=view.findViewById(R.id.anaEkranAnonsListLayout);
         List<Anons> nlist=new ArrayList<>();
-        nlist.add(new Anons(R.mipmap.hsn,R.drawable.ic_like,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwwrhwrhrwhrwhwhrwhrhrhwhwhrhwhwrhwrrh","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwwrhrwhwrhrwhwrrhw","ahrershjegk","Hasan tunahan","25.12.2019",1));
-        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",1));
-        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",1));
-        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwddhehehehehrhwhwrrhwrhrhwh","ahrershjegk","Hasan tunahan","25.12.2019",1));
+        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwwrhwrhrwhrwhwhrwhrhrhwhwhrhwhwrhwrrh","ahrershjegk","Hasan tunahan","25.12.2019",0));
+        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwwrhrwhwrhrwhwrrhw","ahrershjegk","Hasan tunahan","25.12.2019",1));
+        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
+        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",1));
+        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",1));
+        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
+        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
+        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
+        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
+        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
+        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwddhehehehehrhwhwrrhwrhrhwh","ahrershjegk","Hasan tunahan","25.12.2019",1));
         CustomAnaEkranAdapter customAnaEkranAdapter=new CustomAnaEkranAdapter(view.getContext(),nlist);
         recyclerView.setAdapter(customAnaEkranAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));

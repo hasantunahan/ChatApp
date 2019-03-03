@@ -1,4 +1,4 @@
-package com.anonsgoup.anons.models;
+package com.anonsgroup.anons.models;
 
 
 

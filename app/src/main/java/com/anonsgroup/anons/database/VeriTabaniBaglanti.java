@@ -1,4 +1,4 @@
-package com.anonsgoup.anons.database;
+package com.anonsgroup.anons.database;
 
 import android.content.Context;
 

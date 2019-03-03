@@ -1,4 +1,4 @@
-package com.anonsgoup.anons.customViews;
+package com.anonsgroup.anons.customViews;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.anonsgoup.anons.R;
+import com.anonsgroup.anons.R;
 
 public class ProgressDialog extends DialogFragment {
     private ImageView imageView_1,imageView_2,imageView_3;

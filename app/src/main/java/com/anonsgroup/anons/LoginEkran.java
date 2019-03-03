@@ -1,8 +1,8 @@
-package com.anonsgoup.anons;
+package com.anonsgroup.anons;
 
 
 import android.annotation.SuppressLint;
-import com.anonsgoup.anons.customViews.ProgressDialog;
+import com.anonsgroup.anons.customViews.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;

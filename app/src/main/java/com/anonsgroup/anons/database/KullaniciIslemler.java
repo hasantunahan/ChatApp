@@ -1,4 +1,4 @@
-package com.anonsgoup.anons.database;
+package com.anonsgroup.anons.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,10 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.anonsgoup.anons.models.User;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import com.anonsgroup.anons.models.User;
 
 public class KullaniciIslemler {
     private SQLiteOpenHelper sqLiteOpenHelper;
@@ -35,18 +32,15 @@ public class KullaniciIslemler {
     }
 
     public void yeniKullaniciKaydet(User user){
-        Cursor c=null;
-                try {
-                    c=db.rawQuery("select username from kullanici where username="+user.getUsername(),null);
-                    if(c.moveToFirst()){
-                        db.execSQL("delete from kullanici where username="+user.getUsername());
-                    }
-
-
-                }catch (Exception e){
-                    e.printStackTrace();
+        Cursor c;
+            try {
+                c=db.rawQuery("select username from kullanici where username="+user.getUsername(),null);
+                if(c.moveToFirst()){
+                    db.execSQL("delete from kullanici where username="+user.getUsername());
                 }
-
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         ContentValues values=new ContentValues();
         values.put("username",user.getUsername());
         values.put("email",user.getEmail());
