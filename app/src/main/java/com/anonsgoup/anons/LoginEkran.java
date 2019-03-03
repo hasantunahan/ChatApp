@@ -168,10 +168,13 @@ public class LoginEkran extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Log.d("girdi ", "asdasdasdasdasdasdasdasd");
                             if (dataSnapshot.exists()) {
+                                Log.d("email: ", "childerns::::" + " - " + dataSnapshot.getChildren().toString());
                                 // dataSnapshot is the "issue" node with all children with id 0
-                                Log.d("email: ", kullaniciAdi + " - " + dataSnapshot.hasChild(fUser.getUid()));
-                                kullaniciAdi = dataSnapshot.child(fUser.getUid()).child("email").getValue().toString();
-                                Log.d("email: ", dataSnapshot.getValue().toString());
+                                for(DataSnapshot datas : dataSnapshot.getChildren()) {
+                                    Log.d("email: ", kullaniciAdi + " - " + dataSnapshot.child("email"));
+                                    kullaniciAdi = datas.child("email").getValue().toString();
+                                    Log.d("email: ", datas.getValue().toString());
+                                }
                             }
                             girisYap();
                         }

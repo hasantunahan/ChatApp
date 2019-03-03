@@ -8,7 +8,7 @@
     android:gravity="center">
 
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
 
         android:id="@+id/bir_cizgili"
         android:layout_width="60dp"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="@+id/DialogTest"
         app:srcCompat="@drawable/ic_bircizgi" />
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/iki_cizgili"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -28,7 +28,7 @@
         app:layout_constraintStart_toStartOf="@+id/DialogTest"
         app:srcCompat="@drawable/ic_iki_cizgi" />
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/uc_cizgili"
         android:layout_width="60dp"
         android:layout_height="60dp"
