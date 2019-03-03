@@ -50,9 +50,8 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
         myviewHolder.aKonum.setText(mdata.get(i).getKonum());
         myviewHolder.aTarih.setText(mdata.get(i).getTarih());
 
-
-
-        myviewHolder.begeniFotograf.setImageResource(mdata.get(i).getBegeniFotograf());
+        if(mdata.get(i).getGoruldu() == 0)
+            myviewHolder.begeniFotograf.setImageResource(R.drawable.ic_bildiri);
 
     }
 
@@ -97,8 +96,11 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
             lineer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                 acilanLayout.setVisibility(View.VISIBLE);
-                 lineer.setVisibility(View.GONE);
+                    //TODO: Veritabanında görüldü alanı değiştirilecek.
+                    if(begeniFotograf.getDrawable() != null)
+                        begeniFotograf.setImageDrawable(null);
+                    acilanLayout.setVisibility(View.VISIBLE);
+                    lineer.setVisibility(View.GONE);
                 }
             });
             acilanLayout.setOnClickListener(new View.OnClickListener() {

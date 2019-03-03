@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
 
-    android:layout_height="80dp"
+    android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:padding="5dp"
     android:paddingTop="6dp"
@@ -13,7 +13,7 @@
     app:cardElevation="5dp">
 
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,67 +24,100 @@
             android:id="@+id/profilKisiImagaView"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_marginLeft="2dp"
-            android:paddingRight="3dp" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingEnd="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlSymmetry" />
 
-        <LinearLayout
-            android:layout_width="240dp"
+        <ImageView
+            android:id="@+id/profilLikeImageView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/profilLikeSayisiTextView"
+            app:layout_constraintEnd_toEndOf="@+id/profilTarihTextView"
+            app:layout_constraintStart_toStartOf="@+id/profilTarihTextView"
+            app:layout_constraintTop_toBottomOf="@+id/profilTarihTextView" />
+
+        <TextView
+            android:id="@+id/profilLikeSayisiTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
-            android:orientation="vertical">
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:textColor="@color/profikKoyuGri"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/profilLikeImageView"
+            app:layout_constraintStart_toStartOf="@+id/profilLikeImageView"
+            app:layout_constraintTop_toBottomOf="@+id/profilLikeImageView" />
 
-            <TextView
-                android:id="@+id/profilKisiAdiTextView"
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/anons_fontt"
-                android:textColor="@color/profikKoyuGri"
-                android:textSize="15dp" />
+        <TextView
+            android:id="@+id/profilKisiAnonsTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/infotextfont"
+            android:singleLine="true"
+            android:textColor="@color/profikOrtaGri"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/profilKnumTextView"
+            app:layout_constraintEnd_toStartOf="@+id/profilLikeImageView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/profilKnumTextView"
+            app:layout_constraintTop_toBottomOf="@+id/profilKisiAdiTextView" />
 
-            <TextView
-                android:id="@+id/profilKisiAnonsTextView"
-                android:layout_width="260dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/infotextfont"
-                android:textColor="@color/profikOrtaGri"
-                android:textSize="14dp" />
+        <TextView
+            android:id="@+id/profilTarihTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="start"
+            android:singleLine="true"
+            android:textColor="@color/profikOrtaGri"
+            app:layout_constraintBottom_toTopOf="@+id/profilLikeImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-            <TextView
-                android:id="@+id/profilKnumTextView"
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/infotextfont"
-                android:textColor="@color/profikAcikGri"
-                android:textSize="12sp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/profilKnumTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/infotextfont"
+            android:textColor="@color/profikAcikGri"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/profilLikeImageView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/profilKisiImagaView"
+            app:layout_constraintTop_toBottomOf="@+id/profilKisiAnonsTextView" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/profilTarihTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:singleLine="true"
-                android:textColor="@color/profikOrtaGri" />
-
-            <ImageView
-                android:id="@+id/profilLikeImageView"
-                android:layout_width="24dp"
-                android:layout_height="22dp"
-                android:layout_gravity="center" />
-
-            <TextView
-                android:id="@+id/profilLikeSayisiTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/profikKoyuGri" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/profilKisiAdiTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/anons_fontt"
+            android:textColor="@color/profikKoyuGri"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@+id/profilKisiAnonsTextView"
+            app:layout_constraintEnd_toStartOf="@+id/profilLikeImageView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/profilKisiAnonsTextView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="packed" />
 
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

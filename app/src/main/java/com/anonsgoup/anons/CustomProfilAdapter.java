@@ -1,6 +1,8 @@
 package com.anonsgoup.anons;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,8 +40,8 @@ public class CustomProfilAdapter extends RecyclerView.Adapter<CustomProfilAdapte
         viewHolder.textTarih.setText(mobileOsArrayList.get(i).getProfilTarih());
         viewHolder.textSayi.setText(mobileOsArrayList.get(i).getLikeSayisi());
         viewHolder.imgProfil.setImageResource(mobileOsArrayList.get(i).getProfilImage());
-        viewHolder.imgLike.setImageResource(mobileOsArrayList.get(i).getLikeimagee());
-        viewHolder.linearLayout.setTag(viewHolder);
+        viewHolder.imgLike.setImageResource(R.drawable.ic_like);
+        viewHolder.constraintLayout.setTag(viewHolder);
 
     }
 
@@ -51,7 +53,7 @@ public class CustomProfilAdapter extends RecyclerView.Adapter<CustomProfilAdapte
     class ViewHolder extends RecyclerView.ViewHolder{
          TextView textName,textYazi,textKonum,textTarih,textSayi;
          ImageView imgProfil,imgLike;
-         LinearLayout linearLayout;
+         ConstraintLayout constraintLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,7 +64,7 @@ public class CustomProfilAdapter extends RecyclerView.Adapter<CustomProfilAdapte
             textSayi=itemView.findViewById(R.id.profilLikeSayisiTextView);
             imgProfil=itemView.findViewById(R.id.profilKisiImagaView);
             imgLike=itemView.findViewById(R.id.profilLikeImageView);
-            linearLayout=itemView.findViewById(R.id.linear);
+            constraintLayout=itemView.findViewById(R.id.linear);
         }
     }
 }

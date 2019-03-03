@@ -1,6 +1,7 @@
 package com.anonsgoup.anons.models;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,5 +13,6 @@ public class Anons {
 @Getter @Setter private String konum;
 @Getter @Setter private String kisi;
 @Getter @Setter private String tarih;
+@Getter @Setter private int goruldu = 0;     //0 ise okunmadı , 1 ise okundu
 
 }
