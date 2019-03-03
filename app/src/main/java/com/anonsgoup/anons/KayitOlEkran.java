@@ -23,6 +23,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.anonsgoup.anons.database.KullaniciIslemler;
 import com.anonsgoup.anons.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -221,7 +223,7 @@ public class KayitOlEkran extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             fUser = mAuth.getCurrentUser();
                             fUser.reload();
-                            User user = new User(email,username,name,surname,longDOB,gender,new Date().getTime(),"",0,new Date().getTime(),1000,0);
+                            final User user = new User(email,username,name,surname,longDOB,gender,new Date().getTime(),"",0,new Date().getTime(),1000,0);
                             UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(user.getUsername()).build();
                             fUser.updateProfile(userProfileChangeRequest);
                             Log.d("İşlem: ", "createUserWithEmail:success");
@@ -231,6 +233,10 @@ public class KayitOlEkran extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
+                                        KullaniciIslemler db=KullaniciIslemler.getInstance(getApplicationContext());
+                                        db.open();
+                                        db.yeniKullaniciKaydet(user);
+                                        db.close();
                                         progressDialog.dismiss();
                                         fUser.sendEmailVerification();
                                         if(!fUser.isEmailVerified()) {

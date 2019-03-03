@@ -169,8 +169,8 @@ public class LoginEkran extends AppCompatActivity {
                             Log.d("girdi ", "asdasdasdasdasdasdasdasd");
                             if (dataSnapshot.exists()) {
                                 // dataSnapshot is the "issue" node with all children with id 0
-                                Log.d("email: ", kullaniciAdi + " - " + dataSnapshot.hasChild("tarikkkk"));
-                                kullaniciAdi = dataSnapshot.child("tarikkkk").child("email").getValue().toString();
+                                Log.d("email: ", kullaniciAdi + " - " + dataSnapshot.hasChild(fUser.getUid()));
+                                kullaniciAdi = dataSnapshot.child(fUser.getUid()).child("email").getValue().toString();
                                 Log.d("email: ", dataSnapshot.getValue().toString());
                             }
                             girisYap();

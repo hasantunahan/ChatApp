@@ -5,19 +5,19 @@
     android:id="@+id/constraintLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".AnaMenuEkran"
     >
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="337dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/profil_bilgi_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -29,8 +29,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:fontFamily="@font/anons_fontt"
-            android:text="Yeni Anons"
+            android:fontFamily="@font/baslikfont"
+            android:text="YENİ ANONS"
             android:textColor="@color/baslikGray"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +73,7 @@
             android:layout_marginTop="28dp"
             android:fontFamily="@font/anons_fontt"
             android:text="sayi"
-            android:textColor="@color/colorAnonsOrange"
+            android:textColor="@color/baslikGray"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/mesafeSeekBar"
             app:layout_constraintHorizontal_bias="0.517"
@@ -88,6 +88,7 @@
             android:fontFamily="@font/anons_fontt"
             android:gravity="center"
             android:text="5m"
+            android:textColor="@color/baslikGray"
             app:layout_constraintBottom_toBottomOf="@+id/mesafeSeekBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/mesafeSeekBar" />
@@ -102,25 +103,28 @@
             android:fontFamily="@font/anons_fontt"
             android:gravity="center"
             android:text="999m"
+            android:textColor="@color/baslikGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/mesafeSeekBar"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:layout_width="326dp"
-            android:layout_height="49dp"
-            android:layout_marginStart="8dp"
+            android:id="@+id/editText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
             android:background="@drawable/beyaz_shadow"
-            android:drawableEnd="@drawable/ic_sent"
             android:ems="10"
             android:fontFamily="@font/anons_fontt"
             android:hint="Anons giriniz"
             android:inputType="textPersonName"
+            android:maxLines="3"
             android:padding="8dp"
             android:textColor="@color/baslikGray"
+            android:textColorHint="@color/baslikGray"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -128,6 +132,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mesafeSeekBar"
             app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/gonderButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/editText"
+            app:layout_constraintEnd_toEndOf="@+id/editText"
+            app:layout_constraintTop_toTopOf="@+id/editText"
+            app:srcCompat="@drawable/ic_sent" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
