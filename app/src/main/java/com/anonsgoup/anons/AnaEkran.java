@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +20,12 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
     TextView begeniSayisiTextView;
     TextView profilAdSayodYasTextView;
     private FirebaseAuth mAuth;
+
+
+    public void profilEkranTiklama(View view){
+        Toast.makeText(getApplicationContext(), "Hasan", Toast.LENGTH_SHORT).show();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

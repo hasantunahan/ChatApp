@@ -1,15 +1,20 @@
 package com.anonsgoup.anons;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
+
+import com.anonsgoup.anons.models.Anons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +33,8 @@ public class AnaMenuEkran extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    Dialog epicdialog;
+    FloatingActionButton yeniAnons;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -73,24 +80,38 @@ public class AnaMenuEkran extends Fragment {
         // Inflate the layout for this fragment
 
         RecyclerView recyclerView=view.findViewById(R.id.anaEkranAnonsListLayout);
-        List<AnaEkranitem> nlist=new ArrayList<>();
-        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
-        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
-        nlist.add(new AnaEkranitem(R.mipmap.trk,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
-        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
-        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
-        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
-        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
-        nlist.add(new AnaEkranitem(R.mipmap.seropng,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
-        nlist.add(new AnaEkranitem(R.mipmap.hsn,R.drawable.ic_bildiri,"Serefcan Oğuz","Napıyonuz Gobeller","Gazi Mahallesi/Teknoloji fakültesi","21.02.2019"));
+        List<Anons> nlist=new ArrayList<>();
+        nlist.add(new Anons(R.mipmap.hsn,R.drawable.ic_like,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwwrhwrhrwhrwhwhrwhrhrhwhwhrhwhwrhwrrh","ahrershjegk","Hasan tunahan","25.12.2019"));
+        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwwrhrwhwrhrwhwrrhw","ahrershjegk","Hasan tunahan","25.12.2019"));
+        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019"));
+        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019"));
+        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019"));
+        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019"));
+        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019"));
+        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019"));
+        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019"));
+        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019"));
+        nlist.add(new Anons(R.mipmap.hsn,R.mipmap.seropng,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwddhehehehehrhwhwrrhwrhrhwh","ahrershjegk","Hasan tunahan","25.12.2019"));
         CustomAnaEkranAdapter customAnaEkranAdapter=new CustomAnaEkranAdapter(view.getContext(),nlist);
         recyclerView.setAdapter(customAnaEkranAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+       //TODO: Sorulacak ? olması gereken ""  new Dialog(context :  this) """
+        epicdialog=new Dialog(view.getContext());
+        yeniAnons= view.findViewById(R.id.yeniAnonsButton);
 
-
-
+        yeniAnons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+            }
+        });
 
         return view;
+    }
+    public void showDialog(){
+        epicdialog.setContentView(R.layout.yeni_anons);
+        epicdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        epicdialog.show();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

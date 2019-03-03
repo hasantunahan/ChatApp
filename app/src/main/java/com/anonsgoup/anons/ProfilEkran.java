@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +40,7 @@ public class ProfilEkran extends Fragment {
     private String mParam1;
     private String mParam2;
     private FirebaseAuth mAuth;
+    private LinearLayout editLayout;
     private TextView anonsGorGizle;
     private NestedScrollView anonslarimScrollView;
 
@@ -45,6 +48,7 @@ public class ProfilEkran extends Fragment {
     ArrayList<MobileOs> mobileOs=new ArrayList<>();
     RecyclerView recyclerView;
     Context context;
+
 
     public ProfilEkran() {
         // Required empty public constructor
@@ -77,6 +81,7 @@ public class ProfilEkran extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,6 +89,7 @@ public class ProfilEkran extends Fragment {
         final View view = inflater.inflate(R.layout.activity_profil, container, false);
         mAuth = FirebaseAuth.getInstance();
         context = view.getContext();
+        editLayout=view.findViewById(R.id.editLayout);
 
         anonsGorGizle = view.findViewById(R.id.anonsGorGizleTextView);
         anonslarimScrollView = view.findViewById(R.id.anonslarimNestedScrollView);
@@ -137,12 +143,31 @@ public class ProfilEkran extends Fragment {
                 mAuth.getInstance().signOut();
                 Intent intent = new Intent(view.getContext(), LoginEkran.class);
                 startActivity(intent);
-
             }
         });
+
+        LinearLayout editLayout;
+        editLayout=view.findViewById(R.id.editLayout);
+        editLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(view.getContext(),profiliduzenleEkran.class);
+                startActivity(intent);
+            }
+        });
+        Button profiliduzenle;
+        profiliduzenle=view.findViewById(R.id.profiliDuzenleButton);
+        profiliduzenle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(view.getContext(),profiliduzenleEkran.class);
+                startActivity(intent);
+            }
+        });
+
+
         return view;
     }
-
 
     // TODO: Rename method, update argument and hook metho into UI event
     public void onButtonPressed(Uri uri) {
