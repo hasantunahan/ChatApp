@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -151,7 +150,7 @@ public class ProfilEkran extends Fragment {
         editLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(view.getContext(),profiliduzenleEkran.class);
+                Intent intent=new Intent(view.getContext(), ProfilDuzenleEkran.class);
                 startActivity(intent);
             }
         });
@@ -160,7 +159,7 @@ public class ProfilEkran extends Fragment {
         profiliduzenle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(view.getContext(),profiliduzenleEkran.class);
+                Intent intent=new Intent(view.getContext(), ProfilDuzenleEkran.class);
                 startActivity(intent);
             }
         });

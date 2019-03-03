@@ -316,7 +316,7 @@
                 app:layout_constraintGuide_percent="0.21" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/avatarCircleImageView"
+                android:id="@+id/profilDuzenleAvatarCircleImage"
                 android:layout_width="120dp"
 
                 android:layout_height="120dp"
