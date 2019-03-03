@@ -13,6 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.anonsgoup.anons.models.Anons;
 
@@ -35,7 +38,10 @@ public class AnaMenuEkran extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     Dialog epicdialog;
     FloatingActionButton yeniAnons;
-
+    SeekBar mesafeSeekBar;
+    TextView mesafeTextView;
+    int min=5,max=999,current=10;
+    ImageView gonderButton;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -106,12 +112,47 @@ public class AnaMenuEkran extends Fragment {
             }
         });
 
+
         return view;
     }
     public void showDialog(){
         epicdialog.setContentView(R.layout.yeni_anons);
         epicdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         epicdialog.show();
+
+        mesafeTextView=epicdialog.findViewById(R.id.seekBarSayisi);
+        mesafeSeekBar=epicdialog.findViewById(R.id.mesafeSeekBar);
+        mesafeSeekBar.setMax(max-min);
+        mesafeSeekBar.setProgress(current-min);
+        mesafeTextView.setText(""+current+"metre");
+
+        gonderButton=epicdialog.findViewById(R.id.gonderButton);
+        gonderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        mesafeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                current=progress+min;
+                mesafeTextView.setText(""+current+"metre");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
