@@ -88,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/profil_bilgi_background"
+                    android:background="@drawable/beyaz_shadow"
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:padding="7dp" />
@@ -123,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/profil_bilgi_background"
+                    android:background="@drawable/beyaz_shadow"
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:padding="7dp" />
@@ -172,7 +172,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/profil_bilgi_background"
+                    android:background="@drawable/beyaz_shadow"
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:padding="7dp" />
@@ -206,7 +206,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/profil_bilgi_background"
+                    android:background="@drawable/beyaz_shadow"
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:padding="7dp" />

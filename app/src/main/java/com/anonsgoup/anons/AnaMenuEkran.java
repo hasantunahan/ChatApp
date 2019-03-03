@@ -96,7 +96,7 @@ public class AnaMenuEkran extends Fragment {
         recyclerView.setAdapter(customAnaEkranAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
        //TODO: Sorulacak ? olması gereken ""  new Dialog(context :  this) """
-        epicdialog=new Dialog(view.getContext());
+        epicdialog=new Dialog(view.getContext(),R.style.Kendiismim);
         yeniAnons= view.findViewById(R.id.yeniAnonsButton);
 
         yeniAnons.setOnClickListener(new View.OnClickListener() {

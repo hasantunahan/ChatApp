@@ -14,6 +14,10 @@
         <item name="colorControlActivated">#85122B</item>
     </style>
 
+    <style name="Kendiismim" parent="Base.Theme.AppCompat.Dialog.Alert">
+        <item name="seekBarStyle">@android:style/Widget.Holo.Light.SeekBar</item>
+    </style>
+
     <style name="spinner_item" parent="android:Widget.TextView.SpinnerItem">
     </style>
 
