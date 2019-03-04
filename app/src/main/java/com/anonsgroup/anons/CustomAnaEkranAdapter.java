@@ -67,7 +67,7 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
         ImageView profilFotograf,begeniFotograf,aProfilFoto;
         TextView kisi,metin,konum,tarih,aTarih,aMetin,aKonum,aKisi;
         ConstraintLayout acilanLayout;
-        LinearLayout lineer;
+        ConstraintLayout ilkLayout;
         EditText cevapEditText;
         //boolean kontrol=false;
         public myviewHolder(@NonNull final View itemView) {
@@ -92,21 +92,21 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
             cevapEditText.setMovementMethod(new ScrollingMovementMethod());
 
             acilanLayout=itemView.findViewById(R.id.acilanLayout);
-            lineer=itemView.findViewById(R.id.linear);
-            lineer.setOnClickListener(new View.OnClickListener() {
+            ilkLayout=itemView.findViewById(R.id.linear);
+            ilkLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //TODO: Veritabanında görüldü alanı değiştirilecek.
                     if(begeniFotograf.getDrawable() != null)
                         begeniFotograf.setImageDrawable(null);
                     acilanLayout.setVisibility(View.VISIBLE);
-                    lineer.setVisibility(View.GONE);
+                    ilkLayout.setVisibility(View.GONE);
                 }
             });
             acilanLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    lineer.setVisibility(View.VISIBLE);
+                    ilkLayout.setVisibility(View.VISIBLE);
                     acilanLayout.setVisibility(View.GONE);
                 }
             });
