@@ -130,7 +130,7 @@
 
         <TextView
             android:id="@+id/anaekranKnumTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
@@ -146,7 +146,7 @@
 
         <TextView
             android:id="@+id/anaekranKisiAdiTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
@@ -164,11 +164,10 @@
 
         <TextView
             android:id="@+id/anaekranTarihTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:gravity="start"
-            android:text="25.10.2019"
             android:textColor="@color/profikOrtaGri"
             android:textSize="@dimen/on_dort_sp"
             app:layout_constraintBottom_toTopOf="@+id/anaekranKisiAnonsTextView"
@@ -189,7 +188,7 @@
 
         <TextView
             android:id="@+id/anaekranKisiAnonsTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
