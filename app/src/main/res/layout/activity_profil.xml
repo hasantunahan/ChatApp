@@ -93,7 +93,6 @@
                             android:text="Ad Soyad, Yaş"
                             android:textAllCaps="false"
                             android:textColor="@android:color/black"
-                            android:textSize="18sp"
                             app:fontFamily="@font/anons_fontt" />
 
                     </LinearLayout>
