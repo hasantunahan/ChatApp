@@ -55,65 +55,66 @@
 
         <SeekBar
             android:id="@+id/mesafeSeekBar"
-            android:layout_width="223dp"
-            android:layout_height="37dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
             android:progressTint="@color/baslikGray"
             android:thumb="@drawable/ic_mesafeseekbar"
-            app:layout_constraintBottom_toBottomOf="@+id/textView14"
+            app:layout_constraintBottom_toTopOf="@+id/editText"
             app:layout_constraintEnd_toStartOf="@+id/textView14"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView13"
-            app:layout_constraintTop_toTopOf="@+id/textView14" />
+            app:layout_constraintTop_toBottomOf="@+id/seekBarSayisi" />
 
         <TextView
             android:id="@+id/seekBarSayisi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/anons_fontt"
             android:text="sayi"
             android:textColor="@color/baslikGray"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/mesafeSeekBar"
-            app:layout_constraintHorizontal_bias="0.517"
+            app:layout_constraintHorizontal_bias="0.532"
             app:layout_constraintStart_toStartOf="@+id/mesafeSeekBar"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
         <TextView
             android:id="@+id/textView13"
-            android:layout_width="29dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/anons_fontt"
             android:gravity="center"
             android:text="5m"
             android:textColor="@color/baslikGray"
             app:layout_constraintBottom_toBottomOf="@+id/mesafeSeekBar"
+            app:layout_constraintEnd_toStartOf="@+id/mesafeSeekBar"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/mesafeSeekBar" />
 
         <TextView
             android:id="@+id/textView14"
-            android:layout_width="44dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="150dp"
-            android:layout_marginEnd="28dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/anons_fontt"
             android:gravity="center"
             android:text="999m"
             android:textColor="@color/baslikGray"
+            app:layout_constraintBottom_toBottomOf="@+id/textView13"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/mesafeSeekBar"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/textView13" />
 
         <EditText
             android:id="@+id/editText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="24dp"
             android:background="@drawable/beyaz_shadow"
@@ -129,9 +130,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.45"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mesafeSeekBar"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/gonderButton"

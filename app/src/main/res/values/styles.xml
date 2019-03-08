@@ -31,7 +31,6 @@
         <item name="android:bottomBright">@android:color/transparent</item>
         <item name="android:bottomDark">@android:color/transparent</item>
         <item name="android:bottomMedium">@android:color/transparent</item>
-        <item name="android:centerBright">@android:color/transparent</item>
         <item name="android:centerDark">@android:color/transparent</item>
         <item name="android:centerMedium">@android:color/transparent</item>
         <item name="android:fullBright">@android:color/transparent</item>

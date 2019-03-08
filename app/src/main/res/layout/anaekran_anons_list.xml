@@ -120,7 +120,7 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -128,67 +128,91 @@
         android:orientation="horizontal"
         android:visibility="visible">
 
+        <TextView
+            android:id="@+id/anaekranKnumTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/infotextfont"
+            android:textColor="@color/profikAcikGri"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/anaekranYeniBildiriImageView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/anaEkranKisiImageView"
+            app:layout_constraintTop_toBottomOf="@+id/anaekranKisiAnonsTextView" />
+
+        <TextView
+            android:id="@+id/anaekranKisiAdiTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/anons_fontt"
+            android:textColor="@color/profikKoyuGri"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@+id/anaekranKisiAnonsTextView"
+            app:layout_constraintEnd_toStartOf="@+id/anaekranTarihTextView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/anaEkranKisiImageView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/anaekranTarihTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:gravity="start"
+            android:textColor="@color/profikOrtaGri"
+            android:textSize="@dimen/on_dort_sp"
+            app:layout_constraintBottom_toTopOf="@+id/anaekranKisiAnonsTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/anaekranKisiAdiTextView"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <ImageView
+            android:id="@+id/anaekranYeniBildiriImageView"
+            android:layout_width="36dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/anaekranTarihTextView"
+            app:layout_constraintStart_toStartOf="@+id/anaekranTarihTextView"
+            app:layout_constraintTop_toBottomOf="@+id/anaekranTarihTextView"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/anaekranKisiAnonsTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/infotextfont"
+            android:singleLine="true"
+            android:textColor="@color/profikOrtaGri"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/anaekranKnumTextView"
+            app:layout_constraintEnd_toStartOf="@+id/anaekranYeniBildiriImageView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/anaEkranKisiImageView"
+            app:layout_constraintTop_toBottomOf="@+id/anaekranKisiAdiTextView" />
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/anaEkranKisiImageView"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_marginStart="2dp" />
-
-        <LinearLayout
-            android:layout_width="240dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/anaekranKisiAdiTextView"
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/anons_fontt"
-                android:textColor="@color/profikKoyuGri"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/anaekranKisiAnonsTextView"
-                android:layout_width="260dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/infotextfont"
-                android:singleLine="true"
-                android:textColor="@color/profikOrtaGri"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/anaekranKnumTextView"
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/infotextfont"
-                android:textColor="@color/profikAcikGri"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/anaekranTarihTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:textSize="@dimen/on_dort_sp"
-                android:textColor="@color/profikOrtaGri" />
-
-            <ImageView
-                android:id="@+id/anaekranYeniBildiriImageView"
-                android:layout_width="36dp"
-                android:layout_height="34dp"
-                android:layout_gravity="center" />
-
-        </LinearLayout>
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/anaekranKisiAnonsTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/anaekranKisiAnonsTextView" />
 
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 
 
