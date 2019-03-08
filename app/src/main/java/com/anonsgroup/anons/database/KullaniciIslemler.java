@@ -8,12 +8,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.anonsgroup.anons.models.User;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Date;
+
 public class KullaniciIslemler {
     private SQLiteOpenHelper sqLiteOpenHelper;
     private SQLiteDatabase db;
     private static KullaniciIslemler kullaniciIslemleri;
 
-    private final String kullaniciTablo="kullanici";
+    private final String kullaniciTablo="user";
     private KullaniciIslemler(Context context){
         this.sqLiteOpenHelper = new VeriTabaniBaglanti(context);
     }
@@ -34,9 +40,9 @@ public class KullaniciIslemler {
     public void yeniKullaniciKaydet(User user){
         Cursor c;
             try {
-                c=db.rawQuery("select username from kullanici where username="+user.getUsername(),null);
+                c=db.rawQuery("select username from user where username="+user.getUsername(),null);
                 if(c.moveToFirst()){
-                    db.execSQL("delete from kullanici where username="+user.getUsername());
+                    db.execSQL("delete from user where username="+user.getUsername());
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -65,7 +71,28 @@ public class KullaniciIslemler {
         values.put("email",user.getEmail());
         values.put("profilPhoto",user.getProfilPhoto());
         values.put("profilBackground",user.getProfilBackground());
-        db.update("kullanici",values,"username",new String[]{user.getUsername()});
+        db.update("user",values,"username",new String[]{user.getUsername()});
+    }
+    public User kullaniciAl (String kullaniciAdi){
+        User user = new User();
+        String sql = "SELECT * FROM user where username="+kullaniciAdi;
+        Cursor cursor;
+        cursor = db.rawQuery(sql, null);
+
+        if (cursor.moveToNext()){
+           user.setEmail(cursor.getString(cursor.getColumnIndex("email" )));
+           user.setUsername(cursor.getString(cursor.getColumnIndex("username")));
+           user.setName(cursor.getString(cursor.getColumnIndex("name")));
+           user.setSurname(cursor.getString(cursor.getColumnIndex("surname")));
+           user.setDob(cursor.getLong(cursor.getColumnIndex("dob")));
+           user.setGender(cursor.getString(cursor.getColumnIndex("gender")));
+           user.setSummInfo(cursor.getString(cursor.getColumnIndex("summInfo")));
+           user.setLastDateOfLogIn(cursor.getLong(cursor.getColumnIndex("lastDateOfLogIn")));
+           user.setCountOfAnonsDaily(cursor.getInt(cursor.getColumnIndex("countOfAnonsDaily")));
+           user.setProfilPhoto(cursor.getBlob(cursor.getColumnIndex("profilPhoto")));
+           user.setProfilBackground(cursor.getBlob(cursor.getColumnIndex("profilBackground")));
+        }
+        return user;
     }
 
 }
