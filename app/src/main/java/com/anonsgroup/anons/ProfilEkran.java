@@ -93,7 +93,7 @@ public class ProfilEkran extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         context = view.getContext();
         editLayout=view.findViewById(R.id.editLayout);
-        imageView = view.findViewById(R.id.imageView);
+        imageView = view.findViewById(R.id.settingsImageButton);
         final DrawerLayout drawerLayout = view.findViewById(R.id.drawerLayout);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
