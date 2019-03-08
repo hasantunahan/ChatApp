@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v4.widget.DrawerLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.anonsgroup.anons.NavigationDrawerFragment"
+        android:layout_width="270dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start" />
+
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfilEkran">
@@ -35,7 +47,7 @@
                 app:srcCompat="@drawable/defaultback" />
 
             <ImageButton
-                android:id="@+id/settingsImageButton"
+                android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -362,38 +374,6 @@
 
     </LinearLayout>
 
-    <android.support.v4.widget.DrawerLayout android:id="@+id/drawerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:context=".MainActivity">
-
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="15dp"
-                app:srcCompat="@drawable/ic_send" />
-        </LinearLayout>
-
-        <fragment
-            android:id="@+id/fragment"
-            android:name="com.anonsgroup.anons.NavigationDrawerFragment"
-            android:layout_width="270dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start" />
-    </android.support.v4.widget.DrawerLayout>
-
-
-
 
 </FrameLayout>
+    </android.support.v4.widget.DrawerLayout>
