@@ -6,13 +6,16 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,7 +46,7 @@ public class ProfilEkran extends Fragment {
     private LinearLayout editLayout;
     private TextView anonsGorGizle;
     private NestedScrollView anonslarimScrollView;
-
+    private ImageView imageView;
     private OnFragmentInteractionListener mListener;
     ArrayList<Anons> anons=new ArrayList<>();
     RecyclerView recyclerView;
@@ -90,7 +93,14 @@ public class ProfilEkran extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         context = view.getContext();
         editLayout=view.findViewById(R.id.editLayout);
-
+        imageView = view.findViewById(R.id.imageView);
+        final DrawerLayout drawerLayout = view.findViewById(R.id.drawerLayout);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(Gravity.START);
+            }
+        });
         //TODO: resimler databaseden çekilip imageview a konacak ve diğer bilgiler.
         //TODO: Şerefin yaptığı açılan pencere buna entegre edilecek.
 
