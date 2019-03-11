@@ -350,19 +350,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
-                <Button
-                    android:id="@+id/geciciButton"
-                    android:layout_width="59dp"
-                    android:layout_height="41dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="100dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="Button"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.973"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
             </android.support.constraint.ConstraintLayout>
 
         </LinearLayout>
@@ -374,7 +361,27 @@
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/menu_items"></android.support.design.widget.NavigationView>
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/menu_items">
+        <LinearLayout
+            android:layout_gravity="bottom"
+            android:background="#20191d1e"
+            android:layout_width="match_parent"
+            android:paddingBottom="2dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="2dp"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/geciciButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

@@ -1,10 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
-        android:id="@+id/bir"
-        android:checkable="false"
-        android:title="deneme"
+        android:id="@+id/menu_item_engellenenler"
+        android:checkable="true"
+        android:icon="@drawable/ic_edit"
+        android:title="Engellenenler"
         />
+    <item
+        android:id="@+id/menu_item_begendigin_anonslar"
+        android:checkable="true"
+        android:icon="@drawable/ic_edit"
+        android:title="Beğendiğin anonslar"
+        />
+
+
+    <item
+        android:id="@+id/menu_item_uygulamayi_paylas"
+        android:checkable="true"
+        android:icon="@drawable/ic_edit"
+        android:title="Uygulamayı Paylaş"
+        />
+    <item
+        android:id="@+id/menu_item_lisanslar"
+        android:checkable="true"
+        android:icon="@drawable/ic_edit"
+        android:title="Lisanslar"
+        />
+    <item
+        android:id="@+id/menu_item_gizlilik_kosullari"
+        android:checkable="true"
+        android:icon="@drawable/ic_edit"
+        android:title="Gizlilik Koşulları"
+        />
+    <item
+        android:id="@+id/menu_item_gorus_oneri"
+        android:checkable="true"
+        android:icon="@drawable/ic_edit"
+        android:title="Görüş ve Öneriler"
+        />
+    <item
+        android:id="@+id/menu_item_yardim"
+        android:checkable="true"
+        android:icon="@drawable/ic_edit"
+        android:title="Yardım"
+        />
+    <item
+        android:id="@+id/menu_item_ayarlar"
+        android:checkable="true"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="Ayarlar"
+        />
+    <group
+        android:id="@+id/nav_footer">
+    </group>
 
 </menu>
