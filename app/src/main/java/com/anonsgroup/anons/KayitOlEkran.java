@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anonsgroup.anons.database.KullaniciIslemler;
+import com.anonsgroup.anons.database.VeriTabaniDb;
 import com.anonsgroup.anons.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -230,9 +231,10 @@ public class KayitOlEkran extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        KullaniciIslemler db=KullaniciIslemler.getInstance(getApplicationContext());
+                                        VeriTabaniDb db = VeriTabaniDb.getInstance(getApplicationContext());
                                         db.open();
-                                        db.yeniKullaniciKaydet(user);
+                                        KullaniciIslemler kIslemler = new KullaniciIslemler(db.dbAl());
+                                        kIslemler.yeniKullaniciKaydet(user);
                                         db.close();
                                         progressDialog.dismiss();
                                         fUser.sendEmailVerification();

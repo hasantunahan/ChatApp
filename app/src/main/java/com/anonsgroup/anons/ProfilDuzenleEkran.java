@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -16,6 +17,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.anonsgroup.anons.database.KullaniciIslemler;
+import com.anonsgroup.anons.database.VeriTabaniDb;
+import com.anonsgroup.anons.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +32,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
 
 
 public class ProfilDuzenleEkran extends AppCompatActivity {
@@ -60,6 +65,21 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
         emailEditText = findViewById(R.id.profilDuzenleEmailEditText);
         soyadiEditText = findViewById(R.id.profilDuzenleSoyadEditText);
 
+        VeriTabaniDb db = VeriTabaniDb.getInstance(getApplicationContext());
+        db.open();
+        KullaniciIslemler kIslemler = new KullaniciIslemler(db.dbAl());
+        User user =kIslemler.kullaniciAl(fUser.getDisplayName());
+        db.close();
+
+        adiEditText.setText(user.getName());
+        soyadiEditText.setText(user.getSurname());
+        dogumTarihiEditText.setText(new Date(user.getDob()).toString());
+        durumEditText.setText(user.getSummInfo());
+        emailEditText.setText(user.getEmail());
+        if(user.getProfilPhoto() != null)
+            profilImage.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilPhoto(),0,user.getProfilPhoto().length));
+        if(user.getProfilBackground() != null)
+            backgroundImage.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilBackground(),0,user.getProfilBackground().length));
 
 
         //TODO: BU IMAGEVIEWLER BAŞLANGIÇ OLARAK DATABASEDEN ÇEKİLMELİ

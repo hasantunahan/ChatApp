@@ -68,6 +68,30 @@ public class KullaniciIslemler {
         }
         return user;
     }
+    public User kullaniciAlMail (String kullaniciMail){
+        User user = new User();
+        String sql = "SELECT * FROM user where email="+kullaniciMail;
+        Cursor cursor;
+        cursor = db.rawQuery(sql, null);
+
+        if (cursor.moveToNext()){
+            user.setEmail(cursor.getString(cursor.getColumnIndex("email" )));
+            user.setUsername(cursor.getString(cursor.getColumnIndex("username")));
+            user.setName(cursor.getString(cursor.getColumnIndex("name")));
+            user.setSurname(cursor.getString(cursor.getColumnIndex("surname")));
+            user.setDob(cursor.getLong(cursor.getColumnIndex("dob")));
+            user.setGender(cursor.getString(cursor.getColumnIndex("gender")));
+            user.setSummInfo(cursor.getString(cursor.getColumnIndex("summInfo")));
+            user.setLastDateOfLogIn(cursor.getLong(cursor.getColumnIndex("lastDateOfLogIn")));
+            user.setCountOfAnonsDaily(cursor.getInt(cursor.getColumnIndex("countOfAnonsDaily")));
+            user.setProfilPhoto(cursor.getBlob(cursor.getColumnIndex("profilPhoto")));
+            user.setProfilBackground(cursor.getBlob(cursor.getColumnIndex("profilBackground")));
+            return user;
+        }
+        else
+            return null;
+
+    }
 
 
 }

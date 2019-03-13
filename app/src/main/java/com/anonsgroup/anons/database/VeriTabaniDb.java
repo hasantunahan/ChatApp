@@ -20,6 +20,9 @@ public class VeriTabaniDb {
         }
         return veriTabaniDb;
     }
+    public SQLiteDatabase dbAl(){
+        return db;
+    }
     public void open() {
         this.db = sqLiteOpenHelper.getWritableDatabase();
     }

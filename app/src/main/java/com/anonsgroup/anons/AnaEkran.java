@@ -38,7 +38,7 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
-        profilAdSayodYasTextView = findViewById(R.id.profilAdSayodYasTextView);
+        profilAdSayodYasTextView = findViewById(R.id.profilAdSayodTextView);
         bildirimSayisiTextView = findViewById(R.id.bildirimSayisiTextView);
         begeniSayisiTextView = findViewById(R.id.begeniSayisiTextView);
         arkadasSayisiTextView = findViewById(R.id.arkadasSayisiTextView);

@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anonsgroup.anons.database.KullaniciIslemler;
+import com.anonsgroup.anons.database.VeriTabaniDb;
 import com.anonsgroup.anons.models.Anons;
 import com.anonsgroup.anons.models.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -112,6 +113,11 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         context = view.getContext();
         editLayout=view.findViewById(R.id.editLayout);
         settingImageView = view.findViewById(R.id.settingsImageButton);
+        adSoyadTextView = view.findViewById(R.id.profilAdSayodTextView);
+        profildurumTextView = view.findViewById(R.id.profildurumTextView);
+        profilPhotoImageView  = view.findViewById(R.id.profilAvatarCircleImage);
+        profilBackgroundImageView = view.findViewById(R.id.profilBackgroundImageView);
+
         final DrawerLayout drawerLayout = view.findViewById(R.id.drawerLayout);
         settingImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,16 +126,20 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
             }
         });
 
-        KullaniciIslemler islemler = KullaniciIslemler.getInstance(getContext());
-        islemler.open();
-        User user =islemler.kullaniciAl(mAuth.getCurrentUser().getDisplayName());
-        islemler.close();
-
-        profilPhotoImageView.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilPhoto(),0,user.getProfilPhoto().length));
-        profilBackgroundImageView.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilBackground(),0,user.getProfilBackground().length));
-        profildurumTextView.setText(user.getSummInfo());
-        String a = user.getName()+" "+user.getSurname();
+        VeriTabaniDb db = VeriTabaniDb.getInstance(getContext());
+        db.open();
+        KullaniciIslemler kIslemler = new KullaniciIslemler(db.dbAl());
+        User user =kIslemler.kullaniciAl(mAuth.getCurrentUser().getDisplayName());
+        db.close();
+        String a = user.getName() + " " + user.getSurname();
         adSoyadTextView.setText(a);
+        profildurumTextView.setText(user.getSummInfo());
+        if(user.getProfilPhoto() != null)
+            profilPhotoImageView.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilPhoto(),0,user.getProfilPhoto().length));
+        if(user.getProfilBackground() != null)
+            profilBackgroundImageView.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilBackground(),0,user.getProfilBackground().length));
+
+
         //TODO: resimler databaseden çekilip imageview a konacak ve diğer bilgiler.
         //TODO: Şerefin yaptığı açılan pencere buna entegre edilecek.
 

@@ -19,6 +19,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.anonsgroup.anons.database.KullaniciIslemler;
+import com.anonsgroup.anons.database.VeriTabaniDb;
+import com.anonsgroup.anons.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -43,6 +47,7 @@ public class LoginEkran extends AppCompatActivity {
     private FirebaseUser fUser;
     private TextInputLayout userNameWrapper;
     private TextInputLayout passwordWrapper;
+    private VeriTabaniDb tabaniDb;
 
 
     //TODO: kullanıcı çıkış yaptığında local veritabanı tamamen temizlenecek.
@@ -222,10 +227,35 @@ public class LoginEkran extends AppCompatActivity {
                             return;
                         }
                     }
-                    Log.d("displayname:", fUser.getDisplayName());
-                    Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
-                    finish();
-                    startActivity(intent);
+                    tabaniDb = VeriTabaniDb.getInstance(getApplicationContext());
+                    tabaniDb.open();
+                    final User[] user = {new KullaniciIslemler(tabaniDb.dbAl()).kullaniciAl(kullaniciAdi)};
+                    if(user[0] == null){
+                        Query query = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("username").equalTo(kullaniciAdi);
+                        query.addValueEventListener(new ValueEventListener() {
+
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                    user[0] = postSnapshot.getValue(User.class);
+                                    islemleriBitir(user[0]);
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        } );
+                    }
+                    else {
+                        tabaniDb.close();
+                        Log.d("displayname:", fUser.getDisplayName());
+                        Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
+                        finish();
+                        startActivity(intent);
+                    }
 
                 } else {
                     progressDialog.dismiss();
@@ -237,5 +267,13 @@ public class LoginEkran extends AppCompatActivity {
         });
 
 
+    }
+
+    private void islemleriBitir(User user) {
+        tabaniDb.close();
+        //TODO: fiebaseden resimler alınacak usera eklenip locale konulacak.
+        Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
+        finish();
+        startActivity(intent);
     }
 }
