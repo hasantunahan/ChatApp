@@ -384,7 +384,7 @@
 
 
             <Button
-                android:id="@+id/ayarlarbtn"
+                android:id="@+id/menu_ayarlar_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/border_style"
