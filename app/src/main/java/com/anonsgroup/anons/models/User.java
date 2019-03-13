@@ -4,9 +4,11 @@ package com.anonsgroup.anons.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
+@NoArgsConstructor
 public class User {
     public User(String email, String username, String name, String surname, long dob, String gender, long createdDate, String summInfo, long lastDateOfLogOut, long lastDateOfLogIn, int countOfAnonsDaily, int countOfAllAnons) {
         this.email = email;
