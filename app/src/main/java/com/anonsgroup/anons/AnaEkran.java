@@ -1,11 +1,16 @@
 package com.anonsgroup.anons;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +37,6 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
         setContentView(R.layout.activity_ana_ekran);
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
-
 
         profilAdSayodYasTextView = findViewById(R.id.profilAdSayodYasTextView);
         bildirimSayisiTextView = findViewById(R.id.bildirimSayisiTextView);
@@ -64,5 +68,12 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+    @Override
+    public void onBackPressed() {
+    if (ProfilEkran.mdrawerLayout!= null && ProfilEkran.mdrawerLayout.isDrawerOpen(GravityCompat.START))
+        ProfilEkran.mdrawerLayout.closeDrawer(GravityCompat.START);
+        else
+        super.onBackPressed();
     }
 }

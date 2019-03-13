@@ -45,4 +45,8 @@
     <string name="password_empty">Lütfen şifrenizi giriniz</string>
     <string name="next">İleri</string>
     <string name="hide_anons">Anonsları Gizle</string>
+    <string name="username_kontrol">Kullanıcı adı kontrol ediliyor.</string>
+    <string name="username_already">Kullanıcı adı bulunmaktadır.</string>
+    <string name="email_control">E-posta kontrol ediliyor</string>
+    <string name="email_already">E-posta bulunmaktadır.</string>
 </resources>
