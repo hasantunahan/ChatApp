@@ -270,8 +270,10 @@ public class LoginEkran extends AppCompatActivity {
     }
 
     private void islemleriBitir(User user) {
-        tabaniDb.close();
+
         //TODO: fiebaseden resimler alınacak usera eklenip locale konulacak.
+        new KullaniciIslemler(tabaniDb.dbAl()).yeniKullaniciKaydet(user);
+        tabaniDb.close();
         Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
         finish();
         startActivity(intent);
