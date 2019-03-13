@@ -45,6 +45,9 @@ public class LoginEkran extends AppCompatActivity {
     private TextInputLayout passwordWrapper;
 
 
+    //TODO: kullanıcı çıkış yaptığında local veritabanı tamamen temizlenecek.
+    //TODO: Tekrar giriş yapan kullanıcı için local veritabanına bilgiler firebaseden çekilecek. Çekilen anons sayısı kontrollü olacak.
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

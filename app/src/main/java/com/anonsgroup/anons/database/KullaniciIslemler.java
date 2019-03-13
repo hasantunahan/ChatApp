@@ -68,4 +68,5 @@ public class KullaniciIslemler {
         db.update("kullanici",values,"username",new String[]{user.getUsername()});
     }
 
+
 }

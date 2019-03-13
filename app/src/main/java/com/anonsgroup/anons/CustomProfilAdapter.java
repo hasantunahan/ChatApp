@@ -37,7 +37,7 @@ public class CustomProfilAdapter extends RecyclerView.Adapter<CustomProfilAdapte
         viewHolder.textYazi.setText(anonsArrayList.get(i).getMetin());
         viewHolder.textKonum.setText(anonsArrayList.get(i).getKonum());
         viewHolder.textTarih.setText(anonsArrayList.get(i).getTarih());
-        //TODO Beğeni Sayısı bir şekilde buraya çekilecek ayarlama yapılacak.
+        //TODO Beğeni Sayısı databaseden alıncak (anonsArrayList.get(i).getBegeniSayi)
         viewHolder.textSayi.setText("---");
         viewHolder.imgProfil.setImageResource(anonsArrayList.get(i).getProfilFotograf());
         viewHolder.imgLike.setImageResource(R.drawable.ic_like);
