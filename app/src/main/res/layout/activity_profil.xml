@@ -357,13 +357,19 @@
 
     </FrameLayout>
 
+
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/menu_items">
-        <LinearLayout
+        app:menu="@menu/menu_items"
+        app:itemIconTint="@android:color/black"
+        android:layout_gravity="start"
+        >
+
+    <LinearLayout
             android:layout_gravity="bottom"
             android:background="#20191d1e"
             android:layout_width="match_parent"
@@ -371,17 +377,33 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:paddingTop="2dp"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            >
+
+
+            <Button
+                android:id="@+id/ayarlarbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_style"
+                android:text="ayarlar"
+                android:textColor="@color/black"
+                />
 
             <Button
                 android:id="@+id/geciciButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_style"
+                android:text="Çıkış Yap"
+                android:textColor="@color/black" />
 
 
         </LinearLayout>
 
     </android.support.design.widget.NavigationView>
+
 
 </android.support.v4.widget.DrawerLayout>

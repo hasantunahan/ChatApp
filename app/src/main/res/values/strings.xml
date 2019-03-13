@@ -44,4 +44,7 @@
     <string name="password_empty">Please enter your password.</string>
     <string name="next">Go</string>
     <string name="hide_anons">Hide Anons</string>
+    <string name="drawer_open" translatable="false">Open</string>
+    <string name="drawer_close" translatable="false">Close</string>
+
 </resources>

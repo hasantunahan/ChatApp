@@ -5,19 +5,26 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anonsgroup.anons.models.Anons;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,7 +40,7 @@ import java.util.ArrayList;
  * Use the {@link ProfilEkran#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfilEkran extends Fragment {
+public class ProfilEkran extends Fragment implements NavigationView.OnNavigationItemSelectedListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -47,6 +54,8 @@ public class ProfilEkran extends Fragment {
     private TextView anonsGorGizle;
     private NestedScrollView anonslarimScrollView;
     private ImageView imageView;
+    private NavigationView navigationView;
+    static public DrawerLayout mdrawerLayout;
     private OnFragmentInteractionListener mListener;
     ArrayList<Anons> anons=new ArrayList<>();
     RecyclerView recyclerView;
@@ -148,6 +157,15 @@ public class ProfilEkran extends Fragment {
         CustomProfilAdapter customProfilAdapter=new CustomProfilAdapter(anons,context);
         recyclerView.setAdapter(customProfilAdapter);
 
+        navigationView= view.findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        mdrawerLayout = view.findViewById(R.id.drawerLayout);
+        ActionBarDrawerToggle drawerToggle=
+                new ActionBarDrawerToggle(this.getActivity(),mdrawerLayout,R.string.drawer_open,R.string.drawer_close);
+        mdrawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+
+
         //TODO: Navigation drawer gelince bu burdan kalkıcak.
         geciciButton = view.findViewById(R.id.geciciButton);
         geciciButton.setOnClickListener(new View.OnClickListener() {
@@ -205,6 +223,51 @@ public class ProfilEkran extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        navigationViewKapat();
+
+        switch (menuItem.getItemId()){
+            case R.id.menu_item_begendigin_anonslar:
+                Toast.makeText(getContext(),"beğendigin anonslar",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.menu_item_engellenenler:
+                Toast.makeText(getContext(),"Engellenenler",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.menu_item_uygulamayi_paylas:
+                Intent shareIntent =new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                String sharedBody="body";
+                String shareSub="sub";
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT,shareSub);
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT,sharedBody);
+                context.startActivity(Intent.createChooser(shareIntent,"Paylaş"));
+                Toast.makeText(getContext(), "3", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_item_lisanslar:
+                Toast.makeText(getContext(),"Lisanslar",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.menu_item_gizlilik_kosullari:
+                Toast.makeText(getContext(),"Gizlilik Koşulları",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.menu_item_gorus_oneri:
+                Toast.makeText(getContext(),"Görüş Ve öneri",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.menu_item_yardim:
+                Toast.makeText(getContext(),"yardım",Toast.LENGTH_LONG).show();
+                break;
+        }
+
+
+        return true;
+    }
+
+    private void navigationViewKapat() {
+            mdrawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

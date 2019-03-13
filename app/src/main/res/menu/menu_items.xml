@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/menu_item_engellenenler"
         android:checkable="true"
@@ -46,14 +48,7 @@
         android:icon="@drawable/ic_edit"
         android:title="Yardım"
         />
-    <item
-        android:id="@+id/menu_item_ayarlar"
-        android:checkable="true"
-        android:icon="@drawable/ic_settings_black_24dp"
-        android:title="Ayarlar"
-        />
-    <group
-        android:id="@+id/nav_footer">
-    </group>
 
 </menu>
+
+
