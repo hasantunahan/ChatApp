@@ -96,12 +96,11 @@
                             android:paddingTop="10dp">
 
                             <TextView
-                                android:id="@+id/profilAdSayodYasTextView"
+                                android:id="@+id/profilAdSayodTextView"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="Ad Soyad, Yaş"
                                 android:textAllCaps="false"
                                 android:textColor="@android:color/black"
                                 android:textSize="18sp"
@@ -120,9 +119,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:gravity="left"
-                                android:paddingLeft="45dp"
-                                android:text="Hakkında"
+                                android:gravity="start"
+                                android:paddingStart="45dp"
                                 android:textAllCaps="false"
                                 android:textColor="@android:color/black"
                                 android:textSize="14sp"

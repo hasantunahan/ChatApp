@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -38,6 +39,11 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
     private int hangiResimDegisti;
     private Bitmap avatarBitmap;
     private Bitmap backgroundBitmap;
+    private EditText adiEditText;
+    private EditText dogumTarihiEditText;
+    private EditText durumEditText;
+    private EditText emailEditText;
+    private EditText soyadiEditText;
     private FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
     private boolean profilKontrol, backgroundKontrol;
 
@@ -48,6 +54,13 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
         setContentView(R.layout.activity_profiliduzenle_ekran);
         profilImage = findViewById(R.id.profilDuzenleAvatarCircleImage);
         backgroundImage = findViewById(R.id.profilDuzenleBackgroundImageView);
+        adiEditText = findViewById(R.id.profilDuzenleAdiEditText);
+        dogumTarihiEditText = findViewById(R.id.profilDuzenleDogumTarihiEditText);
+        durumEditText  = findViewById(R.id.profilDuzenleDurumEditText);
+        emailEditText = findViewById(R.id.profilDuzenleEmailEditText);
+        soyadiEditText = findViewById(R.id.profilDuzenleSoyadEditText);
+
+
 
         //TODO: BU IMAGEVIEWLER BAŞLANGIÇ OLARAK DATABASEDEN ÇEKİLMELİ
         //TODO: Locale Kayıt yapılacak

@@ -91,7 +91,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/beyaz_shadow"
                     android:ems="10"
-                    android:inputType="textPersonName"
+                    android:inputType="textEmailAddress"
                     android:padding="7dp" />
             </LinearLayout>
 
@@ -170,7 +170,7 @@
                     android:textColor="@color/baslikGray" />
 
                 <EditText
-                    android:id="@+id/peofilDuzenleDogumTarihiEditText"
+                    android:id="@+id/profilDuzenleDogumTarihiEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
