@@ -2,6 +2,7 @@ package com.anonsgroup.anons;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,8 +27,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anonsgroup.anons.database.KullaniciIslemler;
 import com.anonsgroup.anons.models.Anons;
+import com.anonsgroup.anons.models.User;
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -53,9 +58,13 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
     private LinearLayout editLayout;
     private TextView anonsGorGizle;
     private NestedScrollView anonslarimScrollView;
-    private ImageView imageView;
+    private ImageView settingImageView;
     private NavigationView navigationView;
     static public DrawerLayout mdrawerLayout;
+    private TextView adSoyadTextView;
+    private TextView profildurumTextView;
+    private ImageView profilPhotoImageView;
+    private ImageView profilBackgroundImageView;
     private OnFragmentInteractionListener mListener;
     ArrayList<Anons> anons=new ArrayList<>();
     RecyclerView recyclerView;
@@ -102,14 +111,25 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         mAuth = FirebaseAuth.getInstance();
         context = view.getContext();
         editLayout=view.findViewById(R.id.editLayout);
-        imageView = view.findViewById(R.id.settingsImageButton);
+        settingImageView = view.findViewById(R.id.settingsImageButton);
         final DrawerLayout drawerLayout = view.findViewById(R.id.drawerLayout);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        settingImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(Gravity.START);
             }
         });
+
+        KullaniciIslemler islemler = KullaniciIslemler.getInstance(getContext());
+        islemler.open();
+        User user =islemler.kullaniciAl(mAuth.getCurrentUser().getDisplayName());
+        islemler.close();
+
+        profilPhotoImageView.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilPhoto(),0,user.getProfilPhoto().length));
+        profilBackgroundImageView.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilBackground(),0,user.getProfilBackground().length));
+        profildurumTextView.setText(user.getSummInfo());
+        String a = user.getName()+" "+user.getSurname();
+        adSoyadTextView.setText(a);
         //TODO: resimler databaseden çekilip imageview a konacak ve diğer bilgiler.
         //TODO: Şerefin yaptığı açılan pencere buna entegre edilecek.
 
