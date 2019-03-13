@@ -14,41 +14,41 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.anonsgroup.anons.ProfilDuzenleEkran"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            ></activity>
+        <activity android:name=".MenuAyarlarEkran"></activity>
         <activity
-            android:name="com.anonsgroup.anons.LoginEkran"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:name=".ProfilDuzenleEkran"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".LoginEkran"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.anonsgroup.anons.AnaEkran"
-            android:parentActivityName="com.anonsgroup.anons.LoginEkran"
+            android:name=".AnaEkran"
+            android:parentActivityName=".LoginEkran"
             android:theme="@style/custom_noActionbar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.anonsgroup.anons.AnaEkran" />
         </activity>
         <activity
-            android:name="com.anonsgroup.anons.KayitOlEkran"
-            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:name=".KayitOlEkran"
             android:label="Kayit Ol"
-            android:parentActivityName="com.anonsgroup.anons.LoginEkran"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:parentActivityName=".LoginEkran"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.anonsgroup.anons.KayitOlEkran" />
         </activity>
         <activity
-            android:name="com.anonsgroup.anons.EmailDogrulamaEkran"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:name=".EmailDogrulamaEkran"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />

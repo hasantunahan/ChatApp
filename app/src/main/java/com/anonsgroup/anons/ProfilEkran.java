@@ -13,7 +13,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -70,6 +69,7 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
     ArrayList<Anons> anons=new ArrayList<>();
     RecyclerView recyclerView;
     Context context;
+    private  Button menuAyarlarButton;
 
 
     public ProfilEkran() {
@@ -187,6 +187,7 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         CustomProfilAdapter customProfilAdapter=new CustomProfilAdapter(anons,context);
         recyclerView.setAdapter(customProfilAdapter);
 
+        menuAyarlarButton = view.findViewById(R.id.menu_ayarlar_button);
         navigationView= view.findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         mdrawerLayout = view.findViewById(R.id.drawerLayout);
@@ -194,6 +195,14 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
                 new ActionBarDrawerToggle(this.getActivity(),mdrawerLayout,R.string.drawer_open,R.string.drawer_close);
         mdrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+
+        menuAyarlarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(view.getContext(), MenuAyarlarEkran.class);
+                startActivity(intent);
+            }
+        });
 
 
         //TODO: Navigation drawer gelince bu burdan kalkıcak.
