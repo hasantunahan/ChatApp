@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,6 +39,7 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
     private Bitmap avatarBitmap;
     private Bitmap backgroundBitmap;
     private FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+    private boolean profilKontrol, backgroundKontrol;
 
 
     @Override
@@ -74,6 +76,9 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                             // ...
+                            backgroundKontrol = true;
+                            System.out.println("deneememememee");
+
                         }
                     });
 
@@ -93,11 +98,23 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                             // ...
+                            profilKontrol = true;
+                            System.out.println("deneememememee");
                         }
                     });
 
                 }
+                //TODO: Burası Düzenlenecek tekrar
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        //Thread.sleep(10000);
+                        System.out.println("buraya girdi.");
+                        return;
 
+                    }
+                };
+                new Thread(runnable).start();
 
                 break;
             case R.id.profiliDuzenleiptalButton:

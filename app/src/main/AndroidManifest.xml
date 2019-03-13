@@ -31,7 +31,7 @@
         <activity
             android:name="com.anonsgroup.anons.AnaEkran"
             android:parentActivityName="com.anonsgroup.anons.LoginEkran"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/custom_noActionbar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.anonsgroup.anons.AnaEkran" />

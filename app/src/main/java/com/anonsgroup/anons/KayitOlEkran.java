@@ -172,8 +172,7 @@ public class KayitOlEkran extends AppCompatActivity {
 
     private void registerNewUser(final String email ,final String password){
 
-        //TODO STRİNG OLACAK
-        progressDialog.setMessage("username Kontrol Ediliyor.");
+        progressDialog.setMessage(getResources().getString(R.string.username_kontrol));
         if(!progressDialog.isShowing())
             progressDialog.show(getSupportFragmentManager(),"kayitol ekran");
         database.getReference("users").orderByChild("username").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -182,11 +181,10 @@ public class KayitOlEkran extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     progressDialog.dismiss();
                     usernameWrapper.setErrorEnabled(true);
-                    //TODO String olarak ayarla
-                    usernameWrapper.setError("Kullanıcı Adı Bulunmaktadır.");
+                    usernameWrapper.setError(getResources().getString(R.string.username_already));
                 } else {
                     usernameWrapper.setErrorEnabled(false);
-                    progressDialog.setMessage("emailKontrol Ediliyor.");
+                    progressDialog.setMessage(getResources().getString(R.string.email_control));
                     if(!progressDialog.isShowing())
                         progressDialog.show(getSupportFragmentManager(),"kayitol ekran");
                     database.getReference("users").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -195,8 +193,7 @@ public class KayitOlEkran extends AppCompatActivity {
                             if (dataSnapshot.exists()) {
                                 progressDialog.dismiss();
                                 emailWrapper.setErrorEnabled(true);
-                                //TODO String olarak ayarla
-                                emailWrapper.setError("Email Bulunmaktadır.");
+                                emailWrapper.setError(getResources().getString(R.string.email_already));
                             } else {
                                 emailWrapper.setErrorEnabled(false);
                                 kayitTamamla();

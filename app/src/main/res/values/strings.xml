@@ -44,4 +44,11 @@
     <string name="password_empty">Please enter your password.</string>
     <string name="next">Go</string>
     <string name="hide_anons">Hide Anons</string>
+    <string name="drawer_open" translatable="false">Open</string>
+    <string name="drawer_close" translatable="false">Close</string>
+
+    <string name="username_kontrol">Username is being checked</string>
+    <string name="username_already">Username has already been taken.</string>
+    <string name="email_control">E-mail is being checked.</string>
+    <string name="email_already">E-mail has already been taken.</string>
 </resources>
