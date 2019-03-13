@@ -1,34 +1,14 @@
 package com.anonsgroup.anons.database;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-
 import com.anonsgroup.anons.models.User;
 
 public class KullaniciIslemler {
-    private SQLiteOpenHelper sqLiteOpenHelper;
     private SQLiteDatabase db;
-    private static KullaniciIslemler kullaniciIslemleri;
-
-    private final String kullaniciTablo="user";
-    private KullaniciIslemler(Context context){
-        this.sqLiteOpenHelper = new VeriTabaniBaglanti(context);
-    }
-
-    public static KullaniciIslemler getInstance(Context context){
-        if(kullaniciIslemleri == null){
-            kullaniciIslemleri = new KullaniciIslemler(context);
-        }
-        return kullaniciIslemleri;
-    }
-    public void open() {
-        this.db = sqLiteOpenHelper.getWritableDatabase();
-    }
-    public void close(){
-        this.db.close();
+    public KullaniciIslemler(SQLiteDatabase db){
+        this.db=db;
     }
 
     public void yeniKullaniciKaydet(User user){
@@ -54,7 +34,7 @@ public class KullaniciIslemler {
         values.put("countOfAnonsDaily",user.getCountOfAnonsDaily());
         values.put("profilPhoto",user.getProfilPhoto());
         values.put("profilBackground",user.getProfilBackground());
-        db.insert("kullanici",null,values);
+        db.insert("user",null,values);
     }
 
     public void kullaniciGuncelle(User user){
