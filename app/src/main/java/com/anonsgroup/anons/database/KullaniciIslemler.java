@@ -8,12 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.anonsgroup.anons.models.User;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.Date;
-
 public class KullaniciIslemler {
     private SQLiteOpenHelper sqLiteOpenHelper;
     private SQLiteDatabase db;
