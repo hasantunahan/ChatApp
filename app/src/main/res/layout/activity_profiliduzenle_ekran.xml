@@ -92,7 +92,8 @@
                     android:background="@drawable/beyaz_shadow"
                     android:ems="10"
                     android:inputType="textEmailAddress"
-                    android:padding="7dp" />
+                    android:padding="7dp"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -127,7 +128,8 @@
                     android:background="@drawable/beyaz_shadow"
                     android:ems="10"
                     android:inputType="textEmailAddress"
-                    android:padding="7dp" />
+                    android:padding="7dp"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -177,7 +179,8 @@
                     android:background="@drawable/beyaz_shadow"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:padding="7dp" />
+                    android:padding="7dp"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -211,7 +214,8 @@
                     android:background="@drawable/beyaz_shadow"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:padding="7dp" />
+                    android:padding="7dp"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -244,7 +248,8 @@
                     android:background="@drawable/beyaz_shadow"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:padding="7dp" />
+                    android:padding="7dp"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <Button

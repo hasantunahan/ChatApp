@@ -126,19 +126,6 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
             }
         });
 
-        VeriTabaniDb db = VeriTabaniDb.getInstance(getContext());
-        db.open();
-        KullaniciIslemler kIslemler = new KullaniciIslemler(db.dbAl());
-        User user =kIslemler.kullaniciAl(mAuth.getCurrentUser().getDisplayName());
-        db.close();
-        String a = user.getName() + " " + user.getSurname();
-        adSoyadTextView.setText(a);
-        profildurumTextView.setText(user.getSummInfo());
-        if(user.getProfilPhoto() != null)
-            profilPhotoImageView.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilPhoto(),0,user.getProfilPhoto().length));
-        if(user.getProfilBackground() != null)
-            profilBackgroundImageView.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilBackground(),0,user.getProfilBackground().length));
-
 
         //TODO: resimler databaseden çekilip imageview a konacak ve diğer bilgiler.
         //TODO: Şerefin yaptığı açılan pencere buna entegre edilecek.
@@ -255,6 +242,24 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    @Override
+    public void onResume() {
+        VeriTabaniDb db = VeriTabaniDb.getInstance(getContext());
+        db.open();
+        KullaniciIslemler kIslemler = new KullaniciIslemler(db.dbAl());
+        User user =kIslemler.kullaniciAl(mAuth.getCurrentUser().getDisplayName());
+        db.close();
+        String a = user.getName() + " " + user.getSurname();
+        adSoyadTextView.setText(a);
+        profildurumTextView.setText(user.getSummInfo());
+        if(user.getProfilPhoto() != null)
+            profilPhotoImageView.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilPhoto(),0,user.getProfilPhoto().length));
+        if(user.getProfilBackground() != null)
+            profilBackgroundImageView.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilBackground(),0,user.getProfilBackground().length));
+        super.onResume();
+
     }
 
     @Override

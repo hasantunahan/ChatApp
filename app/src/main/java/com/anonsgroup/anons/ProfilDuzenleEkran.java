@@ -43,12 +43,15 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
     private final int AVATAR_RESMI=1;
     private int hangiResimDegisti;
     private Bitmap avatarBitmap;
+    private byte[] avatarByte;
+    private byte[] backgroundByte;
     private Bitmap backgroundBitmap;
     private EditText adiEditText;
     private EditText dogumTarihiEditText;
     private EditText durumEditText;
     private EditText emailEditText;
     private EditText soyadiEditText;
+    private User user;
     private FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
     private boolean profilKontrol, backgroundKontrol;
 
@@ -68,7 +71,7 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
         VeriTabaniDb db = VeriTabaniDb.getInstance(getApplicationContext());
         db.open();
         KullaniciIslemler kIslemler = new KullaniciIslemler(db.dbAl());
-        User user =kIslemler.kullaniciAl(fUser.getDisplayName());
+        user =kIslemler.kullaniciAl(fUser.getDisplayName());
         db.close();
 
         adiEditText.setText(user.getName());
@@ -97,8 +100,8 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                 if(backgroundBitmap != null){
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     backgroundBitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
-                    byte[] data = baos.toByteArray();
-                    UploadTask uploadTask = storageReference.child("backGround.jpeg").putBytes(data);
+                    backgroundByte = baos.toByteArray();
+                    UploadTask uploadTask = storageReference.child("backGround.jpeg").putBytes(backgroundByte);
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
@@ -119,8 +122,8 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                 if(avatarBitmap != null){
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     avatarBitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
-                    byte[] data = baos.toByteArray();
-                    UploadTask uploadTask = storageReference.child("profil.jpeg").putBytes(data);
+                    avatarByte = baos.toByteArray();
+                    UploadTask uploadTask = storageReference.child("profil.jpeg").putBytes(avatarByte);
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
@@ -142,7 +145,19 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                     @Override
                     public void run() {
                         //Thread.sleep(10000);
-                        System.out.println("buraya girdi.");
+                        while(!profilKontrol && !backgroundKontrol);
+                        user.setUsername(fUser.getDisplayName());
+                        if(backgroundKontrol)
+                            user.setProfilBackground(backgroundByte);
+                        if(profilKontrol)
+                            user.setProfilPhoto(avatarByte);
+                        user.setName(adiEditText.getText().toString());
+                        user.setSummInfo(durumEditText.getText().toString());
+                        VeriTabaniDb tabaniDb = VeriTabaniDb.getInstance(getApplicationContext());
+                        tabaniDb.open();
+                        new KullaniciIslemler(tabaniDb.dbAl()).kullaniciGuncelle(user);
+                        tabaniDb.close();
+                        finish();
                         return;
 
                     }
@@ -153,10 +168,40 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
             case R.id.profiliDuzenleiptalButton:
                 break;
             case R.id.profilDuzenleAvatarCircleImage:
-                resimDegistir();
+
+                if(PackageManager.PERMISSION_GRANTED !=
+                        ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                REQUEST_STORAGE_PERMISSION);
+                    } else {
+                        //Yeah! I want both block to do the same thing, you can write your own logic, but this works for me.
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                REQUEST_STORAGE_PERMISSION);
+                    }
+                }
+                else {
+                    resimDegistir();
+
+                }
                 break;
             case R.id.profilDuzenleBackgroundImageView:
-                backgroundDegis();
+                if(PackageManager.PERMISSION_GRANTED !=
+                        ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                REQUEST_STORAGE_PERMISSION);
+                        backgroundDegis();
+                    } else {
+                        //Yeah! I want both block to do the same thing, you can write your own logic, but this works for me.
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                REQUEST_STORAGE_PERMISSION);
+                    }
+                }
+                else {
+                    backgroundDegis();
+
+                }
                 break;
         }
     }
@@ -188,21 +233,9 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                 Bitmap bitmap = null;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
-                } catch (IOException e) {
+                }    catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                if(PackageManager.PERMISSION_GRANTED !=
-                        ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                REQUEST_STORAGE_PERMISSION);
-                    }else {
-                        //Yeah! I want both block to do the same thing, you can write your own logic, but this works for me.
-                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                REQUEST_STORAGE_PERMISSION);
-                    }
-                }else {
                     if(hangiResimDegisti == AVATAR_RESMI) {
                         avatarBitmap = bitmap;
                         profilImage.setImageBitmap(bitmap);
@@ -214,7 +247,6 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
 
                     }
 
-                }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }

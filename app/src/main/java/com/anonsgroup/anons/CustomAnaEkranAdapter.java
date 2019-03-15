@@ -25,6 +25,9 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
         this.mdata = mdata;
     }
 
+    private ConstraintLayout geciciAcil;
+    private ConstraintLayout geciciİlk;
+
     Context context;
     List<Anons> mdata;
 
@@ -101,13 +104,21 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
                         begeniFotograf.setImageDrawable(null);
                     acilanLayout.setVisibility(View.VISIBLE);
                     ilkLayout.setVisibility(View.GONE);
+                    if(geciciAcil!=null&&geciciAcil.getVisibility() == View.VISIBLE){
+                        geciciAcil.setVisibility(View.GONE);
+                        geciciİlk.setVisibility(View.VISIBLE);
+                    }
+                    geciciAcil = acilanLayout;
+                    geciciİlk = ilkLayout;
                 }
             });
             acilanLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ilkLayout.setVisibility(View.VISIBLE);
-                    acilanLayout.setVisibility(View.GONE);
+                    if(ilkLayout.getVisibility()==View.GONE) {
+                        ilkLayout.setVisibility(View.VISIBLE);
+                        acilanLayout.setVisibility(View.GONE);
+                    }
                 }
             });
 

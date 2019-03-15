@@ -45,11 +45,11 @@ public class KullaniciIslemler {
         values.put("email",user.getEmail());
         values.put("profilPhoto",user.getProfilPhoto());
         values.put("profilBackground",user.getProfilBackground());
-        db.update("user",values,"username",new String[]{user.getUsername()});
+        db.update("user",values,"username = ?",new String[]{user.getUsername()});
     }
     public User kullaniciAl (String kullaniciAdi){
         User user = new User();
-        String sql = "SELECT * FROM user where username="+kullaniciAdi;
+        String sql = "SELECT * FROM user where username="+"'"+kullaniciAdi+"'";
         Cursor cursor;
         cursor = db.rawQuery(sql, null);
 
@@ -70,7 +70,7 @@ public class KullaniciIslemler {
     }
     public User kullaniciAlMail (String kullaniciMail){
         User user = new User();
-        String sql = "SELECT * FROM user where email="+kullaniciMail;
+        String sql = "SELECT * FROM user where email=" +"'"+kullaniciMail+"'";
         Cursor cursor;
         cursor = db.rawQuery(sql, null);
 
