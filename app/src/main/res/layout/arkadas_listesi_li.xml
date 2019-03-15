@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/arkadasListesiCardView"
@@ -8,21 +9,23 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:padding="5dp"
-    app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="5dp">
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardPreventCornerOverlap="false"
+    app:cardElevation="0dp"
+    >
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/arkadasListLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageView9"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:id="@+id/arkadasListProfilImage"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -33,30 +36,30 @@
             android:id="@+id/arkadasListKisiAdiTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/anons_fontt"
             android:text="Kisi Adi"
             android:textColor="@color/baslikGray"
-            app:layout_constraintEnd_toEndOf="@+id/arkadasListesiDurumTextView"
+            app:layout_constraintEnd_toEndOf="@+id/arkadasListesiKullaniciAdiTextView"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/arkadasListesiDurumTextView"
+            app:layout_constraintStart_toStartOf="@+id/arkadasListesiKullaniciAdiTextView"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/arkadasListesiDurumTextView"
+            android:id="@+id/arkadasListesiKullaniciAdiTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="28dp"
+            android:layout_marginBottom="12dp"
             android:fontFamily="@font/anons_fontt"
             android:text="Durum"
             android:textColor="@color/profikOrtaGri"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/imageView9"
+            app:layout_constraintStart_toEndOf="@+id/arkadasListProfilImage"
             app:layout_constraintTop_toBottomOf="@+id/arkadasListKisiAdiTextView"
             app:layout_constraintVertical_bias="0.0" />
     </android.support.constraint.ConstraintLayout>
