@@ -1,10 +1,13 @@
 package com.anonsgroup.anons;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -17,13 +20,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.anonsgroup.anons.customViews.ProgressDialog;
 import com.anonsgroup.anons.database.KullaniciIslemler;
 import com.anonsgroup.anons.database.VeriTabaniDb;
+import com.anonsgroup.anons.models.FirebaseUserModel;
 import com.anonsgroup.anons.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -32,6 +38,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -51,10 +59,13 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
     private EditText durumEditText;
     private EditText emailEditText;
     private EditText soyadiEditText;
+    private boolean resimlerDegisti = false;
+    private long longDOB;
     private User user;
     private FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
     private boolean profilKontrol, backgroundKontrol;
-
+    private ProgressDialog progressDialog;
+    private DatePickerDialog.OnDateSetListener onDateSetListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +87,12 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
 
         adiEditText.setText(user.getName());
         soyadiEditText.setText(user.getSurname());
-        dogumTarihiEditText.setText(new Date(user.getDob()).toString());
+        longDOB = user.getDob();
+        Date date = new Date(longDOB);
+        String pattern = "dd-MM-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String a = simpleDateFormat.format(date);
+        dogumTarihiEditText.setText(a);
         durumEditText.setText(user.getSummInfo());
         emailEditText.setText(user.getEmail());
         if(user.getProfilPhoto() != null)
@@ -96,76 +112,80 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
     public void profilDuzenleClicks(View view) {
         switch (view.getId()){
             case R.id.profiliDuzenleKaydetButton:
+                progressDialog = new ProgressDialog();
+                progressDialog.setMessage(getResources().getString(R.string.please_wait));
+                progressDialog.setCancelable(false);
+                progressDialog.setStyle(R.style.CustomAlertDialogStyle,R.style.CustomDialogTheme);
+                progressDialog.show(getSupportFragmentManager(),"ProfilDuzenleEkran");
                 storageReference = FirebaseStorage.getInstance().getReference("UsersPhotos").child(fUser.getUid());
                 if(backgroundBitmap != null){
+                    resimlerDegisti=true;
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     backgroundBitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
                     backgroundByte = baos.toByteArray();
                     UploadTask uploadTask = storageReference.child("backGround.jpeg").putBytes(backgroundByte);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle unsuccessful uploads
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                            // ...
-                            backgroundKontrol = true;
-                            System.out.println("deneememememee");
+                    uploadTask.addOnFailureListener(exception -> {
+                        // Handle unsuccessful uploads
+                    }).addOnSuccessListener(taskSnapshot -> {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                        // ...
+                        backgroundKontrol = true;
+                        System.out.println("deneememememee");
 
-                        }
                     });
 
                 }
                 if(avatarBitmap != null){
+                    resimlerDegisti = true;
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     avatarBitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
                     avatarByte = baos.toByteArray();
                     UploadTask uploadTask = storageReference.child("profil.jpeg").putBytes(avatarByte);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle unsuccessful uploads
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                            // ...
-                            profilKontrol = true;
-                            System.out.println("deneememememee");
-                        }
+                    uploadTask.addOnFailureListener(exception -> {
+                        // Handle unsuccessful uploads
+                    }).addOnSuccessListener(taskSnapshot -> {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                        // ...
+                        profilKontrol = true;
+                        System.out.println("deneememememee");
                     });
 
                 }
                 //TODO: Burası Düzenlenecek tekrar
-                Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        //Thread.sleep(10000);
-                        while(!profilKontrol && !backgroundKontrol);
-                        user.setUsername(fUser.getDisplayName());
-                        if(backgroundKontrol)
-                            user.setProfilBackground(backgroundByte);
-                        if(profilKontrol)
-                            user.setProfilPhoto(avatarByte);
-                        user.setName(adiEditText.getText().toString());
-                        user.setSummInfo(durumEditText.getText().toString());
-                        VeriTabaniDb tabaniDb = VeriTabaniDb.getInstance(getApplicationContext());
-                        tabaniDb.open();
-                        new KullaniciIslemler(tabaniDb.dbAl()).kullaniciGuncelle(user);
-                        tabaniDb.close();
-                        finish();
-                        return;
+                Runnable runnable = () -> {
+                    //Thread.sleep(10000);
+                    if(resimlerDegisti)
+                    while(!profilKontrol && !backgroundKontrol);
+                    user.setUsername(fUser.getDisplayName());
+                    if(backgroundKontrol)
+                        user.setProfilBackground(backgroundByte);
+                    if(profilKontrol)
+                        user.setProfilPhoto(avatarByte);
+                    user.setName(adiEditText.getText().toString().trim());
+                    user.setSummInfo(durumEditText.getText().toString().trim());
+                    user.setDob(longDOB);
+                    user.setSurname(soyadiEditText.getText().toString().trim());
+                    FirebaseDatabase.getInstance().getReference("users")
+                            .child(fUser.getUid())
+                            .setValue(user.getFirebaseModel()).addOnCompleteListener( task -> {
+                                if(task.isSuccessful()) {
+                                    VeriTabaniDb tabaniDb = VeriTabaniDb.getInstance(getApplicationContext());
+                                    tabaniDb.open();
+                                    new KullaniciIslemler(tabaniDb.dbAl()).kullaniciGuncelle(user);
+                                    tabaniDb.close();
+                                    this.runOnUiThread(() -> progressDialog.dismiss());
+                                    finish();
+                                }
+                                else{
+                                    //TODO: buraya firebase e ekleme yapılamadıysa ne olacağı yazılacak.
+                                }
+                    });
 
-                    }
                 };
                 new Thread(runnable).start();
-
                 break;
             case R.id.profiliDuzenleiptalButton:
+                finish();
                 break;
             case R.id.profilDuzenleAvatarCircleImage:
 
@@ -191,7 +211,6 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 REQUEST_STORAGE_PERMISSION);
-                        backgroundDegis();
                     } else {
                         //Yeah! I want both block to do the same thing, you can write your own logic, but this works for me.
                         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -202,6 +221,23 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                     backgroundDegis();
 
                 }
+                break;
+
+            case R.id.profilDuzenleDogumTarihiEditText:
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                onDateSetListener = (view1, year1, month1, dayOfMonth) -> {
+                    longDOB = new Date(year1, month1,dayOfMonth).getTime();
+                    month1 = month1 + 1;
+                    dogumTarihiEditText.setText(dayOfMonth + "-" + month1 + "-" + year1);
+                };
+                DatePickerDialog datePickerDialog = new DatePickerDialog(ProfilDuzenleEkran.this,
+                        android.R.style.Theme_Holo_Light_Dialog, onDateSetListener, year, month, day);
+                datePickerDialog.getDatePicker().setMaxDate((new Date().getTime()) - Long.parseLong("31556926000") * 13);
+                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                datePickerDialog.show();
                 break;
         }
     }

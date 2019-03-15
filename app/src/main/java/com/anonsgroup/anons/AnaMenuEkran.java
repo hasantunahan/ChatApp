@@ -77,6 +77,8 @@ public class AnaMenuEkran extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
@@ -84,9 +86,11 @@ public class AnaMenuEkran extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_ana_menu_ekran, container, false);
         // Inflate the layout for this fragment
-
         RecyclerView recyclerView=view.findViewById(R.id.anaEkranAnonsListLayout);
         List<Anons> nlist=new ArrayList<>();
+        CustomAnaEkranAdapter customAnaEkranAdapter=new CustomAnaEkranAdapter(view.getContext(),nlist);
+        recyclerView.setAdapter(customAnaEkranAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwwrhwrhrwhrwhwhrwhrhrhwhwhrhwhwrhwrrh","ahrershjegk","Hasan tunahan","25.12.2019",0));
         nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwwrhrwhwrhrwhwrrhw","ahrershjegk","Hasan tunahan","25.12.2019",1));
         nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
@@ -98,9 +102,7 @@ public class AnaMenuEkran extends Fragment {
         nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
         nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
         nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwddhehehehehrhwhwrrhwrhrhwh","ahrershjegk","Hasan tunahan","25.12.2019",1));
-        CustomAnaEkranAdapter customAnaEkranAdapter=new CustomAnaEkranAdapter(view.getContext(),nlist);
-        recyclerView.setAdapter(customAnaEkranAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
        //TODO: Sorulacak ? olması gereken ""  new Dialog(context :  this) """
         epicdialog=new Dialog(view.getContext(),R.style.Kendiismim);
         yeniAnons= view.findViewById(R.id.yeniAnonsButton);

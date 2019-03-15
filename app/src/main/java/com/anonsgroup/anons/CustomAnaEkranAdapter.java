@@ -104,7 +104,7 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
                         begeniFotograf.setImageDrawable(null);
                     acilanLayout.setVisibility(View.VISIBLE);
                     ilkLayout.setVisibility(View.GONE);
-                    if(geciciAcil!=null&&geciciAcil.getVisibility() == View.VISIBLE){
+                    if(geciciAcil!=acilanLayout&&geciciAcil!=null&&geciciAcil.getVisibility() == View.VISIBLE){
                         geciciAcil.setVisibility(View.GONE);
                         geciciİlk.setVisibility(View.VISIBLE);
                     }
