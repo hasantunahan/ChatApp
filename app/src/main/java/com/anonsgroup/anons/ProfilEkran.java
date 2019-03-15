@@ -35,6 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 /**
@@ -194,32 +195,24 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
 
         //TODO: Navigation drawer gelince bu burdan kalkıcak.
         geciciButton = view.findViewById(R.id.geciciButton);
-        geciciButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(view.getContext(), LoginEkran.class);
-                startActivity(intent);
-            }
+        geciciButton.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(view.getContext(), LoginEkran.class);
+            startActivity(intent);
+            Objects.requireNonNull(getActivity()).finish();
         });
 
         LinearLayout editLayout;
         editLayout=view.findViewById(R.id.editLayout);
-        editLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(view.getContext(), ProfilDuzenleEkran.class);
-                startActivity(intent);
-            }
+        editLayout.setOnClickListener(v -> {
+            Intent intent=new Intent(view.getContext(), ProfilDuzenleEkran.class);
+            startActivity(intent);
         });
         Button profiliduzenle;
         profiliduzenle=view.findViewById(R.id.profiliDuzenleButton);
-        profiliduzenle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(view.getContext(), ProfilDuzenleEkran.class);
-                startActivity(intent);
-            }
+        profiliduzenle.setOnClickListener(v -> {
+            Intent intent=new Intent(view.getContext(), ProfilDuzenleEkran.class);
+            startActivity(intent);
         });
 
 

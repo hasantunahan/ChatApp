@@ -23,9 +23,6 @@ import android.widget.Toast;
 import com.anonsgroup.anons.database.KullaniciIslemler;
 import com.anonsgroup.anons.database.VeriTabaniDb;
 import com.anonsgroup.anons.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +30,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class LoginEkran extends AppCompatActivity {
     private TextInputEditText usernameEditText;
@@ -48,7 +50,11 @@ public class LoginEkran extends AppCompatActivity {
     private TextInputLayout userNameWrapper;
     private TextInputLayout passwordWrapper;
     private VeriTabaniDb tabaniDb;
-
+    StorageReference storageRef;
+    private AtomicBoolean verilerCekildi;
+    private AtomicBoolean profilPhotoCekildi;
+    private AtomicBoolean backgroundPhotoCekildi;
+    private User user;
 
     //TODO: kullanıcı çıkış yaptığında local veritabanı tamamen temizlenecek.
     //TODO: Tekrar giriş yapan kullanıcı için local veritabanına bilgiler firebaseden çekilecek. Çekilen anons sayısı kontrollü olacak.
@@ -66,6 +72,12 @@ public class LoginEkran extends AppCompatActivity {
         usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         uyariTextView = findViewById(R.id.uyariTextView);
+        verilerCekildi = new AtomicBoolean();
+        profilPhotoCekildi = new AtomicBoolean();
+        backgroundPhotoCekildi = new AtomicBoolean();
+        verilerCekildi.set(false);
+        profilPhotoCekildi.set(false);
+        backgroundPhotoCekildi.set(false);
 
         usernameEditText.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -133,12 +145,13 @@ public class LoginEkran extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (progressDialog != null)
+    protected void onStop() {
+        if (progressDialog != null) {
             if (progressDialog.isShowing())
                 progressDialog.dismiss();
+        }
+        super.onStop();
+
     }
 
     private boolean internetBaglantiKontrol() {
@@ -161,6 +174,7 @@ public class LoginEkran extends AppCompatActivity {
                 progressDialog = new ProgressDialog();
                 progressDialog.setStyle(R.style.CustomAlertDialogStyle,R.style.CustomDialogTheme);
                 progressDialog.setMessage(getResources().getString(R.string.please_wait));
+                progressDialog.setCancelable(false);
                 progressDialog.show(getSupportFragmentManager(),"LoginEkran");
 
                 if (!kullaniciAdi.contains("@")) {
@@ -212,71 +226,121 @@ public class LoginEkran extends AppCompatActivity {
             Toast.makeText(LoginEkran.this, getResources().getString(R.string.internet_connection_error), Toast.LENGTH_SHORT).show();
             return;
         }
-        mAuth.signInWithEmailAndPassword(kullaniciAdi, sifre).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    progressDialog.dismiss();
-                    fUser = mAuth.getCurrentUser();
-                    if (fUser != null) {
-                        fUser.reload();
-                        if (!fUser.isEmailVerified()) {
-                            Log.d("doğrulama", fUser.isEmailVerified() + "");
-                            Intent intent = new Intent(getApplicationContext(), EmailDogrulamaEkran.class);
-                            startActivity(intent);
-                            return;
-                        }
-                    }
-                    tabaniDb = VeriTabaniDb.getInstance(getApplicationContext());
-                    tabaniDb.open();
-                    final User[] user = {new KullaniciIslemler(tabaniDb.dbAl()).kullaniciAlMail(kullaniciAdi)};
-                    if(user[0] == null){
-                        Query query = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("email").equalTo(kullaniciAdi);
-                        query.addValueEventListener(new ValueEventListener() {
+        mAuth.signInWithEmailAndPassword(kullaniciAdi, sifre).addOnCompleteListener(task -> {
 
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                    Log.d("gelen:" , postSnapshot.getValue().toString());
-                                    user[0] = postSnapshot.getValue(User.class);
-                                    islemleriBitir(user[0]);
-
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        } );
-                    }
-                    else {
-                        tabaniDb.close();
-                        Log.d("displayname:", fUser.getDisplayName());
-                        Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
-                        finish();
+            if (task.isSuccessful()) {
+                fUser = mAuth.getCurrentUser();
+                if (fUser != null) {
+                    fUser.reload();
+                    if (!fUser.isEmailVerified()) {
+                        Log.d("doğrulama", fUser.isEmailVerified() + "");
+                        Intent intent = new Intent(getApplicationContext(), EmailDogrulamaEkran.class);
                         startActivity(intent);
+                        return;
                     }
-
-                } else {
-                    progressDialog.dismiss();
-                    uyariTextView.setText(getResources().getString(R.string.invalid_login));
-                    uyariTextView.setVisibility(View.VISIBLE);
-                    Log.d("girisHata", task.getException().getMessage());
                 }
+                tabaniDb = VeriTabaniDb.getInstance(getApplicationContext());
+                tabaniDb.open();
+                user = new KullaniciIslemler(tabaniDb.dbAl()).kullaniciAlMail(kullaniciAdi);
+                if(user == null){
+                    user = new User();
+                    Query query = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("email").equalTo(kullaniciAdi);
+                    query.addValueEventListener(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                Log.d("gelen:" , postSnapshot.getValue().toString());
+                                user = postSnapshot.getValue(User.class);
+                                Log.d("gelenler:",user.getEmail() + " " + user.getName());
+                                verilerCekildi.set(true);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    } );
+                    fUser.reload();
+                    storageRef = FirebaseStorage.getInstance().getReference();
+                    // Create a storage reference from our app
+                    StorageReference profilRef = storageRef.child("UsersPhotos/"+fUser.getUid()+"/profil.jpeg");
+                    System.out.println(fUser.getUid());
+                    final long maxBytes= 1024*1024*5;
+                    profilRef.getBytes(maxBytes).addOnCompleteListener(gorev ->
+                    {user.setProfilPhoto(gorev.getResult()); profilPhotoCekildi.set(true);});
+                    StorageReference backgRef = storageRef.child("UsersPhotos/"+fUser.getUid()+"/backGround.jpeg");
+                    backgRef.getBytes(maxBytes).addOnCompleteListener(gorev1 -> {user.setProfilBackground(gorev1.getResult()); backgroundPhotoCekildi.set(true);});
+                    islemleriBitir();
+
+                }
+                else {
+                    tabaniDb.close();
+                    Log.d("displayname:", fUser.getDisplayName());
+                    Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
+                    finish();
+                    startActivity(intent);
+                }
+
+            } else {
+                progressDialog.dismiss();
+                uyariTextView.setText(getResources().getString(R.string.invalid_login));
+                uyariTextView.setVisibility(View.VISIBLE);
+                Log.d("girisHata", task.getException().getMessage());
             }
         });
 
 
     }
 
-    private void islemleriBitir(User user) {
+    private void islemleriBitir() {
 
-        //TODO: fiebaseden resimler alınacak usera eklenip locale konulacak.
-        new KullaniciIslemler(tabaniDb.dbAl()).yeniKullaniciKaydet(user);
-        tabaniDb.close();
-        Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
-        finish();
-        startActivity(intent);
+        Thread anaGorev = new Thread(() -> {
+
+            while (!profilPhotoCekildi.get()|| !backgroundPhotoCekildi.get() || !verilerCekildi.get()) {
+                System.out.println("deneme");
+                if(Thread.interrupted())
+                    return;
+            }
+            Log.d("en sonki user: ",user.getEmail() + " " + user.getSurname());
+            Log.d("Buraya bakkkk", profilPhotoCekildi.get() + "" + backgroundPhotoCekildi.get() + " " + verilerCekildi.get());
+            new KullaniciIslemler(tabaniDb.dbAl()).yeniKullaniciKaydet(user);
+            tabaniDb.close();
+            Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
+            finish();
+            startActivity(intent);
+        });
+        anaGorev.start();
+        final AtomicReference<String> hataMesaji = new AtomicReference<>();
+        hataMesaji.set("");
+        new Thread(() -> {
+
+            try {
+                Thread.sleep(10000);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (!profilPhotoCekildi.get()) {
+                hataMesaji.set(hataMesaji.get()+getResources().getString(R.string.profilPhoto_download_error) + "\n");
+            }
+            if (!backgroundPhotoCekildi.get()) {
+                hataMesaji.set(hataMesaji.get() + getResources().getString(R.string.backgroundPhoto_download_error) + "\n");
+            }
+            if (!verilerCekildi.get()) {
+                hataMesaji.set(hataMesaji.get() + getResources().getString(R.string.user_info_error) + "\n");
+            }
+            Log.d("Bakalimmmmmmmmm:","eeee Gelmiş");
+            anaGorev.interrupt();
+            hata(hataMesaji.get());
+        }).start();
+
+    }
+    private void hata(String mesaj){
+        this.runOnUiThread(() -> {
+            Toast.makeText(getApplicationContext(), mesaj+getResources().getString(R.string.connection_timeout), Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+        });
     }
 }

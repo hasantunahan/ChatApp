@@ -39,6 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class KayitOlEkran extends AppCompatActivity {
@@ -220,7 +221,7 @@ public class KayitOlEkran extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             fUser = mAuth.getCurrentUser();
-                            fUser.reload();
+                            Objects.requireNonNull(fUser).reload();
                             final User user = new User(email,username,name,surname,longDOB,gender,new Date().getTime(),"",0,new Date().getTime(),1000,0);
                             UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(user.getUsername()).build();
                             fUser.updateProfile(userProfileChangeRequest);
@@ -279,13 +280,10 @@ public class KayitOlEkran extends AppCompatActivity {
                 int year = calendar.get(Calendar.YEAR);
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
-                onDateSetListener = new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        longDOB = new Date(year,month,dayOfMonth).getTime();
-                        month = month + 1;
-                        dobEditText.setText(dayOfMonth + "/" + month + "/" + year);
-                    }
+                onDateSetListener = (view1, year1, month1, dayOfMonth) -> {
+                    longDOB = new Date(year1, month1,dayOfMonth).getTime();
+                    month1 = month1 + 1;
+                    dobEditText.setText(dayOfMonth + "/" + month1 + "/" + year1);
                 };
                 DatePickerDialog datePickerDialog = new DatePickerDialog(KayitOlEkran.this,
                         android.R.style.Theme_Holo_Light_Dialog, onDateSetListener, year, month, day);
