@@ -18,6 +18,10 @@
         <activity
             android:name=".ProfilDuzenleEkran"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".ArkadasListesiEkran"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            ></activity>
+
         <activity
             android:name=".LoginEkran"
             android:theme="@style/Theme.AppCompat.NoActionBar"

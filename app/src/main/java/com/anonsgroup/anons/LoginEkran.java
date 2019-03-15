@@ -229,14 +229,15 @@ public class LoginEkran extends AppCompatActivity {
                     }
                     tabaniDb = VeriTabaniDb.getInstance(getApplicationContext());
                     tabaniDb.open();
-                    final User[] user = {new KullaniciIslemler(tabaniDb.dbAl()).kullaniciAl(kullaniciAdi)};
+                    final User[] user = {new KullaniciIslemler(tabaniDb.dbAl()).kullaniciAlMail(kullaniciAdi)};
                     if(user[0] == null){
-                        Query query = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("username").equalTo(kullaniciAdi);
+                        Query query = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("email").equalTo(kullaniciAdi);
                         query.addValueEventListener(new ValueEventListener() {
 
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                    Log.d("gelen:" , postSnapshot.getValue().toString());
                                     user[0] = postSnapshot.getValue(User.class);
                                     islemleriBitir(user[0]);
 
