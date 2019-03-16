@@ -3,6 +3,7 @@ package com.anonsgroup.anons.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import com.anonsgroup.anons.models.User;
 
 public class KullaniciIslemler {
     private SQLiteDatabase db;

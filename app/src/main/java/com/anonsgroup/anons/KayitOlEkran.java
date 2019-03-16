@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.anonsgroup.anons.database.KullaniciIslemler;
 import com.anonsgroup.anons.database.VeriTabaniDb;
+import com.anonsgroup.anons.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
