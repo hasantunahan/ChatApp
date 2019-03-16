@@ -38,6 +38,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -78,6 +79,7 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
         durumEditText  = findViewById(R.id.profilDuzenleDurumEditText);
         emailEditText = findViewById(R.id.profilDuzenleEmailEditText);
         soyadiEditText = findViewById(R.id.profilDuzenleSoyadEditText);
+        dogumTarihiEditText.setFocusable(false);
 
         VeriTabaniDb db = VeriTabaniDb.getInstance(getApplicationContext());
         db.open();
@@ -88,10 +90,9 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
         adiEditText.setText(user.getName());
         soyadiEditText.setText(user.getSurname());
         longDOB = user.getDob();
-        Date date = new Date(longDOB);
-        String pattern = "dd-MM-yyyy";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        String a = simpleDateFormat.format(date);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date(longDOB));
+        String a = cal.get(Calendar.DAY_OF_MONTH)+"-"+(cal.get(Calendar.MONTH)+1) +"-" +cal.get(Calendar.YEAR);
         dogumTarihiEditText.setText(a);
         durumEditText.setText(user.getSummInfo());
         emailEditText.setText(user.getEmail());
@@ -229,7 +230,12 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 onDateSetListener = (view1, year1, month1, dayOfMonth) -> {
-                    longDOB = new Date(year1, month1,dayOfMonth).getTime();
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.YEAR, year1);
+                    cal.set(Calendar.MONTH, month1);
+                    cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+                    longDOB = timestamp.getTime();
                     month1 = month1 + 1;
                     dogumTarihiEditText.setText(dayOfMonth + "-" + month1 + "-" + year1);
                 };
@@ -285,6 +291,7 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
+                error.printStackTrace();
             }
         }
     }

@@ -179,6 +179,7 @@
                     android:background="@drawable/beyaz_shadow"
                     android:ems="10"
                     android:inputType="textPersonName"
+                    android:onClick="profilDuzenleClicks"
                     android:padding="7dp"
                     android:textColor="@color/black" />
             </LinearLayout>
