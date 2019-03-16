@@ -2,13 +2,23 @@ package com.anonsgroup.anons;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.anonsgroup.anons.models.Anons;
+import com.anonsgroup.anons.models.SenderUsers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,6 +77,8 @@ public class ChatEkran extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_chat_ekran, container, false);
+
+
         mesajAt=view.findViewById(R.id.mesajAtButton);
         mesajAt.setOnClickListener(new View.OnClickListener() {
             @Override

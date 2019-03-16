@@ -8,9 +8,7 @@
     android:layout_height="match_parent">
 
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ProfilEkran">
@@ -31,16 +29,42 @@
                 <ImageView
                     android:id="@+id/profilBackgroundImageView"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="64dp"
+                    android:layout_height="199dp"
                     android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toTopOf="@+id/guideline"
+                    app:layout_constraintBottom_toBottomOf="@+id/profilAvatarCircleImage"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0"
                     app:srcCompat="@drawable/defaultback" />
+
+                <LinearLayout
+                    android:id="@+id/editLayout"
+                    android:layout_width="38dp"
+                    android:layout_height="33dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/profili_duzenle_button"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/settingsImageButton"
+                    app:layout_constraintEnd_toStartOf="@+id/settingsImageButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <Button
+                        android:id="@+id/profiliDuzenleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:drawableStart="@drawable/ic_profiliduzenle"
+                        android:fontFamily="@font/anons_fontt"
+                        android:text="@string/edit_profile"
+                        android:textColor="@color/baslikGray"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
                 <ImageButton
                     android:id="@+id/settingsImageButton"
@@ -49,12 +73,15 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     android:background="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintHorizontal_bias="0.978"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_settings_black_24dp" />
+                    app:layout_constraintVertical_bias="0.0"
+                    app:srcCompat="@drawable/ic_ucnoktasvg" />
 
                 <android.support.constraint.Guideline
                     android:id="@+id/guideline"
@@ -84,7 +111,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:orientation="vertical"
-                        android:paddingTop="80dp"
+                        android:paddingTop="50dp"
                         android:paddingBottom="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -95,7 +122,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
-                            android:paddingTop="10dp">
+                            android:paddingTop="5dp">
 
                             <TextView
                                 android:id="@+id/profilAdSayodTextView"
@@ -256,31 +283,6 @@
                                     android:textColor="@android:color/black"
                                     app:fontFamily="@font/anons_fontt" />
                             </LinearLayout>
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:id="@+id/editLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="48dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginRight="48dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/profili_duzenle_button"
-                            android:gravity="center">
-
-                            <Button
-                                android:id="@+id/profiliDuzenleButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@null"
-                                android:drawableStart="@drawable/ic_profiliduzenle"
-                                android:fontFamily="@font/anons_fontt"
-                                android:text="@string/edit_profile"
-                                android:textColor="@color/baslikGray"
-                                android:textSize="12sp" />
 
                         </LinearLayout>
 
