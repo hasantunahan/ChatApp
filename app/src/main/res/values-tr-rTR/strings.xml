@@ -49,4 +49,8 @@
     <string name="username_already">Kullanıcı adı bulunmaktadır.</string>
     <string name="email_control">E-posta kontrol ediliyor</string>
     <string name="email_already">E-posta bulunmaktadır.</string>
+    <string name="profilPhoto_download_error">Profil fotoğrafı inderme hatası.</string>
+    <string name="backgroundPhoto_download_error">Arkaplan fotoğrafı indirme hatası.</string>
+    <string name="user_info_error">Kullanıcı bilgilerini indirme hatası.</string>
+    <string name="connection_timeout">Bağlantı Zaman Aşımına Uğradı</string>
 </resources>
