@@ -17,7 +17,9 @@
         android:testOnly="false"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MesajEkran"></activity>
+        <activity android:name=".MesajEkran"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            ></activity>
         <activity android:name=".MenuAyarlarEkran" />
         <activity
             android:name=".ProfilDuzenleEkran"
