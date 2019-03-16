@@ -21,13 +21,6 @@ public class MesajlasmaAdapter extends RecyclerView.Adapter<MesajlasmaAdapter.Vi
         final int MSG_TYPE_RIGHT=0;
 
 
-
-
-
-
-
-
-
 @NonNull
 @Override
 public MesajlasmaAdapter.ViewHolders onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
