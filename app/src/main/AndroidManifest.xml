@@ -18,9 +18,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MesajEkran"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             ></activity>
-        <activity android:name=".MenuAyarlarEkran" />
+        <activity android:name=".MenuAyarlarEkran"
+            android:theme="@style/Theme.AppCompat.Light"/>
         <activity
             android:name=".ProfilDuzenleEkran"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
