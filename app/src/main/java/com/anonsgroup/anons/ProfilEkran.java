@@ -29,10 +29,7 @@ import android.widget.Toast;
 import com.anonsgroup.anons.database.KullaniciIslemler;
 import com.anonsgroup.anons.database.VeriTabaniDb;
 import com.anonsgroup.anons.models.Anons;
-import com.anonsgroup.anons.models.User;
 import com.google.firebase.auth.FirebaseAuth;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Objects;
