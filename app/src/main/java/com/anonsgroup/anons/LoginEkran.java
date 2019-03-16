@@ -295,7 +295,7 @@ public class LoginEkran extends AppCompatActivity {
     }
 
     private void islemleriBitir() {
-
+        Thread interrupter = null;
         Thread anaGorev = new Thread(() -> {
 
             while (!profilPhotoCekildi.get()|| !backgroundPhotoCekildi.get() || !verilerCekildi.get()) {
@@ -314,7 +314,7 @@ public class LoginEkran extends AppCompatActivity {
         anaGorev.start();
         final AtomicReference<String> hataMesaji = new AtomicReference<>();
         hataMesaji.set("");
-        new Thread(() -> {
+        interrupter = new Thread(() -> {
 
             try {
                 Thread.sleep(10000);
@@ -332,9 +332,12 @@ public class LoginEkran extends AppCompatActivity {
                 hataMesaji.set(hataMesaji.get() + getResources().getString(R.string.user_info_error) + "\n");
             }
             Log.d("Bakalimmmmmmmmm:","eeee Gelmiş");
-            anaGorev.interrupt();
-            hata(hataMesaji.get());
-        }).start();
+            if(anaGorev.isAlive()) {
+                anaGorev.interrupt();
+                hata(hataMesaji.get());
+            }
+        });
+        interrupter.start();
 
     }
     private void hata(String mesaj){
