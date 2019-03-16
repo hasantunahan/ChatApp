@@ -43,6 +43,7 @@ public class KullaniciIslemler {
         values.put("surname",user.getSurname());
         values.put("summInfo",user.getSummInfo());
         values.put("email",user.getEmail());
+        values.put("dob",user.getDob());
         values.put("profilPhoto",user.getProfilPhoto());
         values.put("profilBackground",user.getProfilBackground());
         db.update("user",values,"username = ?",new String[]{user.getUsername()});
