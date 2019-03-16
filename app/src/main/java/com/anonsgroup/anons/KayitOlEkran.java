@@ -281,7 +281,11 @@ public class KayitOlEkran extends AppCompatActivity {
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 onDateSetListener = (view1, year1, month1, dayOfMonth) -> {
-                    longDOB = new Date(year1, month1,dayOfMonth).getTime();
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.YEAR, year1);
+                    cal.set(Calendar.MONTH, month1);
+                    cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    longDOB = cal.getTime().getTime();
                     month1 = month1 + 1;
                     dobEditText.setText(dayOfMonth + "/" + month1 + "/" + year1);
                 };
