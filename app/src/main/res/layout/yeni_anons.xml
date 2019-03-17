@@ -61,7 +61,7 @@
             android:layout_marginBottom="16dp"
             android:progressTint="@color/baslikGray"
             android:thumb="@drawable/ic_mesafeseekbar"
-            app:layout_constraintBottom_toTopOf="@+id/editText"
+            app:layout_constraintBottom_toTopOf="@+id/yeniAnonsEditText"
             app:layout_constraintEnd_toStartOf="@+id/textView14"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView13"
@@ -113,7 +113,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView13" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/yeniAnonsEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -139,9 +139,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/editText"
-            app:layout_constraintEnd_toEndOf="@+id/editText"
-            app:layout_constraintTop_toTopOf="@+id/editText"
+            app:layout_constraintBottom_toBottomOf="@+id/yeniAnonsEditText"
+            app:layout_constraintEnd_toEndOf="@+id/yeniAnonsEditText"
+            app:layout_constraintTop_toTopOf="@+id/yeniAnonsEditText"
             app:srcCompat="@drawable/ic_sent" />
 
     </android.support.constraint.ConstraintLayout>
