@@ -71,7 +71,7 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
         }
 
 
-        /*FirebaseInstanceId.getInstance().getInstanceId()
+        FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -88,7 +88,7 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
                         Log.d("TOKEN::::::::", msg);
                         Toast.makeText(AnaEkran.this, msg, Toast.LENGTH_SHORT).show();
                     }
-                });*/
+                });
 
     }
 
