@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.anonsgroup.anons.AnaEkran;
 import com.anonsgroup.anons.R;
@@ -27,6 +28,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setSmallIcon(R.mipmap.hsn)
                 .setContentIntent(pendingIntent);
 
+        Log.d("Mesaj Geldiiiii::::::" , remoteMessage.getNotification().getBody());
         String channelId = "0";
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
