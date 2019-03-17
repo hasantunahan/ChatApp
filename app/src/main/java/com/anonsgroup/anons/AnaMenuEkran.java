@@ -13,11 +13,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anonsgroup.anons.models.Anons;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,13 +134,14 @@ public class AnaMenuEkran extends Fragment {
         mesafeSeekBar.setMax(max-min);
         mesafeSeekBar.setProgress(current-min);
         mesafeTextView.setText(""+current+"metre");
+        EditText editText = epicdialog.findViewById(R.id.yeniAnonsEditText);
 
         gonderButton=epicdialog.findViewById(R.id.gonderButton);
-        gonderButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        gonderButton.setOnClickListener(v -> {
+            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+            ///Anons/{sender_id}/anons/{anons_id}
+            databaseRef.child("Anons").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("anons").child("5").child("text").setValue(editText.getEditableText().toString());
+            Toast.makeText(getContext(), "gonderildi???", Toast.LENGTH_SHORT).show();
         });
 
         mesafeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

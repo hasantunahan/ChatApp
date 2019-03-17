@@ -18,6 +18,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        Log.d("Remote Message tag::", remoteMessage.getFrom());
         Intent intent = new Intent(this, AnaEkran.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
@@ -29,11 +30,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent);
 
         Log.d("Mesaj Geldiiiii::::::" , remoteMessage.getNotification().getBody());
-        String channelId = "0";
+        String channelId = getString(R.string.default_notification_channel_id);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,
+            NotificationChannel channel = new NotificationChannel("0",
                     "Denedik Title",
                     NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);

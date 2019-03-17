@@ -55,4 +55,11 @@
     <string name="backgroundPhoto_download_error">Background photo download error.</string>
     <string name="user_info_error">User information download error.</string>
     <string name="connection_timeout">Connection Timeout</string>
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <!--
+        This is the name that users will see when interacting with this channel.
+        It should describe the category of notifications that will be sent through this channel
+     -->
+    <string name="default_notification_channel_name" translatable="false">Weather</string>
 </resources>

@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmentInteractionListener,AnaMenuEkran.OnFragmentInteractionListener,ChatEkran.OnFragmentInteractionListener {
     TextView arkadasSayisiTextView;
@@ -52,7 +53,12 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
         final ViewPager viewPager =(ViewPager) findViewById(R.id.pager);
         final PagerAdapter adapter=new PagerAdapter(getSupportFragmentManager(),3);
                 viewPager.setAdapter(adapter);viewPager.setCurrentItem(1);
+        FirebaseMessaging.getInstance().subscribeToTopic("anons").addOnCompleteListener(task -> {
 
+            if(task.isSuccessful())
+                Toast.makeText(this, "Sub Başarılı kardeşşşşşşş", Toast.LENGTH_SHORT).show();
+
+        });
     }
 
     @Override
@@ -65,7 +71,7 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
         }
 
 
-        FirebaseInstanceId.getInstance().getInstanceId()
+        /*FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -82,7 +88,7 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
                         Log.d("TOKEN::::::::", msg);
                         Toast.makeText(AnaEkran.this, msg, Toast.LENGTH_SHORT).show();
                     }
-                });
+                });*/
 
     }
 
