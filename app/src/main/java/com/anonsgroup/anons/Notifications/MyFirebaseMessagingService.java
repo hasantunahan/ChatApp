@@ -26,7 +26,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle("Deneme Title")
                 .setContentText(remoteMessage.getNotification().getBody())
                 .setAutoCancel(true)
-                .setSmallIcon(R.mipmap.hsn)
+                .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentIntent(pendingIntent);
 
         Log.d("Mesaj Geldiiiii::::::" , remoteMessage.getNotification().getBody());
