@@ -31,7 +31,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent = new Intent(this, AnaEkran.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+        Notification.Builder builder = new Notification.Builder(this)
                 .setContentTitle("Deneme Title")
                 .setContentText(remoteMessage.getNotification().getBody())
                 .setAutoCancel(true)
@@ -58,7 +58,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
             getManager().createNotificationChannel(channel);
 
-            Notification.Builder notification = new  Notification.Builder(this,channelID)
+            NotificationCompat.Builder notification = new  NotificationCompat.Builder(this,channelID)
                     .setContentIntent(pendingIntent)
                     .setContentTitle("yeni anons")
                     .setSmallIcon(R.drawable.ic_stat_name)

@@ -140,7 +140,7 @@ public class AnaMenuEkran extends Fragment {
         gonderButton.setOnClickListener(v -> {
             DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
             ///Anons/{sender_id}/anons/{anons_id}
-            databaseRef.child("Anons").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("anons").child("5").child("text").setValue(editText.getEditableText().toString());
+            databaseRef.child("Anons").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("anons").child("7").child("text").setValue(editText.getEditableText().toString());
             Toast.makeText(getContext(), "gonderildi???", Toast.LENGTH_SHORT).show();
         });
 
