@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anonsgroup.anons.models.Anons;
+import com.anonsgroup.anons.models.Anonss;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,7 +28,9 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -139,8 +142,11 @@ public class AnaMenuEkran extends Fragment {
         gonderButton=epicdialog.findViewById(R.id.gonderButton);
         gonderButton.setOnClickListener(v -> {
             DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+            String anonsId = UUID.randomUUID().toString();
             ///Anons/{sender_id}/anons/{anons_id}
-            databaseRef.child("Anons").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("anons").child("7").child("text").setValue(editText.getEditableText().toString());
+            String senderId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            Anonss anons = new Anonss(anonsId,senderId,"yok",new Date().getTime(),0,0,editText.getText().toString());
+            databaseRef.child("Anons").child(senderId).child("anons").child(anonsId).setValue(anons);
             Toast.makeText(getContext(), "gonderildi???", Toast.LENGTH_SHORT).show();
         });
 
