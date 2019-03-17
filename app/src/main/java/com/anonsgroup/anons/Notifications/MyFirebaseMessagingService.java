@@ -22,15 +22,16 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-   final String  channelID ="com.anonsgoup.anons";
-   final String channelName="anons";
+    String  channelID ="com.anonsgoup.anons";
+    String channelName="anons";
     NotificationManager notificationManager;
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        int i= (int) System.currentTimeMillis();
         Log.d("Remote Message tag::", remoteMessage.getFrom());
         Intent intent = new Intent(this, AnaEkran.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,i,intent,PendingIntent.FLAG_ONE_SHOT);
         Notification.Builder builder = new Notification.Builder(this)
                 .setContentTitle("Deneme Title")
                 .setContentText(remoteMessage.getNotification().getBody())
@@ -56,6 +57,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             channel.enableLights(false);
             channel.enableVibration(true);
             channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            channel.canShowBadge();
             getManager().createNotificationChannel(channel);
 
             NotificationCompat.Builder notification = new  NotificationCompat.Builder(this,channelID)
@@ -64,13 +66,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .setSmallIcon(R.drawable.ic_stat_name)
                     .setContentText(remoteMessage.getNotification().getBody())
                     .setAutoCancel(true);
-            notificationManager.notify(0 /* ID of notification */, notification.build());
+
+            notificationManager.notify(i/* ID of notification */, notification.build());
+
+
 return;
         }
 
 
 
-        notificationManager.notify(0 /* ID of notification */, builder.build());
+        notificationManager.notify(i/* ID of notification */, builder.build());
 
     }
 
