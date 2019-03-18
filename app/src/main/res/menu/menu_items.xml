@@ -5,6 +5,12 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/menu_item_profil_duzenle"
+        android:checkable="true"
+        android:icon="@drawable/ic_edit"
+        android:title="Profili Düzenle"
+    />
+    <item
         android:id="@+id/menu_item_engellenenler"
         android:checkable="true"
         android:icon="@drawable/ic_edit"
@@ -48,6 +54,22 @@
         android:icon="@drawable/ic_edit"
         android:title="Yardım"
         />
+    <group
+        android:id="@+id/menu_group_footer"
+        >
+    <item
+        android:id="@+id/menu_item_ayarlar"
+        android:checkable="true"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="Ayarlar" />
+
+    <item
+        android:id="@+id/menu_item_cikis_yap"
+        android:checkable="true"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="Çıkış Yap"
+        />
+    </group>
 
 </menu>
 

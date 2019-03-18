@@ -53,4 +53,12 @@
     <string name="backgroundPhoto_download_error">Arkaplan fotoğrafı indirme hatası.</string>
     <string name="user_info_error">Kullanıcı bilgilerini indirme hatası.</string>
     <string name="connection_timeout">Bağlantı Zaman Aşımına Uğradı</string>
+
+    <string name="opinion_suggestions">Görüş ve Öneriler</string>
+    <string name="opinion">Görüş</string>
+    <string name="suggestion">Öneri</string>
+    <string-array name="opinion_suggestions">
+         <item>@string/opinion</item>
+         <item>@string/suggestion</item>
+    </string-array>
 </resources>

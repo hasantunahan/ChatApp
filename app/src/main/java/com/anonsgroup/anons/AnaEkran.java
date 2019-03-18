@@ -45,6 +45,23 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
 
         final ViewPager viewPager =(ViewPager) findViewById(R.id.pager);
         final PagerAdapter adapter=new PagerAdapter(getSupportFragmentManager(),3);
+                viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int i, float v, int i1) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int i) {
+
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int i) {
+                        if (ProfilEkran.mdrawerLayout!= null && ProfilEkran.mdrawerLayout.isDrawerOpen(GravityCompat.START))
+                            ProfilEkran.mdrawerLayout.closeDrawer(GravityCompat.START);
+                    }
+                });
                 viewPager.setAdapter(adapter);viewPager.setCurrentItem(1);
 
     }

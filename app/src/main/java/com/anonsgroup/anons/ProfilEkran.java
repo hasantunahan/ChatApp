@@ -20,9 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +30,6 @@ import com.anonsgroup.anons.models.Anons;
 import com.anonsgroup.anons.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -51,12 +48,10 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private Button geciciButton;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private FirebaseAuth mAuth;
-    private LinearLayout editLayout;
     private TextView anonsGorGizle;
     private NestedScrollView anonslarimScrollView;
     private ImageView settingImageView;
@@ -70,7 +65,6 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
     ArrayList<Anons> anons=new ArrayList<>();
     RecyclerView recyclerView;
     Context context;
-    private  Button menuAyarlarButton;
 
 
     public ProfilEkran() {
@@ -112,7 +106,6 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         final View view = inflater.inflate(R.layout.activity_profil, container, false);
         mAuth = FirebaseAuth.getInstance();
         context = view.getContext();
-        editLayout=view.findViewById(R.id.editLayout);
         settingImageView = view.findViewById(R.id.settingsImageButton);
         adSoyadTextView = view.findViewById(R.id.profilAdSayodTextView);
         profildurumTextView = view.findViewById(R.id.profildurumTextView);
@@ -120,15 +113,12 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         profilBackgroundImageView = view.findViewById(R.id.profilBackgroundImageView);
 
         final DrawerLayout drawerLayout = view.findViewById(R.id.drawerLayout);
-        settingImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(Gravity.START);
-            }
-        });
+        settingImageView.setOnClickListener(v -> drawerLayout.openDrawer(Gravity.START));
 
 
-        //TODO: resimler databaseden çekilip imageview a konacak ve diğer bilgiler.
+
+
+            //TODO: resimler databaseden çekilip imageview a konacak ve diğer bilgiler.
         //TODO: Şerefin yaptığı açılan pencere buna entegre edilecek.
 
         anonsGorGizle = view.findViewById(R.id.anonsGorGizleTextView);
@@ -175,7 +165,6 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         CustomProfilAdapter customProfilAdapter=new CustomProfilAdapter(anons,context);
         recyclerView.setAdapter(customProfilAdapter);
 
-        menuAyarlarButton = view.findViewById(R.id.menu_ayarlar_button);
         navigationView= view.findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         mdrawerLayout = view.findViewById(R.id.drawerLayout);
@@ -184,36 +173,8 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         mdrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        menuAyarlarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(view.getContext(), MenuAyarlarEkran.class);
-                startActivity(intent);
-            }
-        });
-
-
         //TODO: Navigation drawer gelince bu burdan kalkıcak.
-        geciciButton = view.findViewById(R.id.geciciButton);
-        geciciButton.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(view.getContext(), LoginEkran.class);
-            startActivity(intent);
-            Objects.requireNonNull(getActivity()).finish();
-        });
 
-        LinearLayout editLayout;
-        editLayout=view.findViewById(R.id.editLayout);
-        editLayout.setOnClickListener(v -> {
-            Intent intent=new Intent(view.getContext(), ProfilDuzenleEkran.class);
-            startActivity(intent);
-        });
-        Button profiliduzenle;
-        profiliduzenle=view.findViewById(R.id.profiliDuzenleButton);
-        profiliduzenle.setOnClickListener(v -> {
-            Intent intent=new Intent(view.getContext(), ProfilDuzenleEkran.class);
-            startActivity(intent);
-        });
 
 
         return view;
@@ -266,6 +227,10 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         navigationViewKapat();
 
         switch (menuItem.getItemId()){
+            case R.id.menu_item_profil_duzenle:
+                Intent intent=new Intent(getContext(), ProfilDuzenleEkran.class);
+                startActivity(intent);
+                break;
             case R.id.menu_item_begendigin_anonslar:
                 Toast.makeText(getContext(),"beğendigin anonslar",Toast.LENGTH_LONG).show();
                 break;
@@ -289,10 +254,22 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
                 Toast.makeText(getContext(),"Gizlilik Koşulları",Toast.LENGTH_LONG).show();
                 break;
             case R.id.menu_item_gorus_oneri:
+                Intent intentGorusOneri = new Intent(getContext(), MenuGorusOneriEkran.class);
+                startActivity(intentGorusOneri);
                 Toast.makeText(getContext(),"Görüş Ve öneri",Toast.LENGTH_LONG).show();
                 break;
             case R.id.menu_item_yardim:
                 Toast.makeText(getContext(),"yardım",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.menu_item_ayarlar:
+                Intent intentDrawableAc = new Intent(getContext(), MenuAyarlarEkran.class);
+                startActivity(intentDrawableAc);
+                break;
+            case R.id.menu_item_cikis_yap:
+                FirebaseAuth.getInstance().signOut();
+                Intent intentCikisyap = new Intent(getContext(), LoginEkran.class);
+                startActivity(intentCikisyap);
+                Objects.requireNonNull(getActivity()).finish();
                 break;
         }
 
@@ -300,11 +277,10 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         return true;
     }
 
-    private void navigationViewKapat() {
+
+   static public void navigationViewKapat() {
             mdrawerLayout.closeDrawer(GravityCompat.START);
     }
-
-
 
     /**
      * This interface must be implemented by activities that contain this
@@ -320,4 +296,6 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }
