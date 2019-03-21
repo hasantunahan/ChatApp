@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,8 +20,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anonsgroup.anons.customViews.AnonsViewHolder;
 import com.anonsgroup.anons.models.Anons;
 import com.anonsgroup.anons.models.Anonss;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,6 +34,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -46,16 +51,15 @@ public class AnaMenuEkran extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    Dialog epicdialog;
-    FloatingActionButton yeniAnons;
-    SeekBar mesafeSeekBar;
-    TextView mesafeTextView;
-    int min=5,max=999,current=10;
-    ImageView gonderButton;
+    private Dialog epicdialog;
+    private FloatingActionButton yeniAnons;
+    private SeekBar mesafeSeekBar;
+    private TextView mesafeTextView;
+    private int min=5,max=999,current=10;
+    private ImageView gonderButton;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
     public AnaMenuEkran() {
@@ -89,6 +93,7 @@ public class AnaMenuEkran extends Fragment {
         }
 
 
+
     }
 
     @Override
@@ -96,22 +101,6 @@ public class AnaMenuEkran extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_ana_menu_ekran, container, false);
         // Inflate the layout for this fragment
-        RecyclerView recyclerView=view.findViewById(R.id.anaEkranAnonsListLayout);
-        List<Anons> nlist=new ArrayList<>();
-        CustomAnaEkranAdapter customAnaEkranAdapter=new CustomAnaEkranAdapter(view.getContext(),nlist);
-        recyclerView.setAdapter(customAnaEkranAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwwrhwrhrwhrwhwhrwhrhrhwhwhrhwhwrhwrrh","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwwrhrwhwrhrwhwrrhw","ahrershjegk","Hasan tunahan","25.12.2019",1));
-        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",1));
-        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",1));
-        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğw","ahrershjegk","Hasan tunahan","25.12.2019",0));
-        nlist.add(new Anons(R.mipmap.hsn,"sughgıjoewogğpeğpgeoğgepğgpğegpğewgpkğwddhehehehehrhwhwrrhwrhrhwh","ahrershjegk","Hasan tunahan","25.12.2019",1));
 
        //TODO: Sorulacak ? olması gereken ""  new Dialog(context :  this) """
         epicdialog=new Dialog(view.getContext(),R.style.Kendiismim);
@@ -143,11 +132,13 @@ public class AnaMenuEkran extends Fragment {
         gonderButton.setOnClickListener(v -> {
             DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
             String anonsId = UUID.randomUUID().toString();
-            ///Anons/{sender_id}/anons/{anons_id}
+
             String senderId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             Anonss anons = new Anonss(anonsId,senderId,"yok",new Date().getTime(),0,0,editText.getText().toString());
-            databaseRef.child("Anons").child(senderId).child("anons").child(anonsId).setValue(anons);
-            Toast.makeText(getContext(), "gonderildi???", Toast.LENGTH_SHORT).show();
+            epicdialog.dismiss();
+            databaseRef.child("Anons").child(senderId).child(anonsId).setValue(anons).addOnSuccessListener(command -> {
+                Objects.requireNonNull(getActivity()).runOnUiThread(() -> Toast.makeText(getContext(), "Anonsunuz iletilmiştir.", Toast.LENGTH_SHORT).show());
+            });
         });
 
         mesafeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -209,4 +200,6 @@ public class AnaMenuEkran extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

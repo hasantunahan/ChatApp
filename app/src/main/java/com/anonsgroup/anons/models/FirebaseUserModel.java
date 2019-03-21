@@ -8,9 +8,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FirebaseUserModel {
-    @Getter
-    @Setter
-    private String email;
+    @Getter @Setter private String profilUrl;
+    @Getter @Setter private String backgroundUrl;
+    @Getter @Setter private String email;
     @Getter @Setter private String username;
     @Getter @Setter private String name;
     @Getter @Setter private String surname;

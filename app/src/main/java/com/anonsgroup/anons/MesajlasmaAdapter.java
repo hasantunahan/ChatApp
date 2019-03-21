@@ -2,15 +2,10 @@ package com.anonsgroup.anons;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import java.util.List;
-import com.anonsgroup.anons.models.Messages;
-import com.anonsgroup.anons.models.Rooms;
 import com.anonsgroup.anons.models.SenderUsers;
 
 public class MesajlasmaAdapter extends RecyclerView.Adapter<MesajlasmaAdapter.ViewHolders> {

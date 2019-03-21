@@ -13,7 +13,7 @@ public class Rooms {
     @Getter @Setter private String roomId;
     @Getter @Setter private String roomName;
     @Getter @Setter private int remainingMessage;
-    @Getter @Setter private int senderId;
+    @Getter @Setter private String senderId;
 
 
 }

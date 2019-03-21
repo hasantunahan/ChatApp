@@ -18,6 +18,8 @@ import com.anonsgroup.anons.models.Anons;
 
 import java.util.List;
 
+
+
 public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAdapter.myviewHolder> {
 
     public CustomAnaEkranAdapter(Context context, List<Anons> mdata) {
@@ -62,6 +64,10 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
     public int getItemCount() {
         return mdata.size();
     }
+
+
+
+
 
     public class myviewHolder extends RecyclerView.ViewHolder{
         LinearLayout l;
