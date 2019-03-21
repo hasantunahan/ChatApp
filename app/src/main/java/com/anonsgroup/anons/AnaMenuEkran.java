@@ -97,6 +97,7 @@ public class AnaMenuEkran extends Fragment {
 
 
 
+
     }
 
     @Override
@@ -104,6 +105,9 @@ public class AnaMenuEkran extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_ana_menu_ekran, container, false);
         // Inflate the layout for this fragment
+
+
+
 
         //TODO: Sorulacak ? olması gereken ""  new Dialog(context :  this) """
         epicdialog=new Dialog(view.getContext(),R.style.Kendiismim);
