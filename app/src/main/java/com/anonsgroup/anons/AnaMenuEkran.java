@@ -26,8 +26,11 @@ import com.anonsgroup.anons.models.Anonss;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -102,16 +105,26 @@ public class AnaMenuEkran extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_ana_menu_ekran, container, false);
         // Inflate the layout for this fragment
 
-       //TODO: Sorulacak ? olması gereken ""  new Dialog(context :  this) """
+        //TODO: Sorulacak ? olması gereken ""  new Dialog(context :  this) """
         epicdialog=new Dialog(view.getContext(),R.style.Kendiismim);
         yeniAnons= view.findViewById(R.id.yeniAnonsButton);
 
-        yeniAnons.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog();
-            }
-        });
+        yeniAnons.setOnClickListener(v -> showDialog());
+
+        FirebaseDatabase.getInstance().getReference("ArkadasListesi").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                            System.out.println(snapshot.getKey());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
 
         return view;
