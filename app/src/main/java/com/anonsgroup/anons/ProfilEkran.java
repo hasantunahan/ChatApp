@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anonsgroup.anons.customViews.AnonsViewHolder;
+import com.anonsgroup.anons.customViews.ProfilViewHolder;
 import com.anonsgroup.anons.database.KullaniciIslemler;
 import com.anonsgroup.anons.database.VeriTabaniDb;
 import com.anonsgroup.anons.models.Anons;
@@ -79,7 +80,7 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
     Context context;
     private  Button menuAyarlarButton;
     private FirebaseRecyclerOptions<Anonss> recyclerOptions;
-    private FirebaseRecyclerAdapter<Anonss, AnonsViewHolder> fAdapter;
+    private FirebaseRecyclerAdapter<Anonss, ProfilViewHolder> fAdapter;
 
 
     public ProfilEkran() {
@@ -162,36 +163,27 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         });
 
 
-        RecyclerView recyclerView=view.findViewById(R.id.anaEkranAnonsListLayout);
+        RecyclerView recyclerView=view.findViewById(R.id.profilEkranAnonsListRecycler);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Anonslar");
-        ref.orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid());
         recyclerOptions = new FirebaseRecyclerOptions.Builder<Anonss>()
-                .setQuery(ref,Anonss.class).build();
-        fAdapter = new FirebaseRecyclerAdapter<Anonss, AnonsViewHolder>(recyclerOptions) {
+                .setQuery(ref.orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid()),Anonss.class).build();
+        fAdapter = new FirebaseRecyclerAdapter<Anonss, ProfilViewHolder>(recyclerOptions) {
             @Override
-            protected void onBindViewHolder(@NonNull AnonsViewHolder holder, int position, @NonNull Anonss model) {
-                holder.profilFotograf.setImageResource(R.mipmap.hsn);
-                holder.kisi.setText(model.getUserId());
-                holder.metin.setText(model.getText());
-                holder.konum.setText(model.getLocation());
-                holder.tarih.setText(model.getDate()+"");
-
-                holder.aProfilFoto.setImageResource(R.mipmap.hsn);
-                holder.aKisi.setText(model.getUserId());
-                holder.aMetin.setText(model.getText());
-                holder.aKonum.setText(model.getLocation());
-                holder.aTarih.setText(model.getDate()+"");
-
-                if(model.getSeen() == 0)
-                    holder.begeniFotograf.setImageResource(R.drawable.ic_bildiri);
+            protected void onBindViewHolder(@NonNull ProfilViewHolder holder, int position, @NonNull Anonss model) {
+                //TODO: BURASI localden Çekilecek
+                holder.getProfilImage().setImageResource(R.drawable.kullaniciprofildefault);
+                holder.getAdTextView().setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                holder.getAnonsTextView().setText(model.getText());
+                holder.getKonumTextView().setText(model.getLocation());
+                holder.getTarihTextView().setText(model.getDate()+"");
             }
 
             @NonNull
             @Override
-            public AnonsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            public ProfilViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                 LayoutInflater inflater=LayoutInflater.from(getActivity().getApplicationContext());
-                View v=inflater.inflate(R.layout.anaekran_anons_list,viewGroup,false);
-                return new AnonsViewHolder(v);
+                View v=inflater.inflate(R.layout.profil_anons_list,viewGroup,false);
+                return new ProfilViewHolder(v);
             }
         };
 
