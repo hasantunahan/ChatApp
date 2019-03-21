@@ -21,15 +21,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     String  channelID ="com.anonsgoup.anons";
     String channelName="anons";
     NotificationManager notificationManager;
-    public static String username = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName();
+    public static String username;
     @Override
 
     public void onMessageReceived(RemoteMessage remoteMessage) {
+
         Map<String, String> veriler = remoteMessage.getData();
         Log.d("GELEN USERNAME:: ", veriler.get("senderUsername"));
         String gelenUsername =veriler.get("senderUsername");
-        if(gelenUsername!=null && gelenUsername.equals(username))
-            return;
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
+            if (gelenUsername != null && gelenUsername.equals(username))
+                return;
+        }
         int i= (int) System.currentTimeMillis();
         Log.d("Remote Message tag::", remoteMessage.getFrom());
         Intent intent = new Intent(this, AnaEkran.class);

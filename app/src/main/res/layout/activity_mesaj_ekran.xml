@@ -66,7 +66,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/anons_fontt"
-                android:text="İsim Soyisim"
+                android:text="Kullaniciadi"
                 android:textColor="@color/baslikGray"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"

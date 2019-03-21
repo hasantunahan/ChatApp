@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anonsgroup.anons.models.Anons;
+import com.anonsgroup.anons.models.FirebaseUserModel;
 import com.anonsgroup.anons.models.SenderUsers;
 
 import org.w3c.dom.Text;
@@ -19,10 +20,10 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 
-public class ArkadasListesiAdapter extends RecyclerView.Adapter<ArkadasListesiAdapter.ViewHolders> {
-    Context context;
-    List<SenderUsers> mdata;
-    public ArkadasListesiAdapter(Context context, List<SenderUsers> mdata) {
+public class ArkadasListesiAdapter  {
+   /* Context context;
+    List<FirebaseUserModel> mdata;
+    public ArkadasListesiAdapter(Context context, List<FirebaseUserModel> mdata) {
         this.context = context;
         this.mdata = mdata;
     }
@@ -75,5 +76,5 @@ public class ArkadasListesiAdapter extends RecyclerView.Adapter<ArkadasListesiAd
 
 
         }
-    }
+    }*/
 }
