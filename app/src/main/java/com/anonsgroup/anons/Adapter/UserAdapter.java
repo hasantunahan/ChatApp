@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.anonsgroup.anons.MesajEkran;
 import com.anonsgroup.anons.R;
+import com.anonsgroup.anons.models.ArkadaslarimModel;
 import com.anonsgroup.anons.models.FirebaseUserModel;
 import com.bumptech.glide.Glide;
 import com.google.firebase.storage.FirebaseStorage;
@@ -21,9 +22,9 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context context;
-    private List<FirebaseUserModel> mList;
+    private List<ArkadaslarimModel> mList;
 
-    public UserAdapter(Context context, List<FirebaseUserModel> mList) {
+    public UserAdapter(Context context, List<ArkadaslarimModel> mList) {
         this.context = context;
         this.mList = mList;
     }
@@ -40,13 +41,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        FirebaseUserModel user =mList.get(i);
+        ArkadaslarimModel user =mList.get(i);
         viewHolder.username.setText(user.getUsername());
+        viewHolder.durum.setText(user.getDurum());
       //TODO:firebase foto çekilcek yer
-        if(user.getProfilUrl().equals("default")){
+        if(user.getProfilURL().equals("default")){
             viewHolder.image.setImageResource(R.drawable.kullaniciprofildefault);
         }else{
-            Glide.with(context).load(user.getProfilUrl()).into(viewHolder.image);
+            Glide.with(context).load(user.getProfilURL()).into(viewHolder.image);
         }
 
         //mesajlasma
@@ -54,7 +56,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(context, MesajEkran.class);
-                intent.putExtra("username",user.getUsername());
+                intent.putExtra("userid",user.getUsername());
                 context.startActivity(intent);
             }
         });

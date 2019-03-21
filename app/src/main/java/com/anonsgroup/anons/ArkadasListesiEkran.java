@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.anonsgroup.anons.Adapter.UserAdapter;
+import com.anonsgroup.anons.models.ArkadaslarimModel;
 import com.anonsgroup.anons.models.FirebaseUserModel;
 import com.anonsgroup.anons.models.SenderUsers;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +26,7 @@ import java.util.List;
 public class ArkadasListesiEkran extends AppCompatActivity {
         ImageView kapat;
     RecyclerView recyclerView;
-    List<FirebaseUserModel> nlist;
+    List<ArkadaslarimModel> nlist;
     private UserAdapter userAdapter;
 
     @Override
@@ -58,30 +59,46 @@ public class ArkadasListesiEkran extends AppCompatActivity {
 
     private void readUser() {
         FirebaseUser fuser= FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("users");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                nlist.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    FirebaseUserModel user=snapshot.getValue(FirebaseUserModel.class);
-                    assert fuser != null;
-                    assert user != null;
-                    if(!user.getUsername().equals(fuser.getUid())){
-                        nlist.add(user);
+        FirebaseDatabase.getInstance().getReference("ArkadasListesi").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        System.out.println(dataSnapshot.toString());
+                        String key= dataSnapshot.getKey();
+                        System.out.println(key);
+                            FirebaseDatabase.getInstance().getReference("users").child(key).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                               nlist.clear();
+                                   System.out.println(dataSnapshot.toString());
+                                   FirebaseUserModel userModel = dataSnapshot.getValue(FirebaseUserModel.class);
+                                   ArkadaslarimModel user = new ArkadaslarimModel(userModel.getUsername(),userModel.getProfilUrl(),userModel.getSummInfo());
+                                  nlist.add(user);
+                                    userAdapter=new UserAdapter(getApplicationContext(),nlist);
+                                    recyclerView.setAdapter(userAdapter);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+
+
+
                     }
 
-                }
-                userAdapter=new UserAdapter(getApplicationContext(),nlist);
-                recyclerView.setAdapter(userAdapter);
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
+                    }
+                });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+
+
 
     }
 }

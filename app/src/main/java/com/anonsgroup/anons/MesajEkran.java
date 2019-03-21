@@ -47,20 +47,22 @@ public class MesajEkran extends AppCompatActivity {
         photo=findViewById(R.id.mesajEkranPhoto);
         username=findViewById(R.id.mesajEkranIsimSoyisim);
         intent=getIntent();
-        String userid=intent.getStringExtra("username");
+        String userid=intent.getStringExtra("userid");
         fuser= FirebaseAuth.getInstance().getCurrentUser();
-        reference= FirebaseDatabase.getInstance().getReference("users").child(userid);
-
-        reference.addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("users").orderByChild("username").equalTo(userid)
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                FirebaseUserModel user=dataSnapshot.getValue(FirebaseUserModel.class);
-                username.setText(user.getUsername());
-                if(user.getProfilUrl().equals("default")){
-                    photo.setImageResource(R.drawable.kullaniciprofildefault);
-                }else
-                {
-                    Glide.with(MesajEkran.this).load(user.getProfilUrl()).into(photo);
+
+                // username.setText(userid);
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    FirebaseUserModel user=snapshot.getValue(FirebaseUserModel.class);
+                    username.setText(user.getUsername());
+                    if (user.getProfilUrl().equals("default")) {
+                        photo.setImageResource(R.drawable.kullaniciprofildefault);
+                    } else {
+                        Glide.with(MesajEkran.this).load(user.getProfilUrl()).into(photo);
+                    }
                 }
             }
 
