@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Anons</string>
     <string name="app_name_cap">ANONS</string>
     <string name="username">Username</string>
@@ -55,6 +55,14 @@
     <string name="backgroundPhoto_download_error">Background photo download error.</string>
     <string name="user_info_error">User information download error.</string>
     <string name="connection_timeout">Connection Timeout</string>
+
+    <string name="opinion_suggestions">opinions and suggestions</string>
+    <string name="opinion">Opinion</string>
+    <string name="suggestion">Suggestion</string>
+    <string-array name="opinion_suggestions" tools:ignore="InconsistentArrays">
+        <item>@string/opinion</item>
+        <item>@string/suggestion</item>
+    </string-array>
 
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <!--

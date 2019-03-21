@@ -269,7 +269,7 @@ public class LoginEkran extends AppCompatActivity {
                     System.out.println(fUser.getUid());
                     final long maxBytes= 1024*1024*5;
                     profilRef.getBytes(maxBytes).addOnCompleteListener(gorev ->
-                    {user.setProfilPhoto(gorev.getResult()); profilPhotoCekildi.set(true);});
+                    {user.setProfilPhoto(gorev.getResult()); profilPhotoCekildi.set(true);}).addOnFailureListener(Throwable::printStackTrace);
                     StorageReference backgRef = storageRef.child("UsersPhotos/"+fUser.getUid()+"/backGround.jpeg");
                     backgRef.getBytes(maxBytes).addOnCompleteListener(gorev1 -> {user.setProfilBackground(gorev1.getResult()); backgroundPhotoCekildi.set(true);});
                     islemleriBitir();
