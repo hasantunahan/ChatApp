@@ -21,12 +21,15 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
-
-        <activity android:name=".MesajEkran"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            ></activity>
-        <activity android:name=".MenuAyarlarEkran"
-            android:theme="@style/Theme.AppCompat.Light"/>
+        <activity
+            android:name=".MenuGorusOneriEkran"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity
+            android:name=".MesajEkran"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".MenuAyarlarEkran"
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".ProfilDuzenleEkran"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -80,6 +83,5 @@
             </intent-filter>
         </service>
     </application>
-
 
 </manifest>

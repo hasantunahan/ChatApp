@@ -39,33 +39,6 @@
                     app:layout_constraintVertical_bias="0.0"
                     app:srcCompat="@drawable/defaultback" />
 
-                <LinearLayout
-                    android:id="@+id/editLayout"
-                    android:layout_width="38dp"
-                    android:layout_height="33dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/profili_duzenle_button"
-                    android:gravity="center"
-                    app:layout_constraintBottom_toBottomOf="@+id/settingsImageButton"
-                    app:layout_constraintEnd_toStartOf="@+id/settingsImageButton"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <Button
-                        android:id="@+id/profiliDuzenleButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:drawableStart="@drawable/ic_profiliduzenle"
-                        android:fontFamily="@font/anons_fontt"
-                        android:text="@string/edit_profile"
-                        android:textColor="@color/baslikGray"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
                 <ImageButton
                     android:id="@+id/settingsImageButton"
                     android:layout_width="wrap_content"
@@ -370,41 +343,6 @@
         app:itemIconTint="@android:color/black"
         android:layout_gravity="start"
         >
-
-    <LinearLayout
-            android:layout_gravity="bottom"
-            android:background="#20191d1e"
-            android:layout_width="match_parent"
-            android:paddingBottom="2dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="2dp"
-
-            android:orientation="vertical"
-            android:layout_height="wrap_content"
-            >
-
-
-            <Button
-                android:id="@+id/menu_ayarlar_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_style"
-                android:text="ayarlar"
-                android:textColor="@color/black"
-                />
-
-            <Button
-                android:id="@+id/geciciButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_style"
-                android:text="Çıkış Yap"
-                android:textColor="@color/black" />
-
-
-        </LinearLayout>
-
     </android.support.design.widget.NavigationView>
 
 
