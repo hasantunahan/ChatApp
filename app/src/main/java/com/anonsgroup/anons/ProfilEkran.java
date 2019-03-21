@@ -164,9 +164,9 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
 
 
         RecyclerView recyclerView=view.findViewById(R.id.profilEkranAnonsListRecycler);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Anonslar");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Anonslar").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         recyclerOptions = new FirebaseRecyclerOptions.Builder<Anonss>()
-                .setQuery(ref.orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid()),Anonss.class).build();
+                .setQuery(ref,Anonss.class).build();
         fAdapter = new FirebaseRecyclerAdapter<Anonss, ProfilViewHolder>(recyclerOptions) {
             @Override
             protected void onBindViewHolder(@NonNull ProfilViewHolder holder, int position, @NonNull Anonss model) {
