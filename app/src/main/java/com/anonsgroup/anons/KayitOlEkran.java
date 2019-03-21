@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.anonsgroup.anons.database.KullaniciIslemler;
 import com.anonsgroup.anons.database.VeriTabaniDb;
+import com.anonsgroup.anons.models.FirebaseUserModel;
 import com.anonsgroup.anons.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -222,7 +223,7 @@ public class KayitOlEkran extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             fUser = mAuth.getCurrentUser();
                             Objects.requireNonNull(fUser).reload();
-                            final User user = new User(email,username,name,surname,longDOB,gender,new Date().getTime(),"",0,new Date().getTime(),1000,0);
+                            final FirebaseUserModel user = new FirebaseUserModel("default","default",email,username,name,surname,longDOB,gender,new Date().getTime(),"",0,new Date().getTime(),1000,0);
                             UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(user.getUsername()).build();
                             fUser.updateProfile(userProfileChangeRequest);
                             Log.d("İşlem: ", "createUserWithEmail:success");

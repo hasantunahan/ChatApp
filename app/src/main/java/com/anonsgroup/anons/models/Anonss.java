@@ -10,12 +10,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Anonss {
 
-    @Getter @Setter private int anonsId;
-    @Getter @Setter private int userId;
+    @Getter @Setter private String userId;
     @Getter @Setter private String location;
-    @Getter @Setter private String date;
+    @Getter @Setter private long date;
     @Getter @Setter private int countOfLike;
-    @Getter @Setter private int seen;
     @Getter @Setter private String text;
 
 }

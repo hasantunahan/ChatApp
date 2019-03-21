@@ -20,7 +20,7 @@ public class SenderUsers {
         this.senderPhoto = senderPhoto;
     }
 
-    @Getter @Setter private int userId;
+    @Getter @Setter private String userId;
     @Getter @Setter private String userName;
     @Getter @Setter private String name;
     @Getter @Setter private String surname;

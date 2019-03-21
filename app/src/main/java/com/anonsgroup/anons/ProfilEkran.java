@@ -24,14 +24,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anonsgroup.anons.customViews.AnonsViewHolder;
+import com.anonsgroup.anons.customViews.ProfilViewHolder;
 import com.anonsgroup.anons.database.KullaniciIslemler;
 import com.anonsgroup.anons.database.VeriTabaniDb;
 import com.anonsgroup.anons.models.Anons;
+import com.anonsgroup.anons.models.Anonss;
 import com.anonsgroup.anons.models.User;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -65,6 +73,9 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
     ArrayList<Anons> anons=new ArrayList<>();
     RecyclerView recyclerView;
     Context context;
+
+    private FirebaseRecyclerOptions<Anonss> recyclerOptions;
+    private FirebaseRecyclerAdapter<Anonss, ProfilViewHolder> fAdapter;
 
 
     public ProfilEkran() {
@@ -143,27 +154,40 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         });
 
 
-        recyclerView=view.findViewById(R.id.itemlerLayout);
+        RecyclerView recyclerView=view.findViewById(R.id.profilEkranAnonsListRecycler);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Anonslar").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        recyclerOptions = new FirebaseRecyclerOptions.Builder<Anonss>()
+                .setQuery(ref,Anonss.class).build();
+        fAdapter = new FirebaseRecyclerAdapter<Anonss, ProfilViewHolder>(recyclerOptions) {
+            @Override
+            protected void onBindViewHolder(@NonNull ProfilViewHolder holder, int position, @NonNull Anonss model) {
+                //TODO: BURASI localden Çekilecek
+                holder.getProfilImage().setImageResource(R.drawable.kullaniciprofildefault);
+                holder.getAdTextView().setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                holder.getAnonsTextView().setText(model.getText());
+                holder.getKonumTextView().setText(model.getLocation());
+                holder.getTarihTextView().setText(model.getDate()+"");
+            }
+
+            @NonNull
+            @Override
+            public ProfilViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                LayoutInflater inflater=LayoutInflater.from(getActivity().getApplicationContext());
+                View v=inflater.inflate(R.layout.profil_anons_list,viewGroup,false);
+                return new ProfilViewHolder(v);
+            }
+        };
+
+
+
+        //CustomAnaEkranAdapter customAnaEkranAdapter=new CustomAnaEkranAdapter(view.getContext(),nlist);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         linearLayoutManager.scrollToPosition(0);
+        fAdapter.startListening();
+        recyclerView.setAdapter(fAdapter);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setNestedScrollingEnabled(true);
-        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
-        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
-        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
-        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
-        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
-        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
-        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
-        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
-        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
-        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
-        anons.add(new Anons(R.mipmap.hsn,"denemeYazisi bu bir anonstur bilerek uzun tutuldu deneme amaçlııııııdırrrrrrrrr","Gazi Mahallesi, Emniyet Mahallesi","Hasan Tuanahan","28,12,2018",0));
 
-        CustomProfilAdapter customProfilAdapter=new CustomProfilAdapter(anons,context);
-        recyclerView.setAdapter(customProfilAdapter);
 
         navigationView= view.findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -213,6 +237,8 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         if(user.getProfilBackground() != null)
             profilBackgroundImageView.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilBackground(),0,user.getProfilBackground().length));
         super.onResume();
+        if(fAdapter!=null)
+            fAdapter.startListening();
 
     }
 
@@ -295,7 +321,23 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+
+
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(fAdapter!=null)
+            fAdapter.startListening();
     }
 
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(fAdapter!=null)
+            fAdapter.stopListening();
+    }
 
 }
