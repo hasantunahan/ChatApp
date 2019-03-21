@@ -51,10 +51,6 @@ public class ArkadasListesiEkran extends AppCompatActivity {
 
 
 
-
-
-
-
     }
 
     private void readUser() {
@@ -64,17 +60,19 @@ public class ArkadasListesiEkran extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         System.out.println(dataSnapshot.toString());
-                        String key= dataSnapshot.getKey();
-                        System.out.println(key);
+
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            String key= snapshot.getKey();
+                            System.out.println(key);
                             FirebaseDatabase.getInstance().getReference("users").child(key).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                               nlist.clear();
-                                   System.out.println(dataSnapshot.toString());
-                                   FirebaseUserModel userModel = dataSnapshot.getValue(FirebaseUserModel.class);
-                                   ArkadaslarimModel user = new ArkadaslarimModel(userModel.getUsername(),userModel.getProfilUrl(),userModel.getSummInfo());
-                                  nlist.add(user);
-                                    userAdapter=new UserAdapter(getApplicationContext(),nlist);
+                                    nlist.clear();
+                                    System.out.println(dataSnapshot.toString());
+                                    FirebaseUserModel userModel = dataSnapshot.getValue(FirebaseUserModel.class);
+                                    ArkadaslarimModel user = new ArkadaslarimModel(userModel.getUsername(), userModel.getProfilUrl(), userModel.getSummInfo());
+                                    nlist.add(user);
+                                    userAdapter = new UserAdapter(getApplicationContext(), nlist);
                                     recyclerView.setAdapter(userAdapter);
                                 }
 
@@ -83,7 +81,7 @@ public class ArkadasListesiEkran extends AppCompatActivity {
 
                                 }
                             });
-
+                        }
 
 
 

@@ -30,12 +30,19 @@ public class MesajEkran extends AppCompatActivity {
     ImageView arkadas;
     FirebaseUser fuser;
     DatabaseReference reference;
+    ImageView gonder;
+    TextView metin;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        gonder=findViewById(R.id.mesajEkrangonderButton);
+        metin=findViewById(R.id.mesajekranMetin);
+
+
+
         setContentView(R.layout.activity_mesaj_ekran);
       arkadas=findViewById(R.id.mesajEkranArkadasMi);
         arkadas.setOnClickListener(new View.OnClickListener() {
@@ -72,27 +79,11 @@ public class MesajEkran extends AppCompatActivity {
             }
         });
 
+    }
 
-
-
-
-/*
-        photo=findViewById(R.id.mesajEkranPhoto);
-        adsoyad=findViewById(R.id.mesajEkranIsimSoyisim);
-        intent=getIntent();
-        String ad=intent.getStringExtra("name");
-        String soyad=intent.getStringExtra("surname");
-        Integer sendphoto=intent.getIntExtra("photo",0);
-        SenderUsers user=new SenderUsers();
-        adsoyad.setText(ad+" "+soyad);
-        photo.setImageResource(sendphoto);*/
-
-
-
-
-
-
+    private void sendMessage(){
 
     }
+
 
 }

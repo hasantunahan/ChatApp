@@ -116,7 +116,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/mesajekranMetin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -133,12 +133,12 @@
             android:textColor="@color/profikOrtaGri"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView9"
+            app:layout_constraintEnd_toStartOf="@+id/mesajEkrangonderButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView9"
+            android:id="@+id/mesajEkrangonderButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="8dp"
