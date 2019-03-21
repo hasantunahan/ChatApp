@@ -3,6 +3,8 @@ package com.anonsgroup.anons.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.anonsgroup.anons.models.FirebaseUserModel;
 import com.anonsgroup.anons.models.User;
 
 public class KullaniciIslemler {
@@ -11,7 +13,7 @@ public class KullaniciIslemler {
         this.db=db;
     }
 
-    public void yeniKullaniciKaydet(User user){
+    public void yeniKullaniciKaydet(FirebaseUserModel user){
         Cursor c;
             try {
                 c=db.rawQuery("select username from user where username="+user.getUsername(),null);
@@ -32,8 +34,8 @@ public class KullaniciIslemler {
         values.put("summInfo",user.getSummInfo());
         values.put("lastDateOfLogIn",user.getLastDateOfLogIn());
         values.put("countOfAnonsDaily",user.getCountOfAnonsDaily());
-        values.put("profilPhoto",user.getProfilPhoto());
-        values.put("profilBackground",user.getProfilBackground());
+        values.put("profilPhoto","default");
+        values.put("profilBackground","default");
         db.insert("user",null,values);
     }
 

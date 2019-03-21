@@ -136,7 +136,7 @@ public class AnaMenuEkran extends Fragment {
             String senderId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             Anonss anons = new Anonss(senderId,"yok",new Date().getTime(),0,editText.getText().toString());
             epicdialog.dismiss();
-            databaseRef.child("Anons").child(senderId).child(anonsId).setValue(anons).addOnSuccessListener(command -> {
+            databaseRef.child("Anonslar").child(senderId).child(UUID.randomUUID().toString()).setValue(anons).addOnSuccessListener(command -> {
                 Objects.requireNonNull(getActivity()).runOnUiThread(() -> Toast.makeText(getContext(), "Anonsunuz iletilmiştir.", Toast.LENGTH_SHORT).show());
             });
         });

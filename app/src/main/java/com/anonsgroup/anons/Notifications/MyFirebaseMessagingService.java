@@ -25,11 +25,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
 
     public void onMessageReceived(RemoteMessage remoteMessage) {
-
         Map<String, String> veriler = remoteMessage.getData();
         Log.d("GELEN USERNAME:: ", veriler.get("senderUsername"));
         String gelenUsername =veriler.get("senderUsername");
-        if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
             if (gelenUsername != null && gelenUsername.equals(username))
                 return;
         }
