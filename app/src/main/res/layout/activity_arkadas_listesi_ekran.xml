@@ -82,8 +82,7 @@
             android:id="@+id/arkadasListesiRecylerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="234dp"
-            tools:layout_editor_absoluteY="645dp">
+            >
 
         </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.NestedScrollView>
