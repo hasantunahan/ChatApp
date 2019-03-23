@@ -60,20 +60,18 @@ public class ArkadasListesiEkran extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         System.out.println(dataSnapshot.toString());
-
+                        nlist.clear();
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             String key= snapshot.getKey();
                             System.out.println(key);
                             FirebaseDatabase.getInstance().getReference("users").child(key).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    nlist.clear();
                                     System.out.println(dataSnapshot.toString());
                                     FirebaseUserModel userModel = dataSnapshot.getValue(FirebaseUserModel.class);
                                     ArkadaslarimModel user = new ArkadaslarimModel(userModel.getUsername(), userModel.getProfilUrl(), userModel.getSummInfo());
                                     nlist.add(user);
-                                    userAdapter = new UserAdapter(getApplicationContext(), nlist);
-                                    recyclerView.setAdapter(userAdapter);
+
                                 }
 
                                 @Override
@@ -83,7 +81,8 @@ public class ArkadasListesiEkran extends AppCompatActivity {
                             });
                         }
 
-
+                        userAdapter = new UserAdapter(getApplicationContext(), nlist);
+                        recyclerView.setAdapter(userAdapter);
 
 
                     }
