@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -18,18 +17,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.anonsgroup.anons.customViews.ProgressDialog;
 import com.anonsgroup.anons.database.KullaniciIslemler;
 import com.anonsgroup.anons.database.VeriTabaniDb;
 import com.anonsgroup.anons.models.FirebaseUserModel;
-import com.anonsgroup.anons.models.User;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,9 +39,9 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class ProfilDuzenleEkran extends AppCompatActivity {
@@ -60,14 +60,14 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
     private EditText durumEditText;
     private EditText emailEditText;
     private EditText soyadiEditText;
-    private boolean resimlerDegisti = false;
     private long longDOB;
-    private User user;
+    private FirebaseUserModel user;
     private FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
     private boolean profilKontrol, backgroundKontrol;
+    private boolean profilDegisti = false, backgroundDegisti = false;
     private ProgressDialog progressDialog;
     private DatePickerDialog.OnDateSetListener onDateSetListener;
-
+    private DatabaseReference ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,25 +81,38 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
         soyadiEditText = findViewById(R.id.profilDuzenleSoyadEditText);
         dogumTarihiEditText.setFocusable(false);
 
-        VeriTabaniDb db = VeriTabaniDb.getInstance(getApplicationContext());
-        db.open();
-        KullaniciIslemler kIslemler = new KullaniciIslemler(db.dbAl());
-        user =kIslemler.kullaniciAl(fUser.getDisplayName());
-        db.close();
+        //Firebaseden Verilerin Çekildiği Kod::
+        ref= FirebaseDatabase.getInstance().getReference("users").child(fUser.getUid());
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(FirebaseUserModel.class);
+                adiEditText.setText(user.getName());
+                soyadiEditText.setText(user.getSurname());
+                longDOB = user.getDob();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(new Date(longDOB));
+                String a = cal.get(Calendar.DAY_OF_MONTH)+"-"+(cal.get(Calendar.MONTH)+1) +"-" +cal.get(Calendar.YEAR);
+                dogumTarihiEditText.setText(a);
+                durumEditText.setText(user.getSummInfo());
+                emailEditText.setText(user.getEmail());
+                if(user.getProfilUrl().equals("default"))
+                    profilImage.setImageResource(R.drawable.kullaniciprofildefault);
+                else
+                    Glide.with(getApplicationContext()).load(user.getProfilUrl()).into(profilImage);
+                if(user.getBackgroundUrl().equals("default"))
+                    backgroundImage.setImageResource(R.drawable.defaultback);
+                else
+                    Glide.with(getApplicationContext().getApplicationContext()).load(user.getBackgroundUrl()).into(backgroundImage);
+            }
 
-        adiEditText.setText(user.getName());
-        soyadiEditText.setText(user.getSurname());
-        longDOB = user.getDob();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date(longDOB));
-        String a = cal.get(Calendar.DAY_OF_MONTH)+"-"+(cal.get(Calendar.MONTH)+1) +"-" +cal.get(Calendar.YEAR);
-        dogumTarihiEditText.setText(a);
-        durumEditText.setText(user.getSummInfo());
-        emailEditText.setText(user.getEmail());
-        if(user.getProfilPhoto() != null)
-            profilImage.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilPhoto(),0,user.getProfilPhoto().length));
-        if(user.getProfilBackground() != null)
-            backgroundImage.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilBackground(),0,user.getProfilBackground().length));
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
 
 
         //TODO: BU IMAGEVIEWLER BAŞLANGIÇ OLARAK DATABASEDEN ÇEKİLMELİ
@@ -111,6 +124,8 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
 
 
     public void profilDuzenleClicks(View view) {
+        AtomicReference<String> profilUrl = new AtomicReference<>("default");
+        AtomicReference<String> backgroundUrl = new AtomicReference<>("default");
         switch (view.getId()){
             case R.id.profiliDuzenleKaydetButton:
                 progressDialog = new ProgressDialog();
@@ -120,7 +135,6 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                 progressDialog.show(getSupportFragmentManager(),"ProfilDuzenleEkran");
                 storageReference = FirebaseStorage.getInstance().getReference("UsersPhotos").child(fUser.getUid());
                 if(backgroundBitmap != null){
-                    resimlerDegisti=true;
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     backgroundBitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
                     backgroundByte = baos.toByteArray();
@@ -130,14 +144,16 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                     }).addOnSuccessListener(taskSnapshot -> {
                         // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                         // ...
-                        backgroundKontrol = true;
+                        taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(uri ->{
+                            backgroundUrl.set(uri.toString());
+                            backgroundKontrol = true;
+                        });
                         System.out.println("deneememememee");
 
                     });
 
                 }
                 if(avatarBitmap != null){
-                    resimlerDegisti = true;
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     avatarBitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
                     avatarByte = baos.toByteArray();
@@ -147,7 +163,10 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                     }).addOnSuccessListener(taskSnapshot -> {
                         // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                         // ...
-                        profilKontrol = true;
+                        taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(uri ->{
+                            profilUrl.set(uri.toString());
+                            profilKontrol = true;
+                        });
                         System.out.println("deneememememee");
                     });
 
@@ -155,25 +174,25 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                 //TODO: Burası Düzenlenecek tekrar
                 Runnable runnable = () -> {
                     //Thread.sleep(10000);
-                    if(resimlerDegisti)
-                    while(!profilKontrol && !backgroundKontrol);
+                    if(profilDegisti && backgroundDegisti)
+                        while(!profilKontrol && !backgroundKontrol);
+                    else if(profilDegisti)
+                        while(!profilKontrol);
+                    else if (backgroundDegisti)
+                        while (!backgroundKontrol);
                     user.setUsername(fUser.getDisplayName());
                     if(backgroundKontrol)
-                        user.setProfilBackground(backgroundByte);
+                        user.setBackgroundUrl(backgroundUrl.get());
                     if(profilKontrol)
-                        user.setProfilPhoto(avatarByte);
+                        user.setProfilUrl(profilUrl.get());
                     user.setName(adiEditText.getText().toString().trim());
                     user.setSummInfo(durumEditText.getText().toString().trim());
                     user.setDob(longDOB);
                     user.setSurname(soyadiEditText.getText().toString().trim());
                     FirebaseDatabase.getInstance().getReference("users")
                             .child(fUser.getUid())
-                            .setValue(user.getFirebaseModel()).addOnCompleteListener( task -> {
+                            .setValue(user).addOnCompleteListener( task -> {
                                 if(task.isSuccessful()) {
-                                    VeriTabaniDb tabaniDb = VeriTabaniDb.getInstance(getApplicationContext());
-                                    tabaniDb.open();
-                                    new KullaniciIslemler(tabaniDb.dbAl()).kullaniciGuncelle(user);
-                                    tabaniDb.close();
                                     this.runOnUiThread(() -> progressDialog.dismiss());
                                     finish();
                                 }
@@ -189,7 +208,6 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                 finish();
                 break;
             case R.id.profilDuzenleAvatarCircleImage:
-
                 if(PackageManager.PERMISSION_GRANTED !=
                         ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -250,6 +268,7 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
 
     private void backgroundDegis() {
         hangiResimDegisti = BACKGROUND_RESMI;
+        backgroundDegisti = true;
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(ProfilDuzenleEkran.this);
@@ -257,6 +276,7 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
 
     private void resimDegistir() {
         hangiResimDegisti = AVATAR_RESMI;
+        profilDegisti = true;
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(ProfilDuzenleEkran.this);

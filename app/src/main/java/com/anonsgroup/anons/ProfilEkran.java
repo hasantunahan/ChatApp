@@ -30,6 +30,7 @@ import com.anonsgroup.anons.database.KullaniciIslemler;
 import com.anonsgroup.anons.database.VeriTabaniDb;
 import com.anonsgroup.anons.models.Anons;
 import com.anonsgroup.anons.models.Anonss;
+import com.anonsgroup.anons.models.FirebaseUserModel;
 import com.anonsgroup.anons.models.User;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -79,11 +80,11 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
     private ArrayList<Anons> anons=new ArrayList<>();
     private RecyclerView recyclerView;
     private Context context;
-
+   // public static FirebaseUserModel userModel ;
     private FirebaseRecyclerOptions<Anonss> recyclerOptions;
     private FirebaseRecyclerAdapter<Anonss, ProfilViewHolder> fAdapter;
-
-
+    ImageView navigationProfilView;
+    TextView navigationUsername;
     public ProfilEkran() {
         // Required empty public constructor
     }
@@ -161,8 +162,8 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         navigationView.setNavigationItemSelectedListener(this);
         mdrawerLayout = view.findViewById(R.id.drawerLayout);
         View headerView = navigationView.getHeaderView(0);
-        TextView navigationUsername = headerView.findViewById(R.id.nav_header_kullanici_adi);
-        ImageView navigationProfilView = headerView.findViewById(R.id.nav_header_profil_foto);
+        navigationUsername = headerView.findViewById(R.id.nav_header_kullanici_adi);
+        navigationProfilView = headerView.findViewById(R.id.nav_header_profil_foto);
 
         ActionBarDrawerToggle drawerToggle=
                 new ActionBarDrawerToggle(this.getActivity(),mdrawerLayout,R.string.drawer_open,R.string.drawer_close);
@@ -202,13 +203,40 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         recyclerView.setAdapter(fAdapter);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        //TODO: Navigation drawer gelince bu burdan kalkıcak.
 
+
+
+        return view;
+    }
+
+    // TODO: Rename method, update argument and hook metho into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onResume() {
         //Profil Bilgilerinin Çekildği kod:
         FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(mAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        //userModel = snapshot.getValue(FirebaseUserModel.class);
                         profildurumTextView.setText(snapshot.child("summInfo").getValue().toString());
                         String adSoyad = snapshot.child("name").getValue().toString() + " " + snapshot.child("surname").getValue().toString();
                         String username= snapshot.child("username").getValue().toString();
@@ -238,37 +266,6 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
 
             }
         });
-
-
-
-
-        //TODO: Navigation drawer gelince bu burdan kalkıcak.
-
-
-
-        return view;
-    }
-
-    // TODO: Rename method, update argument and hook metho into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onResume() {
         super.onResume();
         if(fAdapter!=null)
             fAdapter.startListening();
