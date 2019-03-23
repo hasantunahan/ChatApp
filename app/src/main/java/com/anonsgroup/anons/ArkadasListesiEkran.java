@@ -5,21 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.ImageView;
-
 import com.anonsgroup.anons.Adapter.UserAdapter;
 import com.anonsgroup.anons.models.ArkadaslarimModel;
 import com.anonsgroup.anons.models.FirebaseUserModel;
-import com.anonsgroup.anons.models.SenderUsers;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,19 +29,14 @@ public class ArkadasListesiEkran extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arkadas_listesi_ekran);
         kapat=findViewById(R.id.arkadasListesiKapat);
-        kapat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        kapat.setOnClickListener(v -> finish());
 
         recyclerView=findViewById(R.id.arkadasListesiRecylerView);
         nlist=new ArrayList<>();
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        userAdapter = new UserAdapter(getApplicationContext(), nlist);
+        recyclerView.setAdapter(userAdapter);
         readUser();
 
 
@@ -71,7 +61,7 @@ public class ArkadasListesiEkran extends AppCompatActivity {
                                     FirebaseUserModel userModel = dataSnapshot.getValue(FirebaseUserModel.class);
                                     ArkadaslarimModel user = new ArkadaslarimModel(userModel.getUsername(), userModel.getProfilUrl(), userModel.getSummInfo());
                                     nlist.add(user);
-
+                                    userAdapter.notifyDataSetChanged();
                                 }
 
                                 @Override
@@ -80,10 +70,6 @@ public class ArkadasListesiEkran extends AppCompatActivity {
                                 }
                             });
                         }
-
-                        userAdapter = new UserAdapter(getApplicationContext(), nlist);
-                        recyclerView.setAdapter(userAdapter);
-
 
                     }
 

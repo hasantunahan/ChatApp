@@ -2,7 +2,6 @@ package com.anonsgroup.anons.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,14 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.anonsgroup.anons.MesajEkran;
 import com.anonsgroup.anons.R;
 import com.anonsgroup.anons.models.ArkadaslarimModel;
-import com.anonsgroup.anons.models.FirebaseUserModel;
 import com.bumptech.glide.Glide;
-import com.google.firebase.storage.FirebaseStorage;
-
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
@@ -52,13 +47,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         }
 
         //mesajlasma
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(context, MesajEkran.class);
-                intent.putExtra("userid",user.getUsername());
-                context.startActivity(intent);
-            }
+        viewHolder.itemView.setOnClickListener(v -> {
+            Intent intent=new Intent(context, MesajEkran.class);
+            intent.putExtra("userid",user.getUsername());
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         });
 
     }
