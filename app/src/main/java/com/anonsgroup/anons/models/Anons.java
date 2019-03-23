@@ -2,15 +2,19 @@ package com.anonsgroup.anons.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
+@NoArgsConstructor
 public class Anons {
-@Getter @Setter private int profilFotograf;
-@Getter @Setter private String metin;
-@Getter @Setter private String konum;
-@Getter @Setter private String kisi;
-@Getter @Setter private String tarih;
-@Getter @Setter private int goruldu = 0;     //0 ise okunmadı , 1 ise okundu
+    @Getter @Setter private int countOfLike;
+    @Getter @Setter private long date;
+    @Getter @Setter private String location;
+    @Getter @Setter private String text;
+    @Getter @Setter private String userId;
+    @Getter @Setter private boolean answered = false;
+    @Getter @Setter private boolean liked = false;
+    @Getter @Setter private boolean seen = false;
 
 }

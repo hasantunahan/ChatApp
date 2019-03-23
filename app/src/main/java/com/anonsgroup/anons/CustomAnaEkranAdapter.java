@@ -43,19 +43,20 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
 
     @Override
     public void onBindViewHolder(@NonNull myviewHolder myviewHolder, int i) {
-        myviewHolder.profilFotograf.setImageResource(mdata.get(i).getProfilFotograf());
-        myviewHolder.kisi.setText(mdata.get(i).getKisi());
-        myviewHolder.metin.setText(mdata.get(i).getMetin());
-        myviewHolder.konum.setText(mdata.get(i).getKonum());
-        myviewHolder.tarih.setText(mdata.get(i).getTarih());
+        //TODO: firebaseden çekilecek kardeşşşşşşş.
+        myviewHolder.profilFotograf.setImageResource(R.drawable.kullaniciprofildefault);
+        myviewHolder.kisi.setText(mdata.get(i).getUserId());
+        myviewHolder.metin.setText(mdata.get(i).getText());
+        myviewHolder.konum.setText(mdata.get(i).getLocation());
+        myviewHolder.tarih.setText(""+mdata.get(i).getDate());
 
-        myviewHolder.aProfilFoto.setImageResource(mdata.get(i).getProfilFotograf());
-        myviewHolder.aKisi.setText(mdata.get(i).getKisi());
-        myviewHolder.aMetin.setText(mdata.get(i).getMetin());
-        myviewHolder.aKonum.setText(mdata.get(i).getKonum());
-        myviewHolder.aTarih.setText(mdata.get(i).getTarih());
+        myviewHolder.aProfilFoto.setImageResource(R.drawable.kullaniciprofildefault);
+        myviewHolder.aKisi.setText(mdata.get(i).getUserId());
+        myviewHolder.aMetin.setText(mdata.get(i).getText());
+        myviewHolder.aKonum.setText(mdata.get(i).getLocation());
+        myviewHolder.aTarih.setText(""+mdata.get(i).getDate());
 
-        if(mdata.get(i).getGoruldu() == 0)
+        if(!mdata.get(i).isSeen())
             myviewHolder.begeniFotograf.setImageResource(R.drawable.ic_bildiri);
 
     }
@@ -102,29 +103,23 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
 
             acilanLayout=itemView.findViewById(R.id.acilanLayout);
             ilkLayout=itemView.findViewById(R.id.linear);
-            ilkLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //TODO: Veritabanında görüldü alanı değiştirilecek.
-                    if(begeniFotograf.getDrawable() != null)
-                        begeniFotograf.setImageDrawable(null);
-                    acilanLayout.setVisibility(View.VISIBLE);
-                    ilkLayout.setVisibility(View.GONE);
-                    if(geciciAcil!=acilanLayout&&geciciAcil!=null&&geciciAcil.getVisibility() == View.VISIBLE){
-                        geciciAcil.setVisibility(View.GONE);
-                        geciciİlk.setVisibility(View.VISIBLE);
-                    }
-                    geciciAcil = acilanLayout;
-                    geciciİlk = ilkLayout;
+            ilkLayout.setOnClickListener(v -> {
+                //TODO: Veritabanında görüldü alanı değiştirilecek.
+                if(begeniFotograf.getDrawable() != null)
+                    begeniFotograf.setImageDrawable(null);
+                acilanLayout.setVisibility(View.VISIBLE);
+                ilkLayout.setVisibility(View.GONE);
+                if(geciciAcil!=acilanLayout&&geciciAcil!=null&&geciciAcil.getVisibility() == View.VISIBLE){
+                    geciciAcil.setVisibility(View.GONE);
+                    geciciİlk.setVisibility(View.VISIBLE);
                 }
+                geciciAcil = acilanLayout;
+                geciciİlk = ilkLayout;
             });
-            acilanLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(ilkLayout.getVisibility()==View.GONE) {
-                        ilkLayout.setVisibility(View.VISIBLE);
-                        acilanLayout.setVisibility(View.GONE);
-                    }
+            acilanLayout.setOnClickListener(v -> {
+                if(ilkLayout.getVisibility()==View.GONE) {
+                    ilkLayout.setVisibility(View.VISIBLE);
+                    acilanLayout.setVisibility(View.GONE);
                 }
             });
 

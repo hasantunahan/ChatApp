@@ -63,8 +63,11 @@ public class AnaMenuEkran extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private List<Anons> nlist;
+    CustomAnaEkranAdapter customAnaEkranAdapter;
     private OnFragmentInteractionListener mListener;
-
+    private FirebaseRecyclerOptions<Anonss> recyclerOptions;
+    private FirebaseRecyclerAdapter<Anonss, AnonsViewHolder> fAdapter;
     public AnaMenuEkran() {
         // Required empty public constructor
     }
@@ -105,7 +108,37 @@ public class AnaMenuEkran extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_ana_menu_ekran, container, false);
         // Inflate the layout for this fragment
+        nlist = new ArrayList<>();
+        RecyclerView recyclerView=view.findViewById(R.id.anaEkranAnonsListLayout);
 
+
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(view.getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.scrollToPosition(0);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        customAnaEkranAdapter=new CustomAnaEkranAdapter(view.getContext(),nlist);
+        recyclerView.setAdapter(customAnaEkranAdapter);
+
+
+        //Anonsların Çekildiği Kod:
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("AnonsGidenKullanicilar").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    System.out.println(dataSnapshot1.toString());
+                    Anons anons = dataSnapshot1.getValue(Anons.class);
+                    nlist.add(anons);
+                }
+                customAnaEkranAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
 

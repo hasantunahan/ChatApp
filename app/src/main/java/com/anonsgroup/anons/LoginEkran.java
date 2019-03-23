@@ -79,19 +79,13 @@ public class LoginEkran extends AppCompatActivity {
         profilPhotoCekildi.set(false);
         backgroundPhotoCekildi.set(false);
 
-        usernameEditText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                userNameWrapper.setError(null);
-                return false;
-            }
+        usernameEditText.setOnKeyListener((v, keyCode, event) -> {
+            userNameWrapper.setError(null);
+            return false;
         });
-        passwordEditText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                passwordWrapper.setError(null);
-                return false;
-            }
+        passwordEditText.setOnKeyListener((v, keyCode, event) -> {
+            passwordWrapper.setError(null);
+            return false;
         });
 
         mAuth = FirebaseAuth.getInstance();
@@ -100,15 +94,12 @@ public class LoginEkran extends AppCompatActivity {
             fUser.reload();
 
 
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!internetBaglantiKontrol()) {
-                    Toast.makeText(LoginEkran.this, getResources().getString(R.string.internet_connection_error), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                startActivity(new Intent(getApplicationContext(), KayitOlEkran.class));
+        signUp.setOnClickListener(v -> {
+            if (!internetBaglantiKontrol()) {
+                Toast.makeText(LoginEkran.this, getResources().getString(R.string.internet_connection_error), Toast.LENGTH_SHORT).show();
+                return;
             }
+            startActivity(new Intent(getApplicationContext(), KayitOlEkran.class));
         });
 
     }
@@ -165,7 +156,6 @@ public class LoginEkran extends AppCompatActivity {
 
         switch (view.getId()) {
             case R.id.loginButton:
-                //şimdilik email ile giriyoruz.
                 kullaniciAdi = usernameEditText.getText().toString().trim();
                 sifre = passwordEditText.getText().toString().trim();
                 if (!alanlarKontrol(kullaniciAdi, sifre)) {
@@ -189,6 +179,7 @@ public class LoginEkran extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Log.d("girdi ", "asdasdasdasdasdasdasdasd");
                             if (dataSnapshot.exists()) {
+                                //TODO: Burdaki loglar program bittiğinde silinecek.
                                 Log.d("email: ", "childerns::::" + " - " + dataSnapshot.getChildren().toString());
                                 // dataSnapshot is the "issue" node with all children with id 0
                                 for(DataSnapshot datas : dataSnapshot.getChildren()) {
@@ -239,49 +230,9 @@ public class LoginEkran extends AppCompatActivity {
                         return;
                     }
                 }
-                tabaniDb = VeriTabaniDb.getInstance(getApplicationContext());
-                tabaniDb.open();
-                user = new KullaniciIslemler(tabaniDb.dbAl()).kullaniciAlMail(kullaniciAdi);
-                if(user == null){
-                    user = new User();
-                    Query query = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("email").equalTo(kullaniciAdi);
-                    query.addValueEventListener(new ValueEventListener() {
-
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                Log.d("gelen:" , postSnapshot.getValue().toString());
-                                user = postSnapshot.getValue(User.class);
-                                Log.d("gelenler:",user.getEmail() + " " + user.getName());
-                                verilerCekildi.set(true);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    } );
-                    fUser.reload();
-                    storageRef = FirebaseStorage.getInstance().getReference();
-                    // Create a storage reference from our app
-                    StorageReference profilRef = storageRef.child("UsersPhotos/"+fUser.getUid()+"/profil.jpeg");
-                    System.out.println(fUser.getUid());
-                    final long maxBytes= 1024*1024*5;
-                    profilRef.getBytes(maxBytes).addOnCompleteListener(gorev ->
-                    {user.setProfilPhoto(gorev.getResult()); profilPhotoCekildi.set(true);}).addOnFailureListener(Throwable::printStackTrace);
-                    StorageReference backgRef = storageRef.child("UsersPhotos/"+fUser.getUid()+"/backGround.jpeg");
-                    backgRef.getBytes(maxBytes).addOnCompleteListener(gorev1 -> {user.setProfilBackground(gorev1.getResult()); backgroundPhotoCekildi.set(true);});
-                    islemleriBitir();
-
-                }
-                else {
-                    tabaniDb.close();
-                    Log.d("displayname:", fUser.getDisplayName());
-                    Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
-                    finish();
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
+                finish();
+                startActivity(intent);
 
             } else {
                 progressDialog.dismiss();
@@ -289,61 +240,6 @@ public class LoginEkran extends AppCompatActivity {
                 uyariTextView.setVisibility(View.VISIBLE);
                 Log.d("girisHata", task.getException().getMessage());
             }
-        });
-
-
-    }
-
-    private void islemleriBitir() {
-        Thread interrupter = null;
-        Thread anaGorev = new Thread(() -> {
-
-            while (!profilPhotoCekildi.get()|| !backgroundPhotoCekildi.get() || !verilerCekildi.get()) {
-                System.out.println("deneme");
-                if(Thread.interrupted())
-                    return;
-            }
-            Log.d("en sonki user: ",user.getEmail() + " " + user.getSurname());
-            Log.d("Buraya bakkkk", profilPhotoCekildi.get() + "" + backgroundPhotoCekildi.get() + " " + verilerCekildi.get());
-            new KullaniciIslemler(tabaniDb.dbAl()).yeniKullaniciKaydet(user);
-            tabaniDb.close();
-            Intent intent = new Intent(getApplicationContext(), AnaEkran.class);
-            finish();
-            startActivity(intent);
-        });
-        anaGorev.start();
-        final AtomicReference<String> hataMesaji = new AtomicReference<>();
-        hataMesaji.set("");
-        interrupter = new Thread(() -> {
-
-            try {
-                Thread.sleep(10000);
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (!profilPhotoCekildi.get()) {
-                hataMesaji.set(hataMesaji.get()+getResources().getString(R.string.profilPhoto_download_error) + "\n");
-            }
-            if (!backgroundPhotoCekildi.get()) {
-                hataMesaji.set(hataMesaji.get() + getResources().getString(R.string.backgroundPhoto_download_error) + "\n");
-            }
-            if (!verilerCekildi.get()) {
-                hataMesaji.set(hataMesaji.get() + getResources().getString(R.string.user_info_error) + "\n");
-            }
-            Log.d("Bakalimmmmmmmmm:","eeee Gelmiş");
-            if(anaGorev.isAlive()) {
-                anaGorev.interrupt();
-                hata(hataMesaji.get());
-            }
-        });
-        interrupter.start();
-
-    }
-    private void hata(String mesaj){
-        this.runOnUiThread(() -> {
-            Toast.makeText(getApplicationContext(), mesaj+getResources().getString(R.string.connection_timeout), Toast.LENGTH_LONG).show();
-            progressDialog.dismiss();
         });
     }
 }

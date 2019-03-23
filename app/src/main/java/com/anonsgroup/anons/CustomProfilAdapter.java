@@ -13,6 +13,7 @@ import com.anonsgroup.anons.models.Anons;
 
 import java.util.ArrayList;
 
+/*
 public class CustomProfilAdapter extends RecyclerView.Adapter<CustomProfilAdapter.ViewHolder> {
     ArrayList<Anons> anonsArrayList;
 
@@ -68,3 +69,4 @@ public class CustomProfilAdapter extends RecyclerView.Adapter<CustomProfilAdapte
         }
     }
 }
+*/

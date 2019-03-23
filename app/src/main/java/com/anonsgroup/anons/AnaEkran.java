@@ -61,7 +61,7 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
                     }
                 });
                 viewPager.setAdapter(adapter);viewPager.setCurrentItem(1);
-        FirebaseMessaging.getInstance().subscribeToTopic("anons");
+       // FirebaseMessaging.getInstance().subscribeToTopic("anons");
     }
 
     @Override

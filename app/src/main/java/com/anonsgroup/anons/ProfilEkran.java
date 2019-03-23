@@ -31,12 +31,18 @@ import com.anonsgroup.anons.database.VeriTabaniDb;
 import com.anonsgroup.anons.models.Anons;
 import com.anonsgroup.anons.models.Anonss;
 import com.anonsgroup.anons.models.User;
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,9 +76,9 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
     private ImageView profilPhotoImageView;
     private ImageView profilBackgroundImageView;
     private OnFragmentInteractionListener mListener;
-    ArrayList<Anons> anons=new ArrayList<>();
-    RecyclerView recyclerView;
-    Context context;
+    private ArrayList<Anons> anons=new ArrayList<>();
+    private RecyclerView recyclerView;
+    private Context context;
 
     private FirebaseRecyclerOptions<Anonss> recyclerOptions;
     private FirebaseRecyclerAdapter<Anonss, ProfilViewHolder> fAdapter;
@@ -135,25 +141,36 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         anonsGorGizle = view.findViewById(R.id.anonsGorGizleTextView);
         anonslarimScrollView = view.findViewById(R.id.anonslarimNestedScrollView);
 
-        anonsGorGizle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(anonslarimScrollView.getVisibility() == View.GONE) {
-                    anonslarimScrollView.setVisibility(View.VISIBLE);
-                    anonslarimScrollView.scrollTo(0,0);
-                    anonsGorGizle.setText(getResources().getString(R.string.hide_anons));
-                    Drawable drawable = getResources().getDrawable(R.drawable.ic_sortupsvg);
-                    anonsGorGizle.setCompoundDrawablesWithIntrinsicBounds(null,null,drawable,null);
-                    return;
-                }
-                anonslarimScrollView.setVisibility(View.GONE);
-                anonsGorGizle.setText(getResources().getString(R.string.show_anons));
-                Drawable drawable = getResources().getDrawable(R.drawable.ic_sortsvg);
+        //reklam alanının kapanıp anonların gözüktüğü yer.
+        anonsGorGizle.setOnClickListener(v -> {
+            if(anonslarimScrollView.getVisibility() == View.GONE) {
+                anonslarimScrollView.setVisibility(View.VISIBLE);
+                anonslarimScrollView.scrollTo(0,0);
+                anonsGorGizle.setText(getResources().getString(R.string.hide_anons));
+                Drawable drawable = getResources().getDrawable(R.drawable.ic_sortupsvg);
                 anonsGorGizle.setCompoundDrawablesWithIntrinsicBounds(null,null,drawable,null);
+                return;
             }
+            anonslarimScrollView.setVisibility(View.GONE);
+            anonsGorGizle.setText(getResources().getString(R.string.show_anons));
+            Drawable drawable = getResources().getDrawable(R.drawable.ic_sortsvg);
+            anonsGorGizle.setCompoundDrawablesWithIntrinsicBounds(null,null,drawable,null);
         });
 
+        navigationView= view.findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        mdrawerLayout = view.findViewById(R.id.drawerLayout);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navigationUsername = headerView.findViewById(R.id.nav_header_kullanici_adi);
+        ImageView navigationProfilView = headerView.findViewById(R.id.nav_header_profil_foto);
 
+        ActionBarDrawerToggle drawerToggle=
+                new ActionBarDrawerToggle(this.getActivity(),mdrawerLayout,R.string.drawer_open,R.string.drawer_close);
+        mdrawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+
+
+        //kendi anonslarının çekildiği kod
         RecyclerView recyclerView=view.findViewById(R.id.profilEkranAnonsListRecycler);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Anonslar").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         recyclerOptions = new FirebaseRecyclerOptions.Builder<Anonss>()
@@ -177,9 +194,6 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
                 return new ProfilViewHolder(v);
             }
         };
-
-
-
         //CustomAnaEkranAdapter customAnaEkranAdapter=new CustomAnaEkranAdapter(view.getContext(),nlist);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -189,13 +203,44 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         recyclerView.setLayoutManager(linearLayoutManager);
 
 
-        navigationView= view.findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        mdrawerLayout = view.findViewById(R.id.drawerLayout);
-        ActionBarDrawerToggle drawerToggle=
-                new ActionBarDrawerToggle(this.getActivity(),mdrawerLayout,R.string.drawer_open,R.string.drawer_close);
-        mdrawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
+        //Profil Bilgilerinin Çekildği kod:
+        FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(mAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        profildurumTextView.setText(snapshot.child("summInfo").getValue().toString());
+                        String adSoyad = snapshot.child("name").getValue().toString() + " " + snapshot.child("surname").getValue().toString();
+                        String username= snapshot.child("username").getValue().toString();
+                        adSoyadTextView.setText(adSoyad);
+                        navigationUsername.setText(username);
+                        String background = snapshot.child("backgroundUrl").getValue().toString();
+                        String profil = snapshot.child("profilUrl").getValue().toString();
+                        if(background.equals("default"))
+                            profilBackgroundImageView.setImageResource(R.drawable.defaultback);
+                        else
+                            Glide.with(getActivity().getApplicationContext()).load(background).into(profilBackgroundImageView);
+
+                        if(profil.equals("default")) {
+                            profilPhotoImageView.setImageResource(R.drawable.kullaniciprofildefault);
+                            navigationProfilView.setImageResource(R.drawable.kullaniciprofildefault);
+                        }
+                        else {
+                            Glide.with(getActivity().getApplicationContext()).load(profil).into(profilPhotoImageView);
+                            Glide.with(getActivity().getApplicationContext()).load(profil).into(navigationProfilView);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
 
         //TODO: Navigation drawer gelince bu burdan kalkıcak.
 
@@ -224,18 +269,6 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
 
     @Override
     public void onResume() {
-        VeriTabaniDb db = VeriTabaniDb.getInstance(getContext());
-        db.open();
-        KullaniciIslemler kIslemler = new KullaniciIslemler(db.dbAl());
-        User user =kIslemler.kullaniciAl(mAuth.getCurrentUser().getDisplayName());
-        db.close();
-        String a = user.getName() + " " + user.getSurname();
-        adSoyadTextView.setText(a);
-        profildurumTextView.setText(user.getSummInfo());
-        if(user.getProfilPhoto() != null)
-            profilPhotoImageView.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilPhoto(),0,user.getProfilPhoto().length));
-        if(user.getProfilBackground() != null)
-            profilBackgroundImageView.setImageBitmap(BitmapFactory.decodeByteArray(user.getProfilBackground(),0,user.getProfilBackground().length));
         super.onResume();
         if(fAdapter!=null)
             fAdapter.startListening();

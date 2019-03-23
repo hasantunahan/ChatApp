@@ -147,29 +147,26 @@ public class KayitOlEkran extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         fUser = mAuth.getCurrentUser();
 
-        signUpOkeyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressDialog.show(getSupportFragmentManager(),"kayitol Ekran");
-                name = nameEditText.getText().toString().trim();
-                surname = surnameEditText.getText().toString().trim();
-                username = usernameEditText.getText().toString().trim();
-                email = emailEditText.getText().toString().trim();
-                password = passwordEditText.getText().toString().trim();
-                gender = genderSpinner.getSelectedItem().toString();
-                if (!tumKontroller()){
-                    progressDialog.dismiss();
-                    return;
-                }
-                if(internetBaglantiKontrol())
-                    registerNewUser(email,password);
-                else{
-                    progressDialog.dismiss();
-                    Toast.makeText(KayitOlEkran.this, getResources().getString(R.string.internet_connection_error), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
+        signUpOkeyButton.setOnClickListener(v -> {
+            progressDialog.show(getSupportFragmentManager(),"kayitol Ekran");
+            name = nameEditText.getText().toString().trim();
+            surname = surnameEditText.getText().toString().trim();
+            username = usernameEditText.getText().toString().trim();
+            email = emailEditText.getText().toString().trim();
+            password = passwordEditText.getText().toString().trim();
+            gender = genderSpinner.getSelectedItem().toString();
+            if (!tumKontroller()){
+                progressDialog.dismiss();
+                return;
             }
+            if(internetBaglantiKontrol())
+                registerNewUser(email,password);
+            else{
+                progressDialog.dismiss();
+                Toast.makeText(KayitOlEkran.this, getResources().getString(R.string.internet_connection_error), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
         });
     }
 
@@ -217,27 +214,23 @@ public class KayitOlEkran extends AppCompatActivity {
 
     private void kayitTamamla(){
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            fUser = mAuth.getCurrentUser();
-                            Objects.requireNonNull(fUser).reload();
-                            final FirebaseUserModel user = new FirebaseUserModel("default","default",email,username,name,surname,longDOB,gender,new Date().getTime(),"",0,new Date().getTime(),1000,0);
-                            UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(user.getUsername()).build();
-                            fUser.updateProfile(userProfileChangeRequest);
-                            Log.d("İşlem: ", "createUserWithEmail:success");
-                            FirebaseDatabase.getInstance().getReference("users")
-                                    .child(fUser.getUid())
-                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        VeriTabaniDb db = VeriTabaniDb.getInstance(getApplicationContext());
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        fUser = mAuth.getCurrentUser();
+                        Objects.requireNonNull(fUser).reload();
+                        final FirebaseUserModel user = new FirebaseUserModel("default","default",email,username,name,surname,longDOB,gender,new Date().getTime(),"",0,new Date().getTime(),1000,0);
+                        UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(user.getUsername()).build();
+                        fUser.updateProfile(userProfileChangeRequest);
+                        Log.d("İşlem: ", "createUserWithEmail:success");
+                        FirebaseDatabase.getInstance().getReference("users")
+                                .child(fUser.getUid())
+                                .setValue(user).addOnCompleteListener(task1 -> {
+                                    if(task1.isSuccessful()){
+                                        /*VeriTabaniDb db = VeriTabaniDb.getInstance(getApplicationContext());
                                         db.open();
                                         KullaniciIslemler kIslemler = new KullaniciIslemler(db.dbAl());
                                         kIslemler.yeniKullaniciKaydet(user);
-                                        db.close();
+                                        db.close();*/
                                         progressDialog.dismiss();
                                         fUser.sendEmailVerification();
                                         if(!fUser.isEmailVerified()) {
@@ -252,23 +245,23 @@ public class KayitOlEkran extends AppCompatActivity {
                                     else{
                                         progressDialog.dismiss();
                                         fUser.delete();
-                                        Log.d("userhata:",task.getException().toString());
+                                        Log.d("userhata:", task1.getException().toString());
+                                        //TODO: Stringe çevrilecek
+                                        Toast.makeText(this, "bir hata oluştu", Toast.LENGTH_SHORT).show();
                                     }
-                                }
-                            });
+                                });
 
-                        } else {
-                            progressDialog.dismiss();
-                            if(fUser != null)
-                                fUser.delete();
-                            // If sign in fails, display a message to the user.
-                            Log.w("İşlem:","createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.user_registering_fail),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-                        // ...
+                    } else {
+                        progressDialog.dismiss();
+                        if(fUser != null)
+                            fUser.delete();
+                        // If sign in fails, display a message to the user.
+                        Log.w("İşlem:","createUserWithEmail:failure", task.getException());
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.user_registering_fail),
+                                Toast.LENGTH_SHORT).show();
                     }
+
+                    // ...
                 });
     }
 
@@ -344,7 +337,13 @@ public class KayitOlEkran extends AppCompatActivity {
         if (usernameInput.isEmpty()) {
             usernameWrapper.setError(getResources().getString(R.string.empty_warning));
             kontrol = false;
-        } else if (usernameInput.length() > 15) {
+        }
+        if (usernameInput.contains("@")){
+            //TODO: Stringe Çevrilecek.
+            usernameWrapper.setError("Kullanıcı Adı @ İşareti içeremez.");
+            kontrol = false;
+        }
+        else if (usernameInput.length() > 15) {
             usernameWrapper.setError(getResources().getString(R.string.username_warning));
             kontrol = false;
         } else {
