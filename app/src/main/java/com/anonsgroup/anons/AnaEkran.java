@@ -1,7 +1,11 @@
 package com.anonsgroup.anons;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,14 +13,26 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.Objects;
 
-public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmentInteractionListener,AnaMenuEkran.OnFragmentInteractionListener,ChatEkran.OnFragmentInteractionListener {
+public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmentInteractionListener, AnaMenuEkran.OnFragmentInteractionListener, ChatEkran.OnFragmentInteractionListener {
     TextView arkadasSayisiTextView;
     TextView bildirimSayisiTextView;
     TextView begeniSayisiTextView;
@@ -24,7 +40,7 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
     private FirebaseAuth mAuth;
 
 
-    public void profilEkranTiklama(View view){
+    public void profilEkranTiklama(View view) {
         Toast.makeText(getApplicationContext(), "Hasan", Toast.LENGTH_SHORT).show();
     }
 
@@ -41,27 +57,31 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
         begeniSayisiTextView = findViewById(R.id.begeniSayisiTextView);
         arkadasSayisiTextView = findViewById(R.id.arkadasSayisiTextView);
 
-        final ViewPager viewPager =(ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter=new PagerAdapter(getSupportFragmentManager(),3);
-                viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int i, float v, int i1) {
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), 3);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
 
-                    }
+            }
 
-                    @Override
-                    public void onPageSelected(int i) {
+            @Override
+            public void onPageSelected(int i) {
 
-                    }
+            }
 
-                    @Override
-                    public void onPageScrollStateChanged(int i) {
-                        if (ProfilEkran.mdrawerLayout!= null && ProfilEkran.mdrawerLayout.isDrawerOpen(GravityCompat.START))
-                            ProfilEkran.mdrawerLayout.closeDrawer(GravityCompat.START);
-                    }
-                });
-                viewPager.setAdapter(adapter);viewPager.setCurrentItem(1);
-       // FirebaseMessaging.getInstance().subscribeToTopic("anons");
+            @Override
+            public void onPageScrollStateChanged(int i) {
+                if (ProfilEkran.mdrawerLayout != null && ProfilEkran.mdrawerLayout.isDrawerOpen(GravityCompat.START))
+                    ProfilEkran.mdrawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(1);
+        // FirebaseMessaging.getInstance().subscribeToTopic("anons");
+
+
+
     }
 
     @Override
@@ -92,8 +112,8 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
 
     }
 
-    private void startLoginEkran(){
-        Intent intent = new Intent(getApplicationContext(),LoginEkran.class);
+    private void startLoginEkran() {
+        Intent intent = new Intent(getApplicationContext(), LoginEkran.class);
         startActivity(intent);
         finish();
     }
@@ -102,11 +122,14 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
     public void onFragmentInteraction(Uri uri) {
 
     }
+
     @Override
     public void onBackPressed() {
-    if (ProfilEkran.mdrawerLayout!= null && ProfilEkran.mdrawerLayout.isDrawerOpen(GravityCompat.START))
-        ProfilEkran.mdrawerLayout.closeDrawer(GravityCompat.START);
+        if (ProfilEkran.mdrawerLayout != null && ProfilEkran.mdrawerLayout.isDrawerOpen(GravityCompat.START))
+            ProfilEkran.mdrawerLayout.closeDrawer(GravityCompat.START);
         else
-        super.onBackPressed();
+            super.onBackPressed();
     }
+
+
 }
