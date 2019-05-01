@@ -1,11 +1,9 @@
 package com.anonsgroup.anons;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.location.Location;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +14,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.anonsgroup.anons.Listeners.LocationListenerImpl;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,8 +30,7 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
     TextView begeniSayisiTextView;
     TextView profilAdSayodYasTextView;
     private FirebaseAuth mAuth;
-    protected LocationManager locationManager;
-    LocationListenerImpl locationListenerImpl;
+    private FusedLocationProviderClient fusedLocationClient;
 
 
     public void profilEkranTiklama(View view) {
@@ -73,7 +72,8 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
         // FirebaseMessaging.getInstance().subscribeToTopic("anons");
-        System.out.println("serogeldiiiiiiiiiiii");
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -82,19 +82,21 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            System.out.println("tırogeldiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-
-            return;
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},99);
         }
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationListenerImpl=new LocationListenerImpl();
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerImpl);
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            Toast.makeText(AnaEkran.this, location.getLatitude()+ "-" + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
-        Toast.makeText(this, ""+locationListenerImpl.can, Toast.LENGTH_SHORT).show();
 
     }
-
-
 
     @Override
     protected void onStart() {

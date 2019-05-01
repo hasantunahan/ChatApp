@@ -121,10 +121,10 @@ public class MesajEkran extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if(!dataSnapshot.hasChild(odaid)){
-                    HashMap chatAddMap =new HashMap();
-                    String profilUrl="default";
+                if(!dataSnapshot.child(fuser.getDisplayName()).hasChild(userid2)){
                     int remainingMessage=20;
+                    /*HashMap chatAddMap =new HashMap();
+                    String profilUrl="default";
                     HashMap altmap=new HashMap();
                     altmap.put("profilUrl",profilUrl);
                     HashMap ustmap=new HashMap();
@@ -135,7 +135,6 @@ public class MesajEkran extends AppCompatActivity {
                     //chatAddMap.put("username",username.getText().toString());
 
                     HashMap ChatUserMap=new HashMap();
-
                     ChatUserMap.put("Rooms/" +odaid, chatAddMap);
                     //ChatUserMap.put("Rooms/"+odaid+"/"+currentUsername,chatAddMap);
                     reference.updateChildren(ChatUserMap, new DatabaseReference.CompletionListener() {
@@ -145,7 +144,12 @@ public class MesajEkran extends AppCompatActivity {
                                 Log.d("CHAT_LOG",databaseError.getMessage().toString());
                             }
                         }
-                    });
+                    });  */
+
+                    reference.child("Rooms").child(fuser.getDisplayName()).child(userid2).child("profilUrl").setValue("default");
+                    reference.child("Rooms").child(userid2).child(fuser.getDisplayName()).child("profilUrl").setValue("default");
+                    reference.child("RemainingMessages").child(odaIDGlobal).child("remainingMessages").setValue(remainingMessage);
+
 
                 }
 
@@ -211,7 +215,7 @@ public class MesajEkran extends AppCompatActivity {
         String msg=metin.getText().toString();
         if(!TextUtils.isEmpty(msg)){
             String current="messages/"+odaIDGlobal;
-            HashMap hashMap=new HashMap();
+            HashMap<String,Object> hashMap=new HashMap<>();
             hashMap.put("message",msg);
             hashMap.put("seend",false);
             hashMap.put("sender",currentUsername);

@@ -15,12 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.anonsgroup.anons.Adapter.UserAdapter;
 import com.anonsgroup.anons.models.Anons;
-import com.anonsgroup.anons.models.ArkadaslarimModel;
 import com.anonsgroup.anons.models.SenderUsers;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -47,12 +44,6 @@ public class ChatEkran extends Fragment {
     private String mParam1;
     private String mParam2;
     private FloatingActionButton mesajAt;
-    private FirebaseUser fuser;
-    private List<ArkadaslarimModel> userList;
-    private UserAdapter userAdapter;
-    private RecyclerView recyclerView;
-    private String odaid;
-    Intent gelen;
 
     private OnFragmentInteractionListener mListener;
 
@@ -93,8 +84,7 @@ public class ChatEkran extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_chat_ekran, container, false);
-        recyclerView=view.findViewById(R.id.chatRecylerView);
-         //burda gelen intent;
+
 
         mesajAt=view.findViewById(R.id.mesajAtButton);
         mesajAt.setOnClickListener(new View.OnClickListener() {
@@ -105,18 +95,12 @@ public class ChatEkran extends Fragment {
             }
         });
 
-
-        //
-      /*  FirebaseDatabase.getInstance().getReference("Rooms").child()
-       .addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("Rooms").child(FirebaseAuth.getInstance().getCurrentUser().getDisplayName()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    ArkadaslarimModel chatList=snapshot.getValue(ArkadaslarimModel.class);
-                    userList.add(chatList);
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    System.out.println(snapshot);
                 }
-                chatList();
             }
 
             @Override
@@ -125,40 +109,8 @@ public class ChatEkran extends Fragment {
             }
         });
 
-*/
-
-
-
-        
         return view;
     }
-
-
-    /*private void chatList() {
-        musers=new ArrayList<>();
-        reference=FirebaseDatabase.getInstance().getReference("Users");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                musers.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user=snapshot.getValue(User.class);
-                    for (ChatList chatList : userList){
-                        if(user.getId().equals(chatList.getId())){
-                            musers.add(user);
-                        }
-                    }
-                }
-                userAdapter=new UserAdapter(getContext(),musers,true);
-                recyclerView.setAdapter(userAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }*/
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
