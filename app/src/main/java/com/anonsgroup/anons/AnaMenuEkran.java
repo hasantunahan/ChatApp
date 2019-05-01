@@ -258,8 +258,10 @@ public class AnaMenuEkran extends Fragment {
             String anonsId = UUID.randomUUID().toString();
             String senderId = fUser.getUid();
             String username = fUser.getDisplayName();
-            String photoUrl = fUser.getPhotoUrl().toString();
-            if(!photoUrl.equals(""))
+            String photoUrl;
+            if(fUser.getPhotoUrl() != null)
+                photoUrl = fUser.getPhotoUrl().toString();
+            else
                 photoUrl = "default";
             Anonss anons = new Anonss(senderId,"yok",new Date().getTime(),0,editText.getText().toString(),lat,longi,current,username,photoUrl);
             epicdialog.dismiss();
