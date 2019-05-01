@@ -15,6 +15,11 @@ import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.anonsgroup.anons.models.Anons;
+import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -44,14 +49,15 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
     @Override
     public void onBindViewHolder(@NonNull myviewHolder myviewHolder, int i) {
         //TODO: firebaseden çekilecek kardeşşşşşşş.
+        Glide.with(context).load(mdata.get(i).getProfilUrl()).into(myviewHolder.profilFotograf);
         myviewHolder.profilFotograf.setImageResource(R.drawable.kullaniciprofildefault);
-        myviewHolder.kisi.setText(mdata.get(i).getUserId());
+        myviewHolder.kisi.setText(mdata.get(i).getUsername());
         myviewHolder.metin.setText(mdata.get(i).getText());
         myviewHolder.konum.setText(mdata.get(i).getLocation());
         myviewHolder.tarih.setText(""+mdata.get(i).getDate());
 
-        myviewHolder.aProfilFoto.setImageResource(R.drawable.kullaniciprofildefault);
-        myviewHolder.aKisi.setText(mdata.get(i).getUserId());
+        Glide.with(context).load(mdata.get(i).getProfilUrl()).into(myviewHolder.aProfilFoto);
+        myviewHolder.aKisi.setText(mdata.get(i).getUsername());
         myviewHolder.aMetin.setText(mdata.get(i).getText());
         myviewHolder.aKonum.setText(mdata.get(i).getLocation());
         myviewHolder.aTarih.setText(""+mdata.get(i).getDate());
