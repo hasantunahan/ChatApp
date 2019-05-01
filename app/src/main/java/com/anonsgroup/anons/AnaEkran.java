@@ -90,7 +90,7 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            Toast.makeText(AnaEkran.this, location.getLatitude()+ "-" + location.getAltitude(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AnaEkran.this, location.getLatitude()+ "-" + location.getLongitude(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
