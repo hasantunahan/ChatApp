@@ -27,8 +27,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmentInteractionListener, AnaMenuEkran.OnFragmentInteractionListener, ChatEkran.OnFragmentInteractionListener {
@@ -37,8 +38,7 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
     TextView begeniSayisiTextView;
     TextView profilAdSayodYasTextView;
     private FirebaseAuth mAuth;
-    private FusedLocationProviderClient fusedLocationClient;
-    private LocationCallback locationCallback;
+
 
     public void profilEkranTiklama(View view) {
         Toast.makeText(getApplicationContext(), "Hasan", Toast.LENGTH_SHORT).show();
@@ -80,55 +80,7 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
         viewPager.setCurrentItem(1);
         // FirebaseMessaging.getInstance().subscribeToTopic("anons");
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 99);
-        }
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            Toast.makeText(AnaEkran.this, location.getLatitude() + "-" + location.getLongitude(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
 
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(createLocationRequest());
-
-        SettingsClient client = LocationServices.getSettingsClient(this);
-        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
-        task.addOnSuccessListener(this, locationSettingsResponse -> {
-            // All location settings are satisfied. The client can initialize
-            // location requests here.
-            // ...
-        });
-
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    // Update UI with location data
-                    // ...
-                    Toast.makeText(AnaEkran.this, location.getLatitude() + "-" + location.getLongitude(), Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        };
-
-        startLocationUpdates();
 
     }
 
@@ -177,30 +129,6 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
             ProfilEkran.mdrawerLayout.closeDrawer(GravityCompat.START);
         else
             super.onBackPressed();
-    }
-
-    protected LocationRequest createLocationRequest() {
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        return locationRequest;
-    }
-
-    private void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        fusedLocationClient.requestLocationUpdates(createLocationRequest(),
-                locationCallback,
-                null /* Looper */);
     }
 
 
