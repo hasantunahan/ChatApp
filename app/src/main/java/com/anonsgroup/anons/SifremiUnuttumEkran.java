@@ -64,7 +64,7 @@ public class SifremiUnuttumEkran extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(SifremiUnuttumEkran.this, "Şifrenizi sıfırlamak için size talimatlar gönderdik!", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(SifremiUnuttumEkran.this, "Sıfırlama e-postası gönderilemedi!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SifremiUnuttumEkran.this, "Lütfen anons'a üye olduğunuz e-mail adresini giriniz", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
