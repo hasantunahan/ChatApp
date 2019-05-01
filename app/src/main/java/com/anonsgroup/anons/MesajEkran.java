@@ -87,6 +87,8 @@ public class MesajEkran extends AppCompatActivity {
         });
         photo=findViewById(R.id.mesajEkranPhoto);
         username=findViewById(R.id.mesajEkranIsimSoyisim);
+        //getStringEXTRA
+        //TODO :veriyi diğer sayfadan alıyoruz
         intent=getIntent();
         final String userid=intent.getStringExtra("userid");
        userid2=userid;
@@ -175,6 +177,9 @@ public class MesajEkran extends AppCompatActivity {
             public void onClick(View v) {
                 sendMessage();
                 metin.setText("");
+
+
+
             }
         });
 
