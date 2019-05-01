@@ -49,14 +49,33 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
     @Override
     public void onBindViewHolder(@NonNull myviewHolder myviewHolder, int i) {
         //TODO: firebaseden çekilecek kardeşşşşşşş.
-        Glide.with(context).load(mdata.get(i).getProfilUrl()).into(myviewHolder.profilFotograf);
-        myviewHolder.profilFotograf.setImageResource(R.drawable.kullaniciprofildefault);
+        final String[] url = new String[1];
+        FirebaseDatabase.getInstance().getReference("users").child(mdata.get(i).getUserId()).child("profilUrl").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                url[0] = dataSnapshot.getValue().toString();
+                if(url[0].equals("default"))
+                    myviewHolder.profilFotograf.setImageResource(R.drawable.kullaniciprofildefault);
+                else
+                    Glide.with(context).load(url[0]).into(myviewHolder.profilFotograf);
+                if(url[0].equals("default"))
+                    myviewHolder.aProfilFoto.setImageResource(R.drawable.kullaniciprofildefault);
+                else
+                    Glide.with(context).load(url[0]).into(myviewHolder.aProfilFoto);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         myviewHolder.kisi.setText(mdata.get(i).getUsername());
         myviewHolder.metin.setText(mdata.get(i).getText());
         myviewHolder.konum.setText(mdata.get(i).getLocation());
         myviewHolder.tarih.setText(""+mdata.get(i).getDate());
 
-        Glide.with(context).load(mdata.get(i).getProfilUrl()).into(myviewHolder.aProfilFoto);
+
         myviewHolder.aKisi.setText(mdata.get(i).getUsername());
         myviewHolder.aMetin.setText(mdata.get(i).getText());
         myviewHolder.aKonum.setText(mdata.get(i).getLocation());
