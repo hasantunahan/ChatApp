@@ -175,11 +175,15 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                 Runnable runnable = () -> {
                     //Thread.sleep(10000);
                     if(profilDegisti && backgroundDegisti)
-                        while(!profilKontrol && !backgroundKontrol);
+                        while(!profilKontrol && !backgroundKontrol){
+                            System.out.println("2 si birden");
+                        }
                     else if(profilDegisti)
                         while(!profilKontrol);
                     else if (backgroundDegisti)
-                        while (!backgroundKontrol);
+                        while (!backgroundKontrol){
+                            System.out.println("sadece background");
+                        }
                     user.setUsername(fUser.getDisplayName());
                     if(backgroundKontrol)
                         user.setBackgroundUrl(backgroundUrl.get());
