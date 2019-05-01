@@ -4,6 +4,23 @@ public class ArkadaslarimModel {
     String username;
     String profilURL;
 
+    public ArkadaslarimModel(String username, String profilURL, String receiverid, String durum) {
+        this.username = username;
+        this.profilURL = profilURL;
+        this.uid = receiverid;
+        this.durum = durum;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    String uid;
+
     public String getUsername() {
         return username;
     }
@@ -34,5 +51,9 @@ public class ArkadaslarimModel {
         this.username = username;
         this.profilURL = profilURL;
         this.durum = durum;
+    }
+    public ArkadaslarimModel(String username,String profilURL){
+        this.username=username;
+        this.profilURL=profilURL;
     }
 }

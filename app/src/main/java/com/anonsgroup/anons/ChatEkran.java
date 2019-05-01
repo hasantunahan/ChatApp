@@ -15,25 +15,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.anonsgroup.anons.Adapter.UserAdapter;
 import com.anonsgroup.anons.models.Anons;
+import com.anonsgroup.anons.models.ArkadaslarimModel;
+import com.anonsgroup.anons.models.FirebaseUserModel;
+import com.anonsgroup.anons.models.MesajModel;
 import com.anonsgroup.anons.models.SenderUsers;
+import com.anonsgroup.anons.models.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ChatEkran.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ChatEkran#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ChatEkran extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -78,13 +77,24 @@ public class ChatEkran extends Fragment {
         }
 
     }
-
+    private RecyclerView recyclerView;
+    private UserAdapter adapter;
+    private List<User> mUsers;
+    FirebaseUser fuser;
+    DatabaseReference reference;
+    private List<ArkadaslarimModel> userList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_chat_ekran, container, false);
 
+        recyclerView=view.findViewById(R.id.chatRecylerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        fuser=FirebaseAuth.getInstance().getCurrentUser();
+        //Sohbete eklemek için
+        userList=new ArrayList<>();
 
         mesajAt=view.findViewById(R.id.mesajAtButton);
         mesajAt.setOnClickListener(new View.OnClickListener() {
@@ -95,19 +105,49 @@ public class ChatEkran extends Fragment {
             }
         });
 
+        adapter = new UserAdapter(getContext(),userList);
+        recyclerView.setAdapter(adapter);
+
+
         FirebaseDatabase.getInstance().getReference("Rooms").child(FirebaseAuth.getInstance().getCurrentUser().getDisplayName()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userList.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    System.out.println(snapshot);
+                    /*userList.add(new ArkadaslarimModel(snapshot.getKey(),snapshot.getChildren().iterator().next().getValue().toString()));
+                    System.out.println("HASOOOOOOOOOOOO"+snapshot.getValue().toString());*/
+                    String key= snapshot.getChildren().iterator().next().getValue().toString();
+                    System.out.println("AAAA"+key);
+                    FirebaseDatabase.getInstance().getReference("users").child(key).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            System.out.println(dataSnapshot.toString());
+                            FirebaseUserModel userModel = dataSnapshot.getValue(FirebaseUserModel.class);
+                            ArkadaslarimModel user = new ArkadaslarimModel(userModel.getUsername(), userModel.getProfilUrl());
+                            userList.add(user);
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
                 }
+              // adapter.notifyDataSetChanged();
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
+
+
 
         return view;
     }
