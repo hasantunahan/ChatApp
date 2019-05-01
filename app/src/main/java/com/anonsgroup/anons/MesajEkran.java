@@ -3,7 +3,6 @@ package com.anonsgroup.anons;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.circularreveal.CircularRevealWidget;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,12 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.anonsgroup.anons.models.FirebaseUserModel;
 import com.anonsgroup.anons.models.MesajModel;
-import com.anonsgroup.anons.models.SenderUsers;
-import com.anonsgroup.anons.models.User;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,14 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -57,8 +47,8 @@ public class MesajEkran extends AppCompatActivity {
     String mCurrentid;
     String userid2;
     String currentUsername;
-  String odaIDGlobal;
-  RecyclerView recyclerView;
+    String odaIDGlobal;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,22 +59,17 @@ public class MesajEkran extends AppCompatActivity {
         mAuth=FirebaseAuth.getInstance();
         mCurrentid=mAuth.getCurrentUser().getUid();
         reference=FirebaseDatabase.getInstance().getReference();
-
+        mchat=new ArrayList<>();
         recyclerView=findViewById(R.id.mesajEkraRecylerView);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
         //Alttan başlatıyor
         //linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-
-
+        mesajAdapter = new MesajlasmaAdapter(MesajEkran.this, mchat);
+        recyclerView.setAdapter(mesajAdapter);
         arkadas=findViewById(R.id.mesajEkranArkadasMi);
-        arkadas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                arkadas.setImageResource(R.drawable.ic_checkfriends);
-            }
-        });
+        arkadas.setOnClickListener(v -> arkadas.setImageResource(R.drawable.ic_checkfriends));
         photo=findViewById(R.id.mesajEkranPhoto);
         username=findViewById(R.id.mesajEkranIsimSoyisim);
         //getStringEXTRA
@@ -94,6 +79,7 @@ public class MesajEkran extends AppCompatActivity {
        userid2=userid;
 
         fuser= FirebaseAuth.getInstance().getCurrentUser();
+        //yazışılan kişnin bilgileri çekiliyor.
         if (fuser.getUid() !=null){
             FirebaseDatabase.getInstance().getReference("users").orderByChild("username").equalTo(userid)
                     .addValueEventListener(new ValueEventListener() {
@@ -190,7 +176,6 @@ public class MesajEkran extends AppCompatActivity {
     }
 
     private void readMesaj(final String myid, final String userid){
-        mchat=new ArrayList<>();
        FirebaseDatabase.getInstance().getReference("messages").child(odaIDGlobal).orderByChild("time")
         .addValueEventListener(new ValueEventListener() {
             @Override
@@ -202,9 +187,9 @@ public class MesajEkran extends AppCompatActivity {
                         MesajModel chat = snapshot.getValue(MesajModel.class);
                         if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid) || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
                             mchat.add(chat);
+                            mesajAdapter.notifyDataSetChanged();
                         }
-                        mesajAdapter = new MesajlasmaAdapter(MesajEkran.this, mchat);
-                        recyclerView.setAdapter(mesajAdapter);
+
                     }
                 }
             }
