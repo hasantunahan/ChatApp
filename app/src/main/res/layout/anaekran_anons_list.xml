@@ -33,7 +33,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/anons_fontt"
-            android:text="KisiAdi"
             android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="@+id/aProfilFoto"
             app:layout_constraintStart_toEndOf="@+id/aProfilFoto"
@@ -69,7 +68,7 @@
             android:textColor="@color/baslikGray"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/cevaplaButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/aKonum" />
 
@@ -113,7 +112,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/cevapEditText"
-            app:layout_constraintEnd_toEndOf="@+id/cevapEditText"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/cevapEditText"
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/ic_sent" />

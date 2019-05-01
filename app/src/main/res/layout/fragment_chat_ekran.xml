@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/sohbetListesiEditText"
+        android:id="@+id/sohbetKisiaraEdittexxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -43,9 +43,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/sohbetListesiEditText"
-        app:layout_constraintEnd_toEndOf="@+id/sohbetListesiEditText"
-        app:layout_constraintTop_toTopOf="@+id/sohbetListesiEditText"
+        app:layout_constraintBottom_toBottomOf="@+id/sohbetKisiaraEdittexxt"
+        app:layout_constraintEnd_toEndOf="@+id/sohbetKisiaraEdittexxt"
+        app:layout_constraintTop_toTopOf="@+id/sohbetKisiaraEdittexxt"
         app:srcCompat="@drawable/ic_arasvg" />
 
     <android.support.design.widget.FloatingActionButton
@@ -82,7 +82,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sohbetListesiEditText">
+        app:layout_constraintTop_toBottomOf="@+id/sohbetKisiaraEdittexxt">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/chatRecylerView"

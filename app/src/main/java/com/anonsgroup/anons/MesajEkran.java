@@ -116,58 +116,48 @@ public class MesajEkran extends AppCompatActivity {
             odaid=userid2+"-"+currentUsername;
         }
         odaIDGlobal=odaid;
+
 ///Oda oluşturma
-        FirebaseDatabase.getInstance().getReference().child("Rooms").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if(!dataSnapshot.child(fuser.getDisplayName()).hasChild(userid2)){
-                    int remainingMessage=20;
-                    /*HashMap chatAddMap =new HashMap();
-                    String profilUrl="default";
-                    HashMap altmap=new HashMap();
-                    altmap.put("profilUrl",profilUrl);
-                    HashMap ustmap=new HashMap();
-                    ustmap.put("profilUrl",profilUrl);
-                    chatAddMap.put(currentUsername,ustmap);
-                    chatAddMap.put(userid2,altmap);
-                    chatAddMap.put("remainingMessage",remainingMessage);
-                    //chatAddMap.put("username",username.getText().toString());
-
-                    HashMap ChatUserMap=new HashMap();
-                    ChatUserMap.put("Rooms/" +odaid, chatAddMap);
-                    //ChatUserMap.put("Rooms/"+odaid+"/"+currentUsername,chatAddMap);
-                    reference.updateChildren(ChatUserMap, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                            if(databaseError !=null){
-                                Log.d("CHAT_LOG",databaseError.getMessage().toString());
-                            }
-                        }
-                    });  */
-
-                    reference.child("Rooms").child(fuser.getDisplayName()).child(userid2).child("profilUrl").setValue("default");
-                    reference.child("Rooms").child(userid2).child(fuser.getDisplayName()).child("profilUrl").setValue("default");
-                    reference.child("RemainingMessages").child(odaIDGlobal).child("remainingMessages").setValue(remainingMessage);
-
-
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         gonder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMessage();
                 metin.setText("");
+                FirebaseDatabase.getInstance().getReference("messages").child(odaIDGlobal).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){
 
+                            FirebaseDatabase.getInstance().getReference().child("Rooms").addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                    if(!dataSnapshot.child(fuser.getDisplayName()).hasChild(userid2)){
+                                        int remainingMessage=20;
+                                        intent=getIntent();
+                                        String uid=intent.getStringExtra("id");
+                                        reference.child("Rooms").child(fuser.getDisplayName()).child(userid2).child("uid").setValue(uid);
+                                        reference.child("Rooms").child(userid2).child(fuser.getDisplayName()).child("uid").setValue(fuser.getUid());
+                                        reference.child("RemainingMessages").child(odaIDGlobal).child("remainingMessages").setValue(remainingMessage);
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
 
             }
@@ -217,7 +207,7 @@ public class MesajEkran extends AppCompatActivity {
             String current="messages/"+odaIDGlobal;
             HashMap<String,Object> hashMap=new HashMap<>();
             hashMap.put("message",msg);
-            hashMap.put("seend",false);
+            hashMap.put("send",false);
             hashMap.put("sender",currentUsername);
             hashMap.put("receiver",userid2);
             hashMap.put("time", ServerValue.TIMESTAMP);
