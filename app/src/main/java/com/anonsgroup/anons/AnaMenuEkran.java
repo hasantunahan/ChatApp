@@ -1,13 +1,17 @@
 package com.anonsgroup.anons;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +29,16 @@ import com.anonsgroup.anons.models.Anons;
 import com.anonsgroup.anons.models.Anonss;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +48,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -66,6 +81,10 @@ public class AnaMenuEkran extends Fragment {
     private OnFragmentInteractionListener mListener;
     private FirebaseRecyclerOptions<Anonss> recyclerOptions;
     private FirebaseRecyclerAdapter<Anonss, AnonsViewHolder> fAdapter;
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
+    private double lat,longi;
+
     public AnaMenuEkran() {
         // Required empty public constructor
     }
@@ -162,6 +181,60 @@ public class AnaMenuEkran extends Fragment {
                 });
 
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 99);
+        }
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(getActivity(), location -> {
+                    // Got last known location. In some rare situations this can be null.
+                    if (location != null) {
+                        Toast.makeText(getActivity().getApplicationContext(), location.getLatitude() + "-" + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(createLocationRequest());
+
+        SettingsClient client = LocationServices.getSettingsClient(getContext());
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+        task.addOnSuccessListener(getActivity(), locationSettingsResponse -> {
+            // All location settings are satisfied. The client can initialize
+            // location requests here.
+            // ...
+        });
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    // Update UI with location data
+                    // ...
+                    HashMap<String,Object> map = new HashMap<>();
+                    longi = location.getLongitude();
+                    lat = location.getLatitude();
+                    map.put("longitude",location.getLongitude());
+                    map.put("latitude",location.getLatitude());
+                    FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(map);
+                    Toast.makeText(getActivity(), location.getLatitude() + "-" + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        };
+
+        startLocationUpdates();
+
+
         return view;
     }
     public void showDialog(){
@@ -182,9 +255,10 @@ public class AnaMenuEkran extends Fragment {
             String anonsId = UUID.randomUUID().toString();
 
             String senderId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            Anonss anons = new Anonss(senderId,"yok",new Date().getTime(),0,editText.getText().toString());
+            Anonss anons = new Anonss(senderId,"yok",new Date().getTime(),0,editText.getText().toString(),lat,longi,current);
             epicdialog.dismiss();
-            databaseRef.child("Anonslar").child(senderId).child(UUID.randomUUID().toString()).setValue(anons).addOnSuccessListener(command -> {
+            databaseRef.child("Anonslar").child(senderId).child(anonsId).setValue(anons).addOnSuccessListener(command -> {
+
                 Objects.requireNonNull(getActivity()).runOnUiThread(() -> Toast.makeText(getContext(), "Anonsunuz iletilmiştir.", Toast.LENGTH_SHORT).show());
             });
         });
@@ -248,6 +322,30 @@ public class AnaMenuEkran extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    protected LocationRequest createLocationRequest() {
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setInterval(60000);
+        locationRequest.setFastestInterval(45000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        return locationRequest;
+    }
+
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationClient.requestLocationUpdates(createLocationRequest(),
+                locationCallback,
+                null /* Looper */);
+    }
+
 
 
 }
