@@ -1,7 +1,11 @@
 package com.anonsgroup.anons;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +13,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,15 +24,16 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Objects;
 
-public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmentInteractionListener,AnaMenuEkran.OnFragmentInteractionListener,ChatEkran.OnFragmentInteractionListener {
+public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmentInteractionListener, AnaMenuEkran.OnFragmentInteractionListener, ChatEkran.OnFragmentInteractionListener {
     TextView arkadasSayisiTextView;
     TextView bildirimSayisiTextView;
     TextView begeniSayisiTextView;
     TextView profilAdSayodYasTextView;
     private FirebaseAuth mAuth;
+    private FusedLocationProviderClient fusedLocationClient;
 
 
-    public void profilEkranTiklama(View view){
+    public void profilEkranTiklama(View view) {
         Toast.makeText(getApplicationContext(), "Hasan", Toast.LENGTH_SHORT).show();
     }
 
@@ -41,27 +50,52 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
         begeniSayisiTextView = findViewById(R.id.begeniSayisiTextView);
         arkadasSayisiTextView = findViewById(R.id.arkadasSayisiTextView);
 
-        final ViewPager viewPager =(ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter=new PagerAdapter(getSupportFragmentManager(),3);
-                viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), 3);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+                if (ProfilEkran.mdrawerLayout != null && ProfilEkran.mdrawerLayout.isDrawerOpen(GravityCompat.START))
+                    ProfilEkran.mdrawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(1);
+        // FirebaseMessaging.getInstance().subscribeToTopic("anons");
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},99);
+        }
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
-                    public void onPageScrolled(int i, float v, int i1) {
-
-                    }
-
-                    @Override
-                    public void onPageSelected(int i) {
-
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int i) {
-                        if (ProfilEkran.mdrawerLayout!= null && ProfilEkran.mdrawerLayout.isDrawerOpen(GravityCompat.START))
-                            ProfilEkran.mdrawerLayout.closeDrawer(GravityCompat.START);
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            Toast.makeText(AnaEkran.this, location.getLatitude()+ "-" + location.getAltitude(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
-                viewPager.setAdapter(adapter);viewPager.setCurrentItem(1);
-       // FirebaseMessaging.getInstance().subscribeToTopic("anons");
+
+
     }
 
     @Override

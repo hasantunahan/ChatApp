@@ -210,7 +210,7 @@ public class MesajEkran extends AppCompatActivity {
         String msg=metin.getText().toString();
         if(!TextUtils.isEmpty(msg)){
             String current="messages/"+odaIDGlobal;
-            HashMap hashMap=new HashMap();
+            HashMap<String,Object> hashMap=new HashMap<>();
             hashMap.put("message",msg);
             hashMap.put("seend",false);
             hashMap.put("sender",currentUsername);
