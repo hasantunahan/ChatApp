@@ -48,6 +48,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -146,11 +147,13 @@ public class AnaMenuEkran extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                nlist.clear();
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     System.out.println(dataSnapshot1.toString());
                     Anons anons = dataSnapshot1.getValue(Anons.class);
                     nlist.add(anons);
                 }
+                Collections.sort(nlist,(o1, o2) -> Long.compare(o1.getDate(),o2.getDate()));
                 customAnaEkranAdapter.notifyDataSetChanged();
             }
 
@@ -332,8 +335,8 @@ public class AnaMenuEkran extends Fragment {
     }
     protected LocationRequest createLocationRequest() {
         LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(60000);
-        locationRequest.setFastestInterval(45000);
+        locationRequest.setInterval(30000);
+        locationRequest.setFastestInterval(25000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         return locationRequest;
     }
