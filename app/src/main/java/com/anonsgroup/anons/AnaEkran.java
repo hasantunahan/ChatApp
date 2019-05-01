@@ -15,8 +15,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,7 +38,7 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
     TextView profilAdSayodYasTextView;
     private FirebaseAuth mAuth;
     private FusedLocationProviderClient fusedLocationClient;
-
+    private LocationCallback locationCallback;
 
     public void profilEkranTiklama(View view) {
         Toast.makeText(getApplicationContext(), "Hasan", Toast.LENGTH_SHORT).show();
@@ -82,7 +89,7 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},99);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 99);
         }
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -90,11 +97,38 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            Toast.makeText(AnaEkran.this, location.getLatitude()+ "-" + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AnaEkran.this, location.getLatitude() + "-" + location.getLongitude(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(createLocationRequest());
+
+        SettingsClient client = LocationServices.getSettingsClient(this);
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+        task.addOnSuccessListener(this, locationSettingsResponse -> {
+            // All location settings are satisfied. The client can initialize
+            // location requests here.
+            // ...
+        });
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    // Update UI with location data
+                    // ...
+                    Toast.makeText(AnaEkran.this, location.getLatitude() + "-" + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        };
+
+        startLocationUpdates();
 
     }
 
@@ -126,8 +160,8 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
 
     }
 
-    private void startLoginEkran(){
-        Intent intent = new Intent(getApplicationContext(),LoginEkran.class);
+    private void startLoginEkran() {
+        Intent intent = new Intent(getApplicationContext(), LoginEkran.class);
         startActivity(intent);
         finish();
     }
@@ -136,11 +170,38 @@ public class AnaEkran extends AppCompatActivity implements ProfilEkran.OnFragmen
     public void onFragmentInteraction(Uri uri) {
 
     }
+
     @Override
     public void onBackPressed() {
-    if (ProfilEkran.mdrawerLayout!= null && ProfilEkran.mdrawerLayout.isDrawerOpen(GravityCompat.START))
-        ProfilEkran.mdrawerLayout.closeDrawer(GravityCompat.START);
+        if (ProfilEkran.mdrawerLayout != null && ProfilEkran.mdrawerLayout.isDrawerOpen(GravityCompat.START))
+            ProfilEkran.mdrawerLayout.closeDrawer(GravityCompat.START);
         else
-        super.onBackPressed();
+            super.onBackPressed();
     }
+
+    protected LocationRequest createLocationRequest() {
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        return locationRequest;
+    }
+
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationClient.requestLocationUpdates(createLocationRequest(),
+                locationCallback,
+                null /* Looper */);
+    }
+
+
 }
