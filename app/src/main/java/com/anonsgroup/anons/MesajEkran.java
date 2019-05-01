@@ -207,7 +207,7 @@ public class MesajEkran extends AppCompatActivity {
             String current="messages/"+odaIDGlobal;
             HashMap<String,Object> hashMap=new HashMap<>();
             hashMap.put("message",msg);
-            hashMap.put("seend",false);
+            hashMap.put("send",false);
             hashMap.put("sender",currentUsername);
             hashMap.put("receiver",userid2);
             hashMap.put("time", ServerValue.TIMESTAMP);
