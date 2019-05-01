@@ -108,6 +108,7 @@ public class ChatEkran extends Fragment {
         adapter = new UserAdapter(getContext(),userList);
         recyclerView.setAdapter(adapter);
 
+
         FirebaseDatabase.getInstance().getReference("Rooms").child(FirebaseAuth.getInstance().getCurrentUser().getDisplayName()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -115,8 +116,8 @@ public class ChatEkran extends Fragment {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     /*userList.add(new ArkadaslarimModel(snapshot.getKey(),snapshot.getChildren().iterator().next().getValue().toString()));
                     System.out.println("HASOOOOOOOOOOOO"+snapshot.getValue().toString());*/
-
-                    String key= snapshot.getKey();
+                    String key= snapshot.getChildren().iterator().next().getValue().toString();
+                    System.out.println("AAAA"+key);
                     FirebaseDatabase.getInstance().getReference("users").child(key).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

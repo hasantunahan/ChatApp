@@ -19,6 +19,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context context;
     private List<ArkadaslarimModel> mList;
 
+
     public UserAdapter(Context context, List<ArkadaslarimModel> mList) {
         this.context = context;
         this.mList = mList;
@@ -50,6 +51,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         viewHolder.itemView.setOnClickListener(v -> {
             Intent intent=new Intent(context, MesajEkran.class);
             intent.putExtra("userid",user.getUsername());
+            intent.putExtra("id",user.getUid());
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
