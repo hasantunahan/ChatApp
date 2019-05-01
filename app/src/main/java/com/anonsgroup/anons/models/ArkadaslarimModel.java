@@ -35,4 +35,8 @@ public class ArkadaslarimModel {
         this.profilURL = profilURL;
         this.durum = durum;
     }
+    public ArkadaslarimModel(String username,String profilURL){
+        this.username=username;
+        this.profilURL=profilURL;
+    }
 }
