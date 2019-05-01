@@ -18,6 +18,8 @@ public class Anonss {
     @Getter @Setter private double lat;
     @Getter @Setter private double longi;
     @Getter @Setter private int distance;
+    @Getter @Setter private String username;
+    @Getter @Setter private String profilUrl;
 
     public Anonss(String userId, String location, long date, int countOfLike, String text) {
         this.userId = userId;

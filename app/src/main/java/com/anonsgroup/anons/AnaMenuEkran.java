@@ -40,6 +40,7 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -84,6 +85,7 @@ public class AnaMenuEkran extends Fragment {
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
     private double lat,longi;
+    private FirebaseUser fUser;
 
     public AnaMenuEkran() {
         // Required empty public constructor
@@ -127,6 +129,7 @@ public class AnaMenuEkran extends Fragment {
         // Inflate the layout for this fragment
         nlist = new ArrayList<>();
         RecyclerView recyclerView=view.findViewById(R.id.anaEkranAnonsListLayout);
+        fUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(view.getContext());
@@ -253,9 +256,12 @@ public class AnaMenuEkran extends Fragment {
         gonderButton.setOnClickListener(v -> {
             DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
             String anonsId = UUID.randomUUID().toString();
-
-            String senderId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            Anonss anons = new Anonss(senderId,"yok",new Date().getTime(),0,editText.getText().toString(),lat,longi,current);
+            String senderId = fUser.getUid();
+            String username = fUser.getDisplayName();
+            String photoUrl = fUser.getPhotoUrl().toString();
+            if(!photoUrl.equals(""))
+                photoUrl = "default";
+            Anonss anons = new Anonss(senderId,"yok",new Date().getTime(),0,editText.getText().toString(),lat,longi,current,username,photoUrl);
             epicdialog.dismiss();
             databaseRef.child("Anonslar").child(senderId).child(anonsId).setValue(anons).addOnSuccessListener(command -> {
 

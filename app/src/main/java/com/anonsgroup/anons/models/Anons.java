@@ -16,5 +16,7 @@ public class Anons {
     @Getter @Setter private boolean answered = false;
     @Getter @Setter private boolean liked = false;
     @Getter @Setter private boolean seen = false;
+    @Getter @Setter private String profilUrl;
+    @Getter @Setter private String username;
 
 }
