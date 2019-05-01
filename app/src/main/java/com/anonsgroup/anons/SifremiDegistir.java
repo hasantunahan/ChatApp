@@ -1,6 +1,7 @@
 package com.anonsgroup.anons;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -25,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class SifremiDegistir extends AppCompatActivity {
@@ -32,7 +34,7 @@ public class SifremiDegistir extends AppCompatActivity {
         Button sifreDegisButton;
         private FirebaseUser firebaseUser;
         Editable sifre;
-        TextInputLayout passwordWrapper;
+        TextInputLayout sifreWrapper2,sifreWrapper;
         boolean kontrol = true;
 
         private static final Pattern PASSWORD_PATTERN =
@@ -53,13 +55,25 @@ public class SifremiDegistir extends AppCompatActivity {
         setContentView(R.layout.activity_sifremi_degistir);
         yeniET1 = findViewById(R.id.yeniET1);
         yeniET2 = findViewById(R.id.yeniET2);
+        sifreWrapper = findViewById(R.id.sifreWrapper);
+        sifreWrapper2 = findViewById(R.id.sifreWrapper2);
         sifreDegisButton = findViewById(R.id.sifreDegisButton);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         sifreDegisButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sifre= yeniET1.getText();
+                if (!kontroller()){
+                    Toast.makeText(SifremiDegistir.this, "Şifre Değiştirilemedi", Toast.LENGTH_SHORT).show();
+                    return;
+                     }
+                else{
+                    System.out.println("asd");
                 firebaseUser.updatePassword(String.valueOf(sifre));
+                FirebaseAuth.getInstance().signOut();
+                Intent intentCikisyap = new Intent(getApplication(), LoginEkran.class);
+                startActivity(intentCikisyap);
+                finish();}
             }
         });
         }
@@ -67,15 +81,38 @@ public class SifremiDegistir extends AppCompatActivity {
 
         private boolean kontroller() {
             String passwordInput = yeniET1.getText().toString().trim();
-            if (passwordInput.isEmpty()) {
-                passwordWrapper.setError(getResources().getString(R.string.empty_warning));
-                kontrol = false;
-            } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
-                passwordWrapper.setError(getResources().getString(R.string.password_warning));
-                kontrol = false;
-            } else {
-                passwordWrapper.setError(null);
+            String passwordInput2 = yeniET2.getText().toString().trim();
+            if (passwordInput.equals(passwordInput2)) {
+                if (passwordInput.isEmpty() && passwordInput2.isEmpty()){
+                    sifreWrapper.setError(getResources().getString(R.string.empty_warning));
+                    sifreWrapper2.setError(getResources().getString(R.string.empty_warning));
+                    kontrol = false;
+                } else if (passwordInput.isEmpty()) {
+                    sifreWrapper.setError(getResources().getString(R.string.empty_warning));
+                    kontrol = false;
+                } else if (passwordInput2.isEmpty()){
+                    sifreWrapper2.setError(getResources().getString(R.string.empty_warning));
+                    kontrol = false;
+                } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches() && !PASSWORD_PATTERN.matcher(passwordInput2).matches()){
+                    sifreWrapper.setError(getResources().getString(R.string.password_warning));
+                    sifreWrapper2.setError(getResources().getString(R.string.password_warning));
+                    kontrol = false;
+                } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+                    sifreWrapper.setError(getResources().getString(R.string.password_warning));
+                    kontrol = false;
+                } else if (!PASSWORD_PATTERN.matcher(passwordInput2).matches()){
+                    sifreWrapper2.setError(getResources().getString(R.string.password_warning));
+                    kontrol = false;
+                }
+                else {
+                    sifreWrapper.setError(null);
+                    kontrol = true;
+                }
             }
+            else {
+                Toast.makeText(getApplicationContext(), "Şifreler Aynı Olmak Zorundadır!", Toast.LENGTH_SHORT).show();
+            }
+
             return kontrol;
         }
 }
