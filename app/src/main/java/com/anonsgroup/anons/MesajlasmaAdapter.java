@@ -29,6 +29,7 @@ public class MesajlasmaAdapter extends RecyclerView.Adapter<MesajlasmaAdapter.Vi
 
         final int MSG_TYPE_LEFT=0;
         final int MSG_TYPE_RIGHT=1;
+        final int MSG_TYPE_BOTTOM=2;
 
 
 @NonNull
@@ -37,8 +38,12 @@ public MesajlasmaAdapter.ViewHolders onCreateViewHolder(@NonNull ViewGroup viewG
     if(i ==MSG_TYPE_RIGHT){
         View view= LayoutInflater.from(context).inflate(R.layout.mesaj_item_sag_baloncuk,viewGroup,false);
         return new MesajlasmaAdapter.ViewHolders(view);
-    }else{
+    }else if (i == MSG_TYPE_LEFT){
         View view= LayoutInflater.from(context).inflate(R.layout.mesaj_item_sol_baloncuk,viewGroup,false);
+        return new MesajlasmaAdapter.ViewHolders(view);
+    }
+    else {
+        View view= LayoutInflater.from(context).inflate(R.layout.mesaj_item_bottom_baloncuk,viewGroup,false);
         return new MesajlasmaAdapter.ViewHolders(view);
     }
         }
@@ -46,7 +51,7 @@ public MesajlasmaAdapter.ViewHolders onCreateViewHolder(@NonNull ViewGroup viewG
 @Override
 public void onBindViewHolder(@NonNull MesajlasmaAdapter.ViewHolders viewHolders, int i) {
          MesajModel c=mChat.get(i);
-         viewHolders.mesajText.setText(c.getMessage());
+         viewHolders.mesajText.setText(c.getMessage().replaceAll("(15294789585564643482588464648948387638431537815628496284274531863862485647)",""));
         }
 
 @Override
@@ -54,8 +59,8 @@ public int getItemCount() {
         return mChat.size();
         }
 
-public class ViewHolders extends RecyclerView.ViewHolder{
-      public TextView mesajText;
+public static class ViewHolders extends RecyclerView.ViewHolder{
+      public static TextView mesajText;
 
 
     public ViewHolders(@NonNull View itemView) {
@@ -68,6 +73,9 @@ public class ViewHolders extends RecyclerView.ViewHolder{
 
     @Override
     public int getItemViewType(int position) {
+        if(mChat.get(position).getMessage().contains("15294789585564643482588464648948387638431537815628496284274531863862485647")  ){
+        return  MSG_TYPE_BOTTOM;
+        }
         if(mChat.get(position).getSender().equals(FirebaseAuth.getInstance().getCurrentUser().getDisplayName())){
             return MSG_TYPE_RIGHT;
         }else

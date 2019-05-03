@@ -40,6 +40,7 @@ public class LoginEkran extends AppCompatActivity {
     private TextInputEditText usernameEditText;
     private TextInputEditText passwordEditText;
     TextView uyariTextView;
+    TextView sifremiUnuttumButton;
     Button signUp;
     Button login;
     String kullaniciAdi;
@@ -66,6 +67,7 @@ public class LoginEkran extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_ekran);
         login = findViewById(R.id.loginButton);
+        sifremiUnuttumButton = findViewById(R.id.textView2);
         signUp = findViewById(R.id.signUpButton);
         userNameWrapper = findViewById(R.id.text_input_layout_username);
         passwordWrapper = findViewById(R.id.text_input_layout_password);
@@ -92,6 +94,15 @@ public class LoginEkran extends AppCompatActivity {
         fUser = mAuth.getCurrentUser();
         if (fUser != null)
             fUser.reload();
+
+
+        sifremiUnuttumButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(getApplicationContext(),SifremiUnuttumEkran.class);
+                startActivity(intent);
+            }
+        });
 
 
         signUp.setOnClickListener(v -> {

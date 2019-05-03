@@ -19,6 +19,7 @@
         android:testOnly="false"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".SifremiDegistir"></activity>
 
         <service
             android:name=".service.LocationService"
@@ -43,6 +44,9 @@
         <activity
             android:name=".ArkadasListesiEkran"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".SifremiUnuttumEkran"
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".LoginEkran"
             android:theme="@style/Theme.AppCompat.NoActionBar"

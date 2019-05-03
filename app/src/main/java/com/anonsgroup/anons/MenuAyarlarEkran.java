@@ -1,16 +1,20 @@
 package com.anonsgroup.anons;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MenuAyarlarEkran extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     SwitchCompat hesapGizliligiSwitchCompat,AnonsBildirimTitresimleriSwitchCompat,AnonsBildirimSesleriSwitchCompat,AnonsBildirimlerSwitchCompat;
     SwitchCompat MesajBildirimlerSwitchCompat,MesajBildirimSesleriSwitchCompat,MesajBildirimTitresimleriSwitchCompat;
+    TextView sifremiDegistir;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,11 +26,20 @@ public class MenuAyarlarEkran extends AppCompatActivity implements CompoundButto
         MesajBildirimlerSwitchCompat = findViewById(R.id.MesajBildirimlerSwitchCompat);
         MesajBildirimSesleriSwitchCompat = findViewById(R.id.MesajBildirimSesleriSwitchCompat);
         MesajBildirimTitresimleriSwitchCompat= findViewById(R.id.MesajBildirimTitresimleriSwitchCompat);
+        sifremiDegistir = findViewById(R.id.sifremiDegistir);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Ayarlar");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         setupSwitchCompatEventListener();
+
+        sifremiDegistir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sifredegis = new Intent(getApplication(),SifremiDegistir.class);
+                startActivity(sifredegis);
+            }
+        });
 
     }
 

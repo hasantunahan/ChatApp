@@ -22,6 +22,7 @@ import android.support.v4.app.JobIntentService;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -311,7 +312,8 @@ public class AnaMenuEkran extends Fragment {
                 photoUrl = fUser.getPhotoUrl().toString();
             else
                 photoUrl = "default";
-            Anonss anons = new Anonss(senderId,"yok",new Date().getTime(),0,editText.getText().toString(),lat,longi,current,username,photoUrl);
+            String city = getAddress(lat,longi,getContext());
+            Anonss anons = new Anonss(senderId,city,new Date().getTime(),0,editText.getText().toString(),lat,longi,current,username,photoUrl);
             epicdialog.dismiss();
             databaseRef.child("Anonslar").child(senderId).child(anonsId).setValue(anons).addOnSuccessListener(command -> {
 
@@ -421,6 +423,19 @@ public class AnaMenuEkran extends Fragment {
             boolean_permission = true;
         }
     }
+    public String getAddress(double latitude, double longitude,Context context) {
+        StringBuilder result = new StringBuilder();
+        try {
+            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses.size() > 0) {
+                Address address = addresses.get(0);
+                result.append(address.getSubLocality()).append("-").append(address.getSubAdminArea());
+            }
+        } catch (IOException e) {
+            Log.e("tag", e.getMessage());
+        }
+        return result.toString();
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -439,5 +454,5 @@ public class AnaMenuEkran extends Fragment {
         }
     }
 
-
+    }
 }
