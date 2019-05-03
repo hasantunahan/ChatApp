@@ -187,6 +187,7 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
 
                     sendMessage(text);
                     metin.setText("");
+                    cevapEditText.setText("");
                     FirebaseDatabase.getInstance().getReference("messages").child(odaIDGlobal).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
