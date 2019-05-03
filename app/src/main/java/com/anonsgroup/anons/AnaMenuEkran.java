@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,10 +50,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -263,7 +268,8 @@ public class AnaMenuEkran extends Fragment {
                 photoUrl = fUser.getPhotoUrl().toString();
             else
                 photoUrl = "default";
-            Anonss anons = new Anonss(senderId,"yok",new Date().getTime(),0,editText.getText().toString(),lat,longi,current,username,photoUrl);
+            String city = getAddress(lat,longi,getContext());
+            Anonss anons = new Anonss(senderId,city,new Date().getTime(),0,editText.getText().toString(),lat,longi,current,username,photoUrl);
             epicdialog.dismiss();
             databaseRef.child("Anonslar").child(senderId).child(anonsId).setValue(anons).addOnSuccessListener(command -> {
 
@@ -353,7 +359,20 @@ public class AnaMenuEkran extends Fragment {
                 locationCallback,
                 null /* Looper */);
     }
+    public String getAddress(double latitude, double longitude,Context context) {
+        StringBuilder result = new StringBuilder();
+        try {
+            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses.size() > 0) {
+                Address address = addresses.get(0);
+                result.append(address.getSubLocality()).append("-").append(address.getSubAdminArea());
+            }
+        } catch (IOException e) {
+            Log.e("tag", e.getMessage());
+        }
+        return result.toString();
 
 
-
+    }
 }
