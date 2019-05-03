@@ -2,10 +2,15 @@ package com.anonsgroup.anons;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +18,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.JobIntentService;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,6 +34,7 @@ import android.widget.Toast;
 import com.anonsgroup.anons.customViews.AnonsViewHolder;
 import com.anonsgroup.anons.models.Anons;
 import com.anonsgroup.anons.models.Anonss;
+import com.anonsgroup.anons.service.LocationService;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -47,11 +55,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -85,8 +95,12 @@ public class AnaMenuEkran extends Fragment {
     private FirebaseRecyclerAdapter<Anonss, AnonsViewHolder> fAdapter;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
-    private double lat,longi;
     private FirebaseUser fUser;
+    private static final int REQUEST_PERMISSIONS = 100;
+    boolean boolean_permission;
+    TextView tv_latitude, tv_longitude, tv_address,tv_area,tv_locality;
+    Double lat,longi;
+    Geocoder geocoder;
 
     public AnaMenuEkran() {
         // Required empty public constructor
@@ -117,7 +131,7 @@ public class AnaMenuEkran extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        geocoder = new Geocoder(getContext(), Locale.getDefault());
 
 
 
@@ -153,7 +167,7 @@ public class AnaMenuEkran extends Fragment {
                     Anons anons = dataSnapshot1.getValue(Anons.class);
                     nlist.add(anons);
                 }
-                Collections.sort(nlist,(o1, o2) -> Long.compare(o1.getDate(),o2.getDate()));
+                Collections.sort(nlist,(o1, o2) -> Long.compare(o2.getDate(),o1.getDate()));
                 customAnaEkranAdapter.notifyDataSetChanged();
             }
 
@@ -186,6 +200,12 @@ public class AnaMenuEkran extends Fragment {
                     }
                 });
 
+        fn_permission();
+        Intent intent = new Intent(getContext(), LocationService.class);
+        getActivity().startService(intent);
+
+
+/*
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -239,10 +259,35 @@ public class AnaMenuEkran extends Fragment {
         };
 
         startLocationUpdates();
+*/
 
 
         return view;
     }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            lat = Double.valueOf(intent.getStringExtra("latutide"));
+            longi = Double.valueOf(intent.getStringExtra("longitude"));
+
+        }
+    };
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(LocationService.str_receiver));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(broadcastReceiver);
+    }
+
     public void showDialog(){
         epicdialog.setContentView(R.layout.yeni_anons);
         epicdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -341,7 +386,7 @@ public class AnaMenuEkran extends Fragment {
         return locationRequest;
     }
 
-    private void startLocationUpdates() {
+    /*private void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -354,9 +399,45 @@ public class AnaMenuEkran extends Fragment {
         }
         fusedLocationClient.requestLocationUpdates(createLocationRequest(),
                 locationCallback,
-                null /* Looper */);
+                null *//* Looper *//*);
     }
 
+*/
+
+    private void fn_permission() {
+        if ((ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+
+            if ((ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION))) {
+
+
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION
+
+                        },
+                        REQUEST_PERMISSIONS);
+
+            }
+        } else {
+            boolean_permission = true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case REQUEST_PERMISSIONS: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    boolean_permission = true;
+
+                } else {
+                    Toast.makeText(getContext(), "Please allow the permission", Toast.LENGTH_LONG).show();
+
+                }
+            }
+        }
+    }
 
 
 }
