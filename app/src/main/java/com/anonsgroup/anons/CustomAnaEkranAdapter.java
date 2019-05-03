@@ -189,8 +189,12 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
                     odaIDGlobal = odaid;
 
                     Toast.makeText(context, "Tamamadır", Toast.LENGTH_SHORT).show();
-                    sendMessage();
+
+                    sendMessage("15294789585564643482588464648948387638431537815628496284274531863862485647"+metin.getText());
+
+                    sendMessage(text);
                     metin.setText("");
+                    cevapEditText.setText("");
                     FirebaseDatabase.getInstance().getReference("messages").child(odaIDGlobal).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -235,8 +239,8 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
         }
     }
 
-    void sendMessage() {
-        String msg = text;
+    void sendMessage(String msg) {
+       /* String msg = text;*/
         if (!TextUtils.isEmpty(msg)) {
             String current = "messages/" + odaIDGlobal;
             HashMap<String, Object> hashMap = new HashMap<>();
