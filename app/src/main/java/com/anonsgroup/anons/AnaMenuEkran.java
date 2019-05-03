@@ -437,6 +437,10 @@ public class AnaMenuEkran extends Fragment {
         }
         return result.toString();
 
+    }
+
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -452,7 +456,5 @@ public class AnaMenuEkran extends Fragment {
                 }
             }
         }
-    }
-
     }
 }
