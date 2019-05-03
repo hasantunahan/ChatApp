@@ -29,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -84,17 +86,22 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
 
             }
         });
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy   HH:mm");
+        String currentDate = sdf.format(new Date(mdata.get(i).getDate()));
 
         myviewHolder.kisi.setText(mdata.get(i).getUsername());
         myviewHolder.metin.setText(mdata.get(i).getText());
         myviewHolder.konum.setText(mdata.get(i).getLocation());
-        myviewHolder.tarih.setText("" + mdata.get(i).getDate());
+        myviewHolder.tarih.setText(currentDate);
 
 
         myviewHolder.aKisi.setText(mdata.get(i).getUsername());
         myviewHolder.aMetin.setText(mdata.get(i).getText());
         myviewHolder.aKonum.setText(mdata.get(i).getLocation());
-        myviewHolder.aTarih.setText("" + mdata.get(i).getDate());
+        myviewHolder.aTarih.setText(currentDate);
+
+
+
 
         if (!mdata.get(i).isSeen())
             myviewHolder.begeniFotograf.setImageResource(R.drawable.ic_bildiri);
@@ -253,9 +260,6 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
                     }
                 }
             });
-
         }
-
-
     }
 }
