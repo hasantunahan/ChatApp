@@ -29,6 +29,7 @@ public class ArkadasListesiEkran extends AppCompatActivity {
     ImageView kapat;
     RecyclerView recyclerView;
     List<ArkadaslarimModel> nlist;
+    List<ArkadaslarimModel> nlist2;
     private UserAdapter userAdapter;
     private String key;
     EditText kisiAra;
@@ -43,62 +44,37 @@ public class ArkadasListesiEkran extends AppCompatActivity {
 
         recyclerView=findViewById(R.id.arkadasListesiRecylerView);
         nlist=new ArrayList<>();
+        nlist2=new ArrayList<>();
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        userAdapter = new UserAdapter(getApplicationContext(), nlist);
+        userAdapter = new UserAdapter(getApplicationContext(), nlist,nlist2);
         recyclerView.setAdapter(userAdapter);
         fuser=FirebaseAuth.getInstance().getCurrentUser();
         readUser();
 
-        kisiAra=findViewById(R.id.sohbetKisiaraEdittexxt);
-   /*    kisiAra.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-           }
-
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
-             // kisiArama(s.toString());
-           }
-
-           @Override
-           public void afterTextChanged(Editable s) {
-
-           }
-       });*/
-
-
-
-    }
-
-    void kisiArama(String s){
-
-        FirebaseUser fuser=FirebaseAuth.getInstance().getCurrentUser();
-        Query query=FirebaseDatabase.getInstance().getReference("users").orderByChild("username")
-                .startAt(s)
-                .endAt(s+"\uf8ff");
-        query.addValueEventListener(new ValueEventListener() {
+        kisiAra=findViewById(R.id.arkadasListesiEditText);
+        kisiAra.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                nlist.clear();
-                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    ArkadaslarimModel model=snapshot.getValue(ArkadaslarimModel.class);
-                    if(!model.getUid().equals(fuser.getUid())){
-                        nlist.add(model);
-                    }
-                }
-                userAdapter=new UserAdapter(getApplicationContext(),nlist);
-                recyclerView.setAdapter(userAdapter);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                userAdapter.getFilter().filter(s.toString());
             }
         });
 
+
+
     }
+
+
 
     private void karsıKontrol(String keyim){
 
@@ -127,6 +103,7 @@ public class ArkadasListesiEkran extends AppCompatActivity {
                 ArkadaslarimModel user = new ArkadaslarimModel(userModel.getUsername(), userModel.getProfilUrl(),dataSnapshot.getKey(), userModel.getSummInfo());
                 System.out.println("sonuckontrol"+user.getUsername());
                 nlist.add(user);
+                nlist2.add(user);
                 userAdapter.notifyDataSetChanged();
             }
 
@@ -147,6 +124,7 @@ public class ArkadasListesiEkran extends AppCompatActivity {
 
                         System.out.println(dataSnapshot.toString());
                         nlist.clear();
+                        nlist2.clear();
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             key= snapshot.getKey();
                             System.out.println("bende ekliler:"+key);

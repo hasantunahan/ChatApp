@@ -2,6 +2,7 @@ package com.anonsgroup.anons;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -11,9 +12,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.anonsgroup.anons.Adapter.UserAdapter;
 import com.anonsgroup.anons.models.Anons;
@@ -84,6 +88,9 @@ public class ChatEkran extends Fragment {
     FirebaseUser fuser;
     DatabaseReference reference;
     private List<ArkadaslarimModel> userList;
+    private List<ArkadaslarimModel> userList2;
+
+    private EditText kisiAra;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,7 +103,7 @@ public class ChatEkran extends Fragment {
         fuser=FirebaseAuth.getInstance().getCurrentUser();
         //Sohbete eklemek için
         userList=new ArrayList<>();
-
+        userList2=new ArrayList<>();
         mesajAt=view.findViewById(R.id.mesajAtButton);
         mesajAt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +113,7 @@ public class ChatEkran extends Fragment {
             }
         });
 
-        adapter = new UserAdapter(getContext(),userList);
+        adapter = new UserAdapter(getContext(),userList,userList2);
         recyclerView.setAdapter(adapter);
 
 
@@ -114,6 +121,7 @@ public class ChatEkran extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userList.clear();
+                userList2.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     /*userList.add(new ArkadaslarimModel(snapshot.getKey(),snapshot.getChildren().iterator().next().getValue().toString()));
                     System.out.println("HASOOOOOOOOOOOO"+snapshot.getValue().toString());*/
@@ -126,6 +134,7 @@ public class ChatEkran extends Fragment {
                             FirebaseUserModel userModel = dataSnapshot.getValue(FirebaseUserModel.class);
                             ArkadaslarimModel user = new ArkadaslarimModel(userModel.getUsername(), userModel.getProfilUrl());
                             userList.add(user);
+                            userList2.add(user);
                           //  Collections.reverse(userList);
                             adapter.notifyDataSetChanged();
                         }
@@ -148,6 +157,23 @@ public class ChatEkran extends Fragment {
             }
         });
 
+        kisiAra=view.findViewById(R.id.sohbetKisiaraEdittexxt);
+        kisiAra.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                adapter.getFilter().filter(s.toString());
+            }
+        });
 
 
 
