@@ -85,6 +85,7 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
     private FirebaseRecyclerAdapter<Anonss, ProfilViewHolder> fAdapter;
     ImageView navigationProfilView;
     TextView navigationUsername;
+    private TextView bildirimSayiTextView;
     public ProfilEkran() {
         // Required empty public constructor
     }
@@ -126,6 +127,7 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         context = view.getContext();
         settingImageView = view.findViewById(R.id.settingsImageButton);
         adSoyadTextView = view.findViewById(R.id.profilAdSayodTextView);
+        bildirimSayiTextView = view.findViewById(R.id.bildirimSayisiTextView);
         profildurumTextView = view.findViewById(R.id.profildurumTextView);
         profilPhotoImageView  = view.findViewById(R.id.profilAvatarCircleImage);
         profilBackgroundImageView = view.findViewById(R.id.profilBackgroundImageView);
@@ -134,7 +136,7 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
         settingImageView.setOnClickListener(v -> drawerLayout.openDrawer(Gravity.START));
 
 
-
+        anonsSayacYazdir();
 
             //TODO: resimler databaseden çekilip imageview a konacak ve diğer bilgiler.
         //TODO: Şerefin yaptığı açılan pencere buna entegre edilecek.
@@ -331,6 +333,23 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
 
 
         return true;
+    }
+
+    private void anonsSayacYazdir() {
+        FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("countOfAllAnons")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String sayac = dataSnapshot.getValue().toString();
+                        bildirimSayiTextView.setText(sayac);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
     }
 
 

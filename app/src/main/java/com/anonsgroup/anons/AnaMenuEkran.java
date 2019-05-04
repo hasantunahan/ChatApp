@@ -55,6 +55,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.functions.FirebaseFunctions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -316,7 +317,6 @@ public class AnaMenuEkran extends Fragment {
             Anonss anons = new Anonss(senderId,city,new Date().getTime(),0,editText.getText().toString(),lat,longi,current,username,photoUrl);
             epicdialog.dismiss();
             databaseRef.child("Anonslar").child(senderId).child(anonsId).setValue(anons).addOnSuccessListener(command -> {
-
                 Objects.requireNonNull(getActivity()).runOnUiThread(() -> Toast.makeText(getContext(), "Anonsunuz iletilmiştir.", Toast.LENGTH_SHORT).show());
             });
         });
