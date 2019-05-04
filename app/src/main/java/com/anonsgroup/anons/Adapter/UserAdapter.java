@@ -13,6 +13,11 @@ import com.anonsgroup.anons.MesajEkran;
 import com.anonsgroup.anons.R;
 import com.anonsgroup.anons.models.ArkadaslarimModel;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
@@ -30,7 +35,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
       View view = LayoutInflater.from(context).inflate(R.layout.arkadas_listesi_li,viewGroup,false);
 
-
         return new UserAdapter.ViewHolder(view);
 
     }
@@ -47,11 +51,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             Glide.with(context).load(user.getProfilURL()).into(viewHolder.image);
         }
 
+
         //mesajlasma
         viewHolder.itemView.setOnClickListener(v -> {
             Intent intent=new Intent(context, MesajEkran.class);
             intent.putExtra("userid",user.getUsername());
-            intent.putExtra("id",user.getUid());
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
@@ -80,10 +84,5 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         }
 
     }
-
-
-
-
-
 
 }

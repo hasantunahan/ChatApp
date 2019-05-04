@@ -111,6 +111,7 @@ public class ArkadasListesiEkran extends AppCompatActivity {
                                 FirebaseDatabase.getInstance().getReference("users").child(key).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        nlist.clear();
                                         System.out.println(dataSnapshot.toString());
                                         FirebaseUserModel userModel = dataSnapshot.getValue(FirebaseUserModel.class);
                                         ArkadaslarimModel user = new ArkadaslarimModel(userModel.getUsername(), userModel.getProfilUrl(),key, userModel.getSummInfo());

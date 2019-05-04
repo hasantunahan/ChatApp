@@ -20,7 +20,7 @@
         android:gravity="center|start"
         android:orientation="horizontal">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profilKisiImagaView"
             android:layout_width="45dp"
             android:layout_height="45dp"

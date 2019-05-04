@@ -1,6 +1,7 @@
 package com.anonsgroup.anons;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anonsgroup.anons.models.Anons;
+import com.anonsgroup.anons.models.ArkadaslarimModel;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,14 +48,14 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
     private ConstraintLayout geciciAcil;
     private ConstraintLayout geciciİlk;
 
-    Context context;
-    List<Anons> mdata;
-    String currentUsername;
-    FirebaseUser fuser=FirebaseAuth.getInstance().getCurrentUser();
-    String odaIDGlobal;
-    DatabaseReference reference=FirebaseDatabase.getInstance().getReference();
-    String userid2;
-    String text;
+    private Context context;
+    private List<Anons> mdata;
+    private String currentUsername;
+    private FirebaseUser fuser=FirebaseAuth.getInstance().getCurrentUser();
+    private String odaIDGlobal;
+    private DatabaseReference reference=FirebaseDatabase.getInstance().getReference();
+    private String userid2;
+    private String text;
 
     @NonNull
     @Override
@@ -106,6 +108,17 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
         if (!mdata.get(i).isSeen())
             myviewHolder.begeniFotograf.setImageResource(R.drawable.ic_bildiri);
 
+     /*   myviewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent( context,MesajEkran.class);
+                intent.putExtra("id",mdata.get(i).getUserId());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+
+            }
+        });
+*/
     }
 
     @Override
@@ -173,6 +186,7 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
 
 
 
+
             cevaplaButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -193,7 +207,6 @@ public class CustomAnaEkranAdapter extends RecyclerView.Adapter<CustomAnaEkranAd
                     sendMessage("15294789585564643482588464648948387638431537815628496284274531863862485647"+metin.getText());
 
                     sendMessage(text);
-                    metin.setText("");
                     cevapEditText.setText("");
                     FirebaseDatabase.getInstance().getReference("messages").child(odaIDGlobal).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
