@@ -21,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class MesajEkran extends AppCompatActivity {
     DatabaseReference reference1;
     MesajlasmaAdapter mesajAdapter;
     List<MesajModel> mchat;
-
+    ImageView arkadasEkle;
     ImageView gonder;
     TextView metin;
     FirebaseAuth mAuth;
@@ -49,6 +50,7 @@ public class MesajEkran extends AppCompatActivity {
     String currentUsername;
     String odaIDGlobal;
     RecyclerView recyclerView;
+    String karsiID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,9 @@ public class MesajEkran extends AppCompatActivity {
         setContentView(R.layout.activity_mesaj_ekran);
         gonder=findViewById(R.id.mesajEkrangonderButton);
         metin=findViewById(R.id.mesajekranMetin);
+
+        arkadasEkle=findViewById(R.id.mesajEkranArkadasMi);
+
         mAuth=FirebaseAuth.getInstance();
         mCurrentid=mAuth.getCurrentUser().getUid();
         reference=FirebaseDatabase.getInstance().getReference();
@@ -76,7 +81,10 @@ public class MesajEkran extends AppCompatActivity {
         //TODO :veriyi diğer sayfadan alıyoruz
         intent=getIntent();
         final String userid=intent.getStringExtra("userid");
+        /*final String karsiid=intent.getStringExtra("id");*/
        userid2=userid;
+     /*  karsiID=karsiid;*/
+        System.out.println("KARSIIII"+karsiID);
 
         fuser= FirebaseAuth.getInstance().getCurrentUser();
         //yazışılan kişnin bilgileri çekiliyor.
@@ -163,10 +171,29 @@ public class MesajEkran extends AppCompatActivity {
             }
         });
 
+        arkadasEkle.setOnClickListener(new View.OnClickListener() {
+            String karsiID;
+            @Override
+            public void onClick(View v) {
+                FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+                DatabaseReference reference=FirebaseDatabase.getInstance().getReference("ArkadasListesi");
+                FirebaseDatabase.getInstance().getReference().child("users").orderByChild("username").equalTo(userid2)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                    karsiID=snapshot.getKey();
+                                }
+                                reference.child(fuser.getUid()).child(karsiID).setValue(true);
+                            }
 
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-
-
+                            }
+                        });
+            }
+        });
     }
 
     private void readMesaj(final String myid, final String userid){
