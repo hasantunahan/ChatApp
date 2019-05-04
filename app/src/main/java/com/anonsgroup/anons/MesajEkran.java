@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.anonsgroup.anons.models.FirebaseUserModel;
 import com.anonsgroup.anons.models.MesajModel;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -51,6 +52,44 @@ public class MesajEkran extends AppCompatActivity {
     String odaIDGlobal;
     RecyclerView recyclerView;
     String karsiID;
+    boolean arkadasmi=false;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DatabaseReference ref=FirebaseDatabase.getInstance().getReference("ArkadasListesi");
+        FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase.getInstance().getReference().child("users").orderByChild("username").equalTo(userid2).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot:dataSnapshot.getChildren()){
+                    karsiID=snapshot.getKey();
+                    ref.child(firebaseUser.getUid()).child(karsiID).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                           if(dataSnapshot.exists()){
+                               arkadas.setImageResource(R.drawable.ic_checkfriends);
+                               arkadasmi=true;
+                           }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +98,6 @@ public class MesajEkran extends AppCompatActivity {
         gonder=findViewById(R.id.mesajEkrangonderButton);
         metin=findViewById(R.id.mesajekranMetin);
 
-        arkadasEkle=findViewById(R.id.mesajEkranArkadasMi);
 
         mAuth=FirebaseAuth.getInstance();
         mCurrentid=mAuth.getCurrentUser().getUid();
@@ -74,7 +112,6 @@ public class MesajEkran extends AppCompatActivity {
         mesajAdapter = new MesajlasmaAdapter(MesajEkran.this, mchat);
         recyclerView.setAdapter(mesajAdapter);
         arkadas=findViewById(R.id.mesajEkranArkadasMi);
-        arkadas.setOnClickListener(v -> arkadas.setImageResource(R.drawable.ic_checkfriends));
         photo=findViewById(R.id.mesajEkranPhoto);
         username=findViewById(R.id.mesajEkranIsimSoyisim);
         //getStringEXTRA
@@ -171,27 +208,20 @@ public class MesajEkran extends AppCompatActivity {
             }
         });
 
-        arkadasEkle.setOnClickListener(new View.OnClickListener() {
-            String karsiID;
+        arkadas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
                 DatabaseReference reference=FirebaseDatabase.getInstance().getReference("ArkadasListesi");
-                FirebaseDatabase.getInstance().getReference().child("users").orderByChild("username").equalTo(userid2)
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                                    karsiID=snapshot.getKey();
-                                }
-                                reference.child(fuser.getUid()).child(karsiID).setValue(true);
-                            }
+                if(!arkadasmi){
+                    reference.child(fuser.getUid()).child(karsiID).setValue(true).addOnSuccessListener(aVoid -> arkadas.setImageResource(R.drawable.ic_checkfriends));
+                }else{
+                    reference.child(fuser.getUid()).child(karsiID).removeValue().addOnSuccessListener(aVoid -> {
+                        arkadas.setImageResource(R.drawable.ic_addfriends);
+                    });
+                }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
             }
         });
     }

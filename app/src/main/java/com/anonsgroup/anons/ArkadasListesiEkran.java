@@ -21,15 +21,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class ArkadasListesiEkran extends AppCompatActivity {
-        ImageView kapat;
+    ImageView kapat;
     RecyclerView recyclerView;
     List<ArkadaslarimModel> nlist;
     private UserAdapter userAdapter;
     private String key;
     EditText kisiAra;
+    FirebaseUser fuser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +47,10 @@ public class ArkadasListesiEkran extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         userAdapter = new UserAdapter(getApplicationContext(), nlist);
         recyclerView.setAdapter(userAdapter);
+        fuser=FirebaseAuth.getInstance().getCurrentUser();
         readUser();
 
-       kisiAra=findViewById(R.id.sohbetKisiaraEdittexxt);
+        kisiAra=findViewById(R.id.sohbetKisiaraEdittexxt);
    /*    kisiAra.addTextChangedListener(new TextWatcher() {
            @Override
            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -80,9 +84,9 @@ public class ArkadasListesiEkran extends AppCompatActivity {
                 nlist.clear();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     ArkadaslarimModel model=snapshot.getValue(ArkadaslarimModel.class);
-                            if(!model.getUid().equals(fuser.getUid())){
-                                nlist.add(model);
-                            }
+                    if(!model.getUid().equals(fuser.getUid())){
+                        nlist.add(model);
+                    }
                 }
                 userAdapter=new UserAdapter(getApplicationContext(),nlist);
                 recyclerView.setAdapter(userAdapter);
@@ -96,35 +100,61 @@ public class ArkadasListesiEkran extends AppCompatActivity {
 
     }
 
+    private void karsıKontrol(String keyim){
+
+        FirebaseDatabase.getInstance().getReference("ArkadasListesi").child(key).child(fuser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    System.out.println("karşıkontrol"+dataSnapshot.getValue().toString()+dataSnapshot.getRef());
+                kullaniciCek(keyim);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+    private void kullaniciCek(String keyler){
+        FirebaseDatabase.getInstance().getReference("users").child(keyler).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                System.out.println(dataSnapshot.toString());
+                FirebaseUserModel userModel = dataSnapshot.getValue(FirebaseUserModel.class);
+                ArkadaslarimModel user = new ArkadaslarimModel(userModel.getUsername(), userModel.getProfilUrl(),dataSnapshot.getKey(), userModel.getSummInfo());
+                System.out.println("sonuckontrol"+user.getUsername());
+                nlist.add(user);
+                userAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     private void readUser() {
-        FirebaseUser fuser= FirebaseAuth.getInstance().getCurrentUser();
+
         FirebaseDatabase.getInstance().getReference("ArkadasListesi").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            System.out.println(dataSnapshot.toString());
-                            nlist.clear();
-                            for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                key= snapshot.getKey();
-                                System.out.println(key);
-                                FirebaseDatabase.getInstance().getReference("users").child(key).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        nlist.clear();
-                                        System.out.println(dataSnapshot.toString());
-                                        FirebaseUserModel userModel = dataSnapshot.getValue(FirebaseUserModel.class);
-                                        ArkadaslarimModel user = new ArkadaslarimModel(userModel.getUsername(), userModel.getProfilUrl(),key, userModel.getSummInfo());
-                                        nlist.add(user);
-                                        userAdapter.notifyDataSetChanged();
-                                    }
+                        System.out.println(dataSnapshot.toString());
+                        nlist.clear();
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            key= snapshot.getKey();
+                            System.out.println("bende ekliler:"+key);
+                            karsıKontrol(key);
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                    }
-                                });
-                            }
+
+                        }
 
 
 
@@ -135,10 +165,5 @@ public class ArkadasListesiEkran extends AppCompatActivity {
 
                     }
                 });
-
-
-
-
-
     }
 }
