@@ -160,7 +160,7 @@ public class AnaMenuEkran extends Fragment {
 
         //Anonsların Çekildiği Kod:
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("AnonsGidenKullanicilar").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.orderByChild("date").limitToLast(20).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 nlist.clear();
