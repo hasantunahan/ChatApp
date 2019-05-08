@@ -48,6 +48,17 @@
             android:layout_height="wrap_content" />
     </android.support.v4.widget.NestedScrollView>
 
+    <TextView
+        android:id="@+id/gunlukAnonsSayiTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/yeniAnonsButton"
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintStart_toStartOf="@+id/yeniAnonsButton"
+        app:layout_constraintTop_toTopOf="@+id/yeniAnonsButton" />
+
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/yeniAnonsButton"
         android:layout_width="wrap_content"
@@ -57,7 +68,7 @@
         android:layout_marginBottom="8dp"
         android:clickable="true"
         android:src="@drawable/bildirieklepng"
-        app:backgroundTint="@color/colorWhite"
+        app:backgroundTint="@android:color/transparent"
         app:elevation="5dp"
         app:fabCustomSize="80dp"
         app:fabSize="auto"
@@ -69,6 +80,8 @@
         app:layout_constraintVertical_bias="1.0"
         app:maxImageSize="45dp"
         app:rippleColor="@color/Gold" />
+
+
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout3"
@@ -117,6 +130,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_chattiklanmamis" />
+
     </android.support.constraint.ConstraintLayout>
 
 

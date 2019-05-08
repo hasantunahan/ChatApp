@@ -100,6 +100,8 @@ public class AnaMenuEkran extends Fragment {
     private FirebaseUser fUser;
     private static final int REQUEST_PERMISSIONS = 100;
     boolean boolean_permission;
+    private TextView gunlukAnonsSayiTextView;
+    private int gunlukAnons;
     TextView tv_latitude, tv_longitude, tv_address,tv_area,tv_locality;
     Double lat,longi;
     Geocoder geocoder;
@@ -147,7 +149,7 @@ public class AnaMenuEkran extends Fragment {
         nlist = new ArrayList<>();
         RecyclerView recyclerView=view.findViewById(R.id.anaEkranAnonsListLayout);
         fUser = FirebaseAuth.getInstance().getCurrentUser();
-
+        gunlukAnonsSayiTextView = view.findViewById(R.id.gunlukAnonsSayiTextView);
 
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(view.getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -156,6 +158,23 @@ public class AnaMenuEkran extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         customAnaEkranAdapter=new CustomAnaEkranAdapter(view.getContext(),nlist);
         recyclerView.setAdapter(customAnaEkranAdapter);
+
+
+        //Gunluk Anons Sayisi Çekilen Kod:
+        FirebaseDatabase.getInstance().getReference("users").child(fUser.getUid()).child("countOfAnonsDaily").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    gunlukAnons = Integer.valueOf(dataSnapshot.getValue().toString());
+                    gunlukAnonsSayiTextView.setText(String.valueOf(gunlukAnons));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         //Anonsların Çekildiği Kod:
@@ -185,7 +204,11 @@ public class AnaMenuEkran extends Fragment {
         epicdialog=new Dialog(view.getContext(),R.style.Kendiismim);
         yeniAnons= view.findViewById(R.id.yeniAnonsButton);
 
-        yeniAnons.setOnClickListener(v -> showDialog());
+        yeniAnons.setOnClickListener(v -> {
+            if(gunlukAnons < 1)
+                Toast.makeText(getContext(), "Anons Hakkınız Bitmiştir.", Toast.LENGTH_SHORT).show(); //TODO: ingilizcesi lazım
+            showDialog();
+        });
 
         FirebaseDatabase.getInstance().getReference("ArkadasListesi").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addValueEventListener(new ValueEventListener() {
