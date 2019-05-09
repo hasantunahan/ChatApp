@@ -236,8 +236,9 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
 
     @Override
     public void onResume() {
+        super.onResume();
         //Profil Bilgilerinin Çekildği kod:
-        FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(mAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(mAuth.getCurrentUser().getEmail()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
@@ -273,7 +274,6 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
 
             }
         });
-        super.onResume();
         if(fAdapter!=null)
             fAdapter.startListening();
 
