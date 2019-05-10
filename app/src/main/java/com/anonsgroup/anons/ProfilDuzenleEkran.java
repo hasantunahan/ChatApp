@@ -179,7 +179,9 @@ public class ProfilDuzenleEkran extends AppCompatActivity {
                             System.out.println("2 si birden");
                         }
                     else if(profilDegisti)
-                        while(!profilKontrol);
+                        while(!profilKontrol){
+                            System.out.println("sadece profil");
+                        }
                     else if (backgroundDegisti)
                         while (!backgroundKontrol){
                             System.out.println("sadece background");

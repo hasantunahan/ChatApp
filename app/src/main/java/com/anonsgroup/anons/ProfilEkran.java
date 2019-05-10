@@ -86,6 +86,7 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
     ImageView navigationProfilView;
     TextView navigationUsername;
     private TextView bildirimSayiTextView;
+    private String profilUrl;
     public ProfilEkran() {
         // Required empty public constructor
     }
@@ -182,7 +183,10 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
             @Override
             protected void onBindViewHolder(@NonNull ProfilViewHolder holder, int position, @NonNull Anonss model) {
                 //TODO: BURASI localden Çekilecek
-                holder.getProfilImage().setImageResource(R.drawable.kullaniciprofildefault);
+                if(profilUrl.equals("default"))
+                    holder.getProfilImage().setImageResource(R.drawable.kullaniciprofildefault);
+                else
+                    Glide.with(getContext()).load(profilUrl).into(holder.getProfilImage());
                 holder.getAdTextView().setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                 holder.getAnonsTextView().setText(model.getText());
                 holder.getKonumTextView().setText(model.getLocation());
@@ -232,8 +236,9 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
 
     @Override
     public void onResume() {
+        super.onResume();
         //Profil Bilgilerinin Çekildği kod:
-        FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(mAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(mAuth.getCurrentUser().getEmail()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
@@ -245,19 +250,20 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
                         adSoyadTextView.setText(adSoyad);
                         navigationUsername.setText(username);
                         String background = snapshot.child("backgroundUrl").getValue().toString();
-                        String profil = snapshot.child("profilUrl").getValue().toString();
+                        profilUrl = snapshot.child("profilUrl").getValue().toString();
+
                         if(background.equals("default"))
                             profilBackgroundImageView.setImageResource(R.drawable.defaultback);
                         else
                             Glide.with(getActivity().getApplicationContext()).load(background).into(profilBackgroundImageView);
 
-                        if(profil.equals("default")) {
+                        if(profilUrl.equals("default")) {
                             profilPhotoImageView.setImageResource(R.drawable.kullaniciprofildefault);
                             navigationProfilView.setImageResource(R.drawable.kullaniciprofildefault);
                         }
                         else {
-                            Glide.with(getActivity().getApplicationContext()).load(profil).into(profilPhotoImageView);
-                            Glide.with(getActivity().getApplicationContext()).load(profil).into(navigationProfilView);
+                            Glide.with(getActivity().getApplicationContext()).load(profilUrl).into(profilPhotoImageView);
+                            Glide.with(getActivity().getApplicationContext()).load(profilUrl).into(navigationProfilView);
                         }
                     }
                 }
@@ -268,7 +274,6 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
 
             }
         });
-        super.onResume();
         if(fAdapter!=null)
             fAdapter.startListening();
 

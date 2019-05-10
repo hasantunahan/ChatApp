@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.anonsgroup.anons.models.FirebaseUserModel;
 import com.anonsgroup.anons.models.MesajModel;
 import com.bumptech.glide.Glide;
@@ -52,6 +54,8 @@ public class MesajEkran extends AppCompatActivity {
     String odaIDGlobal;
     RecyclerView recyclerView;
     String karsiID;
+    private int kalanMesajHakki;
+    private TextView kalanMesajTextView;
     boolean arkadasmi=false;
 
     @Override
@@ -114,6 +118,7 @@ public class MesajEkran extends AppCompatActivity {
         arkadas=findViewById(R.id.mesajEkranArkadasMi);
         photo=findViewById(R.id.mesajEkranPhoto);
         username=findViewById(R.id.mesajEkranIsimSoyisim);
+        kalanMesajTextView = findViewById(R.id.kalanMesajTextView);
         //getStringEXTRA
         //TODO :veriyi diğer sayfadan alıyoruz
         intent=getIntent();
@@ -162,67 +167,80 @@ public class MesajEkran extends AppCompatActivity {
         }
         odaIDGlobal=odaid;
 
-///Oda oluşturma
-
-
-        gonder.setOnClickListener(new View.OnClickListener() {
+        //Firebase Kalan mesaj hakkını gösteren kod;
+        FirebaseDatabase.getInstance().getReference("RemainingMessages").child(odaIDGlobal).child("remainingMessages").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                sendMessage();
-                metin.setText("");
-                FirebaseDatabase.getInstance().getReference("messages").child(odaIDGlobal).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists()){
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    kalanMesajHakki = Integer.valueOf(dataSnapshot.getValue().toString());
+                    kalanMesajTextView.setText(String.valueOf(kalanMesajHakki));
+                }
+            }
 
-                            FirebaseDatabase.getInstance().getReference().child("Rooms").addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                    if(!dataSnapshot.child(fuser.getDisplayName()).hasChild(userid2)){
-                                        int remainingMessage=20;
-                                        intent=getIntent();
-                                        String uid=intent.getStringExtra("id");
-                                        reference.child("Rooms").child(fuser.getDisplayName()).child(userid2).child("uid").setValue(uid);
-                                        reference.child("Rooms").child(userid2).child(fuser.getDisplayName()).child("uid").setValue(fuser.getUid());
-                                        reference.child("RemainingMessages").child(odaIDGlobal).child("remainingMessages").setValue(remainingMessage);
-                                    }
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
 
-        arkadas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
-                DatabaseReference reference=FirebaseDatabase.getInstance().getReference("ArkadasListesi");
-                if(!arkadasmi){
-                    reference.child(fuser.getUid()).child(karsiID).setValue(true).addOnSuccessListener(aVoid -> arkadas.setImageResource(R.drawable.ic_checkfriends));
-                }else{
-                    reference.child(fuser.getUid()).child(karsiID).removeValue().addOnSuccessListener(aVoid -> {
-                        arkadas.setImageResource(R.drawable.ic_addfriends);
-                    });
+
+
+        //Oda oluşturma
+        gonder.setOnClickListener(v -> {
+            if(kalanMesajHakki < 1) {
+                Toast.makeText(this, "Mesaj Hakkınız Bitmiştir.", Toast.LENGTH_SHORT).show(); //TODO: İngilizcesi olacak.
+                return;
+            }
+            sendMessage();
+            metin.setText("");
+            FirebaseDatabase.getInstance().getReference("messages").child(odaIDGlobal).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+
+                        FirebaseDatabase.getInstance().getReference().child("Rooms").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                if(!dataSnapshot.child(fuser.getDisplayName()).hasChild(userid2)){
+                                    int remainingMessage=20;
+                                    intent=getIntent();
+                                    String uid=intent.getStringExtra("id");
+                                    reference.child("Rooms").child(fuser.getDisplayName()).child(userid2).child("uid").setValue(uid);
+                                    reference.child("Rooms").child(userid2).child(fuser.getDisplayName()).child("uid").setValue(fuser.getUid());
+                                    reference.child("RemainingMessages").child(odaIDGlobal).child("remainingMessages").setValue(remainingMessage);
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
                 }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                }
+            });
+
+
+        });
+
+        arkadas.setOnClickListener(v -> {
+            DatabaseReference reference=FirebaseDatabase.getInstance().getReference("ArkadasListesi");
+            if(!arkadasmi){
+                reference.child(fuser.getUid()).child(karsiID).setValue(true).addOnSuccessListener(aVoid -> arkadas.setImageResource(R.drawable.ic_checkfriends));
+            }else{
+                reference.child(fuser.getUid()).child(karsiID).removeValue().addOnSuccessListener(aVoid -> {
+                    arkadas.setImageResource(R.drawable.ic_addfriends);
+                });
             }
+
+
         });
     }
 
