@@ -211,6 +211,48 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
 
         //TODO: Navigation drawer gelince bu burdan kalkıcak.
 
+        //Profil Bilgilerinin Çekildği kod:
+        FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(mAuth.getCurrentUser().getEmail()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        //userModel = snapshot.getValue(FirebaseUserModel.class);
+                        profildurumTextView.setText(snapshot.child("summInfo").getValue().toString());
+                        String adSoyad = snapshot.child("name").getValue().toString() + " " + snapshot.child("surname").getValue().toString();
+                        String username= snapshot.child("username").getValue().toString();
+                        adSoyadTextView.setText(adSoyad);
+                        navigationUsername.setText(username);
+                        String background = snapshot.child("backgroundUrl").getValue().toString();
+                        profilUrl = snapshot.child("profilUrl").getValue().toString();
+
+                        if(background.equals("default"))
+                            profilBackgroundImageView.setImageResource(R.drawable.defaultback);
+                        else
+                            if(getActivity() != null)
+                                Glide.with(getActivity().getApplicationContext()).load(background).into(profilBackgroundImageView);
+
+                        if(profilUrl.equals("default")) {
+                            profilPhotoImageView.setImageResource(R.drawable.kullaniciprofildefault);
+                            navigationProfilView.setImageResource(R.drawable.kullaniciprofildefault);
+                        }
+                        else {
+                            if(getActivity() != null) {
+                                Glide.with(getActivity().getApplicationContext()).load(profilUrl).into(profilPhotoImageView);
+                                Glide.with(getActivity().getApplicationContext()).load(profilUrl).into(navigationProfilView);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        if(fAdapter!=null)
+            fAdapter.startListening();
 
 
         return view;
@@ -237,45 +279,6 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
     @Override
     public void onResume() {
         super.onResume();
-        //Profil Bilgilerinin Çekildği kod:
-        FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(mAuth.getCurrentUser().getEmail()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        //userModel = snapshot.getValue(FirebaseUserModel.class);
-                        profildurumTextView.setText(snapshot.child("summInfo").getValue().toString());
-                        String adSoyad = snapshot.child("name").getValue().toString() + " " + snapshot.child("surname").getValue().toString();
-                        String username= snapshot.child("username").getValue().toString();
-                        adSoyadTextView.setText(adSoyad);
-                        navigationUsername.setText(username);
-                        String background = snapshot.child("backgroundUrl").getValue().toString();
-                        profilUrl = snapshot.child("profilUrl").getValue().toString();
-
-                        if(background.equals("default"))
-                            profilBackgroundImageView.setImageResource(R.drawable.defaultback);
-                        else
-                            Glide.with(getActivity().getApplicationContext()).load(background).into(profilBackgroundImageView);
-
-                        if(profilUrl.equals("default")) {
-                            profilPhotoImageView.setImageResource(R.drawable.kullaniciprofildefault);
-                            navigationProfilView.setImageResource(R.drawable.kullaniciprofildefault);
-                        }
-                        else {
-                            Glide.with(getActivity().getApplicationContext()).load(profilUrl).into(profilPhotoImageView);
-                            Glide.with(getActivity().getApplicationContext()).load(profilUrl).into(navigationProfilView);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        if(fAdapter!=null)
-            fAdapter.startListening();
 
     }
 
@@ -386,12 +389,18 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
     }
 
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(fAdapter!=null)
+            fAdapter.stopListening();
+    }
+
 
     @Override
     public void onStop() {
         super.onStop();
-        if(fAdapter!=null)
-            fAdapter.stopListening();
+
     }
 
 }
