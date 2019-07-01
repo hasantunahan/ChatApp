@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.anonsgroup.anons.Adapter.UserAdapter;
+import com.anonsgroup.anons.Notification.Token;
 import com.anonsgroup.anons.models.Anons;
 import com.anonsgroup.anons.models.ArkadaslarimModel;
 import com.anonsgroup.anons.models.FirebaseUserModel;
@@ -33,6 +34,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -175,9 +177,15 @@ public class ChatEkran extends Fragment {
             }
         });
 
-
+        updateToken(FirebaseInstanceId.getInstance().getToken());
 
         return view;
+    }
+
+    private void updateToken(String token){
+        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1=new Token();
+        reference.child(fuser.getUid()).setValue(token1);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -186,6 +194,7 @@ public class ChatEkran extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
+
 
     @Override
     public void onAttach(Context context) {

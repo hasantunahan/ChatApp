@@ -61,6 +61,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
         viewHolder.itemView.setOnClickListener(v -> {
             Intent intent=new Intent(context, MesajEkran.class);
             intent.putExtra("userid",user.getUsername());
+            intent.putExtra("id",user.getUid());
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });

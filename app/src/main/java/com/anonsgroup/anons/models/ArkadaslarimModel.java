@@ -4,6 +4,9 @@ public class ArkadaslarimModel {
     String username;
     String profilURL;
 
+    public ArkadaslarimModel() {
+    }
+
     public ArkadaslarimModel(String username, String profilURL, String receiverid, String durum) {
         this.username = username;
         this.profilURL = profilURL;

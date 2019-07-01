@@ -45,7 +45,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -187,10 +189,14 @@ public class ProfilEkran extends Fragment implements NavigationView.OnNavigation
                     holder.getProfilImage().setImageResource(R.drawable.kullaniciprofildefault);
                 else
                     Glide.with(getContext()).load(profilUrl).into(holder.getProfilImage());
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy   HH:mm");
+                String currentDate = sdf.format(new Date(model.getDate()));
+
                 holder.getAdTextView().setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                 holder.getAnonsTextView().setText(model.getText());
                 holder.getKonumTextView().setText(model.getLocation());
-                holder.getTarihTextView().setText(model.getDate()+"");
+                holder.getTarihTextView().setText(currentDate);
             }
 
             @NonNull

@@ -14,8 +14,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anonsgroup.anons.Notification.Client;
+import com.anonsgroup.anons.Notification.Data;
+import com.anonsgroup.anons.Notification.MyResponse;
+import com.anonsgroup.anons.Notification.Sender;
+import com.anonsgroup.anons.Notification.Token;
+import com.anonsgroup.anons.models.ArkadaslarimModel;
 import com.anonsgroup.anons.models.FirebaseUserModel;
 import com.anonsgroup.anons.models.MesajModel;
+import com.anonsgroup.anons.models.User;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +40,9 @@ import java.util.List;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MesajEkran extends AppCompatActivity {
     CircleImageView photo;
@@ -57,6 +67,9 @@ public class MesajEkran extends AppCompatActivity {
     private int kalanMesajHakki;
     private TextView kalanMesajTextView;
     boolean arkadasmi=false;
+    APIService apiService;
+
+    boolean notify=false;
 
     @Override
     protected void onResume() {
@@ -102,6 +115,8 @@ public class MesajEkran extends AppCompatActivity {
         gonder=findViewById(R.id.mesajEkrangonderButton);
         metin=findViewById(R.id.mesajekranMetin);
 
+        apiService= Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
+
 
         mAuth=FirebaseAuth.getInstance();
         mCurrentid=mAuth.getCurrentUser().getUid();
@@ -123,6 +138,7 @@ public class MesajEkran extends AppCompatActivity {
         //TODO :veriyi diğer sayfadan alıyoruz
         intent=getIntent();
         final String userid=intent.getStringExtra("userid");
+       // final String id=intent.getStringExtra("id");
         /*final String karsiid=intent.getStringExtra("id");*/
        userid2=userid;
      /*  karsiID=karsiid;*/
@@ -301,10 +317,25 @@ public class MesajEkran extends AppCompatActivity {
                 }
             });
 
+            final String mesaj=msg;
+            FirebaseDatabase.getInstance().getReference("users").child(fuser.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    FirebaseUserModel user=dataSnapshot.getValue(FirebaseUserModel.class);
+                    if (notify){
+                        sendNotification(karsiID,user.getUsername(),mesaj);
+                        notify=false;
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
         }
-
-
-
 
         /*String gelenUsername=intent.getStringExtra("userid");
        // String roomId= UUID.randomUUID().toString();
@@ -324,6 +355,45 @@ public class MesajEkran extends AppCompatActivity {
 
 
     }
+    private void sendNotification(String receiver,String username,String message){
+     DatabaseReference tokens=FirebaseDatabase.getInstance().getReference("Tokens");
+     Query query=tokens.orderByKey().equalTo(receiver);
+     query.addValueEventListener(new ValueEventListener() {
+         @Override
+         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+             for (DataSnapshot snapshot:dataSnapshot.getChildren()){
+                 Token token=snapshot.getValue(Token.class);
+                Data data=new Data(fuser.getUid(),R.mipmap.ic_launcher,username+":"+message,"YeniMesaj",karsiID);
 
+                 Sender sender=new Sender(data,token.getToken());
+
+                 apiService.sendNotification(sender)
+                         .enqueue(new Callback<MyResponse>() {
+                             @Override
+                             public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                                 if(response.code() ==200){
+                                     if(response.body().success!=1){
+                                         Toast.makeText(MesajEkran.this, "Bildirim Hatasi", Toast.LENGTH_SHORT).show();
+                                     }
+                                 }
+                             }
+
+                             @Override
+                             public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                             }
+                         });
+
+             }
+
+         }
+
+         @Override
+         public void onCancelled(@NonNull DatabaseError databaseError) {
+
+         }
+     });
+
+    }
 
 }
